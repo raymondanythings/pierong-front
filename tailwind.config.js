@@ -13,7 +13,7 @@ module.exports = {
 				default: '620px'
 			},
 			colors: {
-				mainTeal: '#4f7474'
+				mainTeal: '#EAE6DA'
 			},
 			fontFamily: {
 				soojin: ['Soojin', 'sans-serif']

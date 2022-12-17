@@ -14,7 +14,7 @@ const withAuth = (Component: ComponentType<any>) => {
 		return <Navigate to="login" />
 	}
 
-	if (!type || code) {
+	if (!type || !code) {
 		return Redirect
 	}
 	return WithAuthComponent

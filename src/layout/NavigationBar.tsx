@@ -35,7 +35,7 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 				dragElastic={0.3}
 				// dragMomentum={false}
 				layout
-				className="flex align-center absolute h-11 bg-gray-400 right-0 overflow-hidden rounded-l-lg z-40"
+				className="flex align-center absolute h-11 bg-[#57765E] right-0 overflow-hidden rounded-l-lg z-40"
 			>
 				<svg
 					onClick={() => {
