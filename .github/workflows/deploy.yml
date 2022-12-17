@@ -1,0 +1,24 @@
+name: Deploy to cloudtype
+on:
+    push:
+        branches:
+            - master
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Connect repository
+              uses: cloudtype-github-actions/connect@v1
+              with:
+                  token: ${{ secrets.CLOUDTYPE_TOKEN }}
+                  ghtoken: ${{ secrets.GHP_TOKEN }}
+                  scope: teamname
+            - name: Deploy to Cloudtype
+              uses: cloudtype-github-actions/deploy@v1
+              with:
+                  token: ${{ secrets.CLOUDTYPE_TOKEN }}
+                  project: teamname/myproject
+                  stage: development
+                  file: ./.cloudtype/app.yaml
