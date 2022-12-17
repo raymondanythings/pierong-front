@@ -1,4 +1,4 @@
-name: 파이롱
+name: pierong
 app: node@18
 options:
     git:
