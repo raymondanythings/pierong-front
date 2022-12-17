@@ -22,4 +22,3 @@ jobs:
                   project: raymondanythings/pierong
                   # stage: master
                   file: ./.cloudtype/app.yaml
-0
