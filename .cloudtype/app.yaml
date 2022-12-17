@@ -1,0 +1,12 @@
+name: myapp
+app: node@18
+options:
+    git:
+        branch: master
+        url: https://github.com/cloudtype/example-node-express.git
+    env:
+        - name: NODE_ENV
+          value: production
+    install: npm ci --production
+    ports: 3000
+    start: npm start
