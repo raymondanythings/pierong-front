@@ -31,7 +31,7 @@ const Splash = () => {
 				/>
 
 				<motion.div className="App" initial="hidden" animate={title ? 'visible' : 'hidden'} variants={container}>
-					<AnimatedText text="서비스 이름" />
+					<AnimatedText text="PIERONG" />
 				</motion.div>
 			</div>
 		</div>
