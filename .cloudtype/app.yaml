@@ -1,5 +1,5 @@
 name: pierong
-app: node@18
+app: web
 options:
     git:
         branch: master
