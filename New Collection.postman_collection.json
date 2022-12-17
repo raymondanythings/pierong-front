@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "9cc651e4-5774-4547-a851-a48177dbfee4",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://oauth2.googleapis.com/token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "code",
+							"value": "4/0AWgavde_uOr3ZZMpBACWVGkSbzJUz8_ug3hzwieQ6e454mhNm9oONNDynlXuFYjb3Yv9tw",
+							"type": "default"
+						},
+						{
+							"key": "client_id",
+							"value": "531897348928-lko4ojglbitigiv6eadt6u2lau28df1v.apps.googleusercontent.com",
+							"type": "default"
+						},
+						{
+							"key": "client_secret",
+							"value": "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",
+							"type": "default"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "default"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:3000/oauth?type=google",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://oauth2.googleapis.com/token",
+					"protocol": "https",
+					"host": [
+						"oauth2",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"token"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "4/0AWgavdcxAgMl8ax6i1tEAhnVx-mNTTyBF4P0xzv9N8mChyxE4Rc8nSbagBMBr7JpCnyHNA",
+							"disabled": true
+						},
+						{
+							"key": "client_id",
+							"value": "531897348928-lko4ojglbitigiv6eadt6u2lau28df1v.apps.googleusercontent.com",
+							"disabled": true
+						},
+						{
+							"key": "client_secret",
+							"value": "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",
+							"disabled": true
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"disabled": true
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:3000/oauth?type=google",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://www.googleapis.com/oauth2/v1/userinfo?access_token=ya29.a0AX9GBdWvGyCgaMw6RDe8lT-_SytguPrDYRNjl7x2a55YU181rZemvoh2C8zn4SwUfp9frY3yjaMXeYP_0QEFUZI9OCvXcazXNb0uP3Vf092D-948Y_FT96dLatYoPQYEqWXyE9mScLaCqeAPrN9nE9rQavS1aCgYKAcoSARMSFQHUCsbCjrQBJxmEB911AkyONnlg_g0163",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.googleapis.com/oauth2/v1/userinfo?access_token=ya29.a0AX9GBdWvGyCgaMw6RDe8lT-_SytguPrDYRNjl7x2a55YU181rZemvoh2C8zn4SwUfp9frY3yjaMXeYP_0QEFUZI9OCvXcazXNb0uP3Vf092D-948Y_FT96dLatYoPQYEqWXyE9mScLaCqeAPrN9nE9rQavS1aCgYKAcoSARMSFQHUCsbCjrQBJxmEB911AkyONnlg_g0163",
+					"protocol": "https",
+					"host": [
+						"www",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"oauth2",
+						"v1",
+						"userinfo"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "ya29.a0AX9GBdWvGyCgaMw6RDe8lT-_SytguPrDYRNjl7x2a55YU181rZemvoh2C8zn4SwUfp9frY3yjaMXeYP_0QEFUZI9OCvXcazXNb0uP3Vf092D-948Y_FT96dLatYoPQYEqWXyE9mScLaCqeAPrN9nE9rQavS1aCgYKAcoSARMSFQHUCsbCjrQBJxmEB911AkyONnlg_g0163"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

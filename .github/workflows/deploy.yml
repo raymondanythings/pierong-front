@@ -21,4 +21,4 @@ jobs:
                   token: ${{ secrets.CLOUDTYPE_TOKEN }}
                   project: raymondanythings/pierong
                   stage: 파이롱
-                  # file: ./.cloudtype/app.yaml
+                  file: ./.cloudtype/app.yaml

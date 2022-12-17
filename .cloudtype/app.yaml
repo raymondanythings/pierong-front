@@ -1,4 +1,4 @@
-name: myapp
+name: 파이롱
 app: node@18
 options:
     git:

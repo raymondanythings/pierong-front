@@ -4,12 +4,13 @@ import { FC, useEffect } from 'react'
 
 interface OAuthProps {
 	type: 'google' | 'naver' | 'kakao'
-	token: string
+	code: string
 }
 
-const OAuth: FC<OAuthProps> = ({ token, type }) => {
+const OAuth: FC<OAuthProps> = ({ code, type }) => {
+	console.log(code)
 	const getUser = async () => {
-		const res = await axios.post('/login', { type, token })
+		const res = await axios.post('/login', { type, code })
 	}
 
 	useEffect(() => {
