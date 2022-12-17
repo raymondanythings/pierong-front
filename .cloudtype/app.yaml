@@ -3,7 +3,7 @@ app: node@18
 options:
     git:
         branch: master
-        url: https://github.com/cloudtype/example-node-express.git
+        url: https://github.com/6floorpeople/pierong-front.git
     env:
         - name: NODE_ENV
           value: production
