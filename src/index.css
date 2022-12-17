@@ -1,13 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @tailwind variants; */
 
-/* @layer components {
-	.body {
-		@apply mainTeal;
+@font-face {
+	font-family: 'Soojin';
+	src: url('./assets/font/ImcreSoojin.woff');
+}
+
+@layer base {
+	main {
+		@apply font-soojin;
 	}
-} */
+}
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126

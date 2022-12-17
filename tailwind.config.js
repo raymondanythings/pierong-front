@@ -14,6 +14,9 @@ module.exports = {
 			},
 			colors: {
 				mainTeal: '#4f7474'
+			},
+			fontFamily: {
+				soojin: ['Soojin', 'sans-serif']
 			}
 		}
 	},
