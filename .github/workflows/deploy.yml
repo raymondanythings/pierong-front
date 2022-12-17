@@ -14,11 +14,11 @@ jobs:
               with:
                   token: ${{ secrets.CLOUDTYPE_TOKEN }}
                   ghtoken: ${{ secrets.GHP_TOKEN }}
-                  scope: teamname
+                  scope: raymondanythings
             - name: Deploy to Cloudtype
               uses: cloudtype-github-actions/deploy@v1
               with:
                   token: ${{ secrets.CLOUDTYPE_TOKEN }}
-                  project: teamname/myproject
+                  project: raymondanythings/pierong
                   stage: development
                   file: ./.cloudtype/app.yaml
