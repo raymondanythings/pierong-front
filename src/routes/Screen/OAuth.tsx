@@ -10,7 +10,6 @@ interface OAuthProps {
 const OAuth: FC<OAuthProps> = ({ token, type }) => {
 	const getUser = async () => {
 		const res = await axios.post('/login', { type, token })
-		console.log(res)
 	}
 
 	useEffect(() => {
