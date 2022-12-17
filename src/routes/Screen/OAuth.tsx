@@ -1,5 +1,6 @@
+import axios from 'api'
 import withAuth from 'layout/withAuth'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 interface OAuthProps {
 	type: 'google' | 'naver' | 'kakao'
@@ -7,8 +8,15 @@ interface OAuthProps {
 }
 
 const OAuth: FC<OAuthProps> = ({ token, type }) => {
-	console.log(type)
-	console.log('token: ', token)
+	const getUser = async () => {
+		const res = await axios.post('/login', { type, token })
+		console.log(res)
+	}
+
+	useEffect(() => {
+		getUser()
+	}, [])
+
 	if (type === 'kakao') {
 		return null
 	}
