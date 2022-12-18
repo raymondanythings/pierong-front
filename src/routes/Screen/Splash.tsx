@@ -43,9 +43,9 @@ const Splash = () => {
 		titleControls.start('visible')
 	}, [])
 	return (
-		<div className="relative h-screen flex items-end justify-center pb-14">
+		<div className="relative flex h-full  items-end justify-center pb-14">
 			<div
-				className="absolute w-full  left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-[11px] items-center"
+				className="absolute w-full left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-[11px] items-center"
 				style={{ top: 'calc(var(--vh, 1vh) * 45)' }}
 			>
 				<motion.div

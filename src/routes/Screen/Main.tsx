@@ -10,16 +10,7 @@ const Main = () => {
 		console.log(res)
 	}
 
-	return (
-		<>
-			Main
-			<button onClick={() => getUser()}>ddfdf</button>
-			<button onClick={() => authLogin('google')}>google</button>
-			<button onClick={() => authLogin('kakao')}>kakao</button>
-			<div id="naver_id_login"></div>
-			<button onClick={() => authLogin('naver')}>naver</button>
-		</>
-	)
+	return <>Main</>
 }
 
 export default withNavigation(Main)

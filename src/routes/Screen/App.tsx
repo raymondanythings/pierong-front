@@ -16,7 +16,7 @@ function App() {
 		return () => window.removeEventListener('resize', setScreenSize)
 	})
 	return (
-		<main className="max-w-screen-default mx-auto relative" ref={navigationRef}>
+		<main className="max-w-screen-default h-screen mx-auto relative" ref={navigationRef}>
 			{showNav && <NavigationBar navigationRef={navigationRef} />}
 			<Outlet />
 		</main>
