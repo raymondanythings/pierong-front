@@ -10,6 +10,8 @@
 @layer base {
 	main {
 		@apply font-soojin;
+		height: -webkit-fill-available;
+		height: fill-available;
 	}
 }
 

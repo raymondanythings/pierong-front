@@ -17,6 +17,9 @@ module.exports = {
 			},
 			fontFamily: {
 				soojin: ['Soojin', 'sans-serif']
+			},
+			height: {
+				screen: 'calc(var(--vh, 1vh) * 100)'
 			}
 		}
 	},
