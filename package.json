@@ -1,7 +1,11 @@
 {
-  "name": "no-name",
+  "name": "pierong",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "6floorpeople",
+    "url" : "https://github.com/6floorpeople"
+  },
   "dependencies": {
     "@cloudtype/cli": "^1.0.1",
     "axios": "^1.2.1",

@@ -88,27 +88,24 @@ const Splash = () => {
 			</div>
 			<motion.div initial="hidden" animate={buttonControls} variants={container} className="flex space-y-5 flex-col">
 				<h1 className="text-center text-xl">sns로 간편 가입하기</h1>
-				<div className="flex justify-between space-x-4">
+				<div className="flex justify-between space-x-6">
 					<button
-						onClick={() => authLogin('google')}
-						className="bg-white flex p-3 justify-center items-center rounded-full shadow-md w-[50px] h-[50px]"
+						onClick={() => authLogin('naver')}
+						className="bg-[#03C75A]  flex  justify-center items-center rounded-full shadow-md w-10 h-10"
 					>
-						<img className="w-full" src={Google} />
-						{/* <span className="text-black">구글로 시작하기</span> */}
+						<img className="w-5/12" src={Naver} />
 					</button>
 					<button
 						onClick={() => authLogin('kakao')}
-						className="bg-[#FEE500] flex p-2.5 justify-center items-center rounded-full shadow-md w-[50px] h-[50px]"
+						className="bg-[#FEE500] flex  justify-center items-center rounded-full shadow-md w-10 h-10"
 					>
-						<img className="w-full" src={Kakao} />
-						{/* <span className="text-black">카카오로 시작하기</span> */}
+						<img className="w-7/12" src={Kakao} />
 					</button>
 					<button
-						onClick={() => authLogin('naver')}
-						className="bg-[#03C75A]  flex p-3.5 justify-center items-center rounded-full shadow-md w-[50px] h-[50px]"
+						onClick={() => authLogin('google')}
+						className="bg-white flex  justify-center items-center rounded-full shadow-md w-10 h-10"
 					>
-						<img className="w-full" src={Naver} />
-						{/* <span className="text-white">네이버로 시작하기</span> */}
+						<img className="w-7/12" src={Google} />
 					</button>
 				</div>
 			</motion.div>
