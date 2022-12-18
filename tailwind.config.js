@@ -16,7 +16,7 @@ module.exports = {
 				mainTeal: '#EAE6DA'
 			},
 			fontFamily: {
-				soojin: ['Soojin', 'sans-serif']
+				main: ['kreon', 'kyobo', 'sans-serif']
 			},
 			height: {
 				screen: 'calc(var(--vh, 1vh) * 100)'

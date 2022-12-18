@@ -4,7 +4,7 @@ import { motion, Variants } from 'framer-motion'
 const Wrapper = ({ children }: { children: ReactNode }) => {
 	return <span className="word-wrapper">{children}</span>
 }
-const AnimatedText = ({ text }: { text: string }) => {
+const AnimatedText = ({ className, text }: { className?: string; text: string }) => {
 	const item: Variants = {
 		hidden: {
 			y: '200%',
@@ -37,7 +37,11 @@ const AnimatedText = ({ text }: { text: string }) => {
 									}}
 									key={index}
 								>
-									<motion.span className="inline-block py-2" variants={item}>
+									<motion.span
+										style={{ fontSize: element === 'ㅤ' ? '1px' : '' }}
+										className={'inline-block py-2 ' + className}
+										variants={item}
+									>
 										{element}
 									</motion.span>
 								</span>

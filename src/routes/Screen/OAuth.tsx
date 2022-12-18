@@ -10,14 +10,6 @@ interface OAuthProps {
 
 const OAuth: FC<OAuthProps> = ({ user, code, type }) => {
 	console.log(user)
-	// const getUser = async () => {
-	// 	const res = await axios.post(`/login/${type}`, { code })
-	// 	console.log(res)
-	// }
-
-	// useEffect(() => {
-	// 	getUser()
-	// }, [])
 
 	if (type === 'kakao') {
 		return null

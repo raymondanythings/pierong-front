@@ -3,13 +3,32 @@
 @tailwind utilities;
 
 @font-face {
+	font-family: 'kyobo';
+	src: url('./assets/font/KyoboHandwriting2021sjy.woff') format('woff');
+}
+@font-face {
+	font-family: 'kreon';
+	src: url('./assets/font/Kreon-Bold.woff') format('woff');
+	font-weight: 600;
+}
+@font-face {
+	font-family: 'kreon';
+	src: url('./assets/font/Kreon-Light.woff') format('woff');
+	font-weight: 400;
+}
+@font-face {
+	font-family: 'kreon';
+	src: url('./assets/font/Kreon-Regular.woff') format('woff');
+	font-weight: 500;
+}
+@font-face {
 	font-family: 'Soojin';
 	src: url('./assets/font/ImcreSoojin.woff');
 }
 
 @layer base {
 	main {
-		@apply font-soojin;
+		@apply font-main;
 		height: -webkit-fill-available;
 		height: fill-available;
 	}

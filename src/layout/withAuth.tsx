@@ -13,9 +13,7 @@ const withAuth = (Component: ComponentType<any>) => {
 			setUser(res)
 		}
 
-		console.log('????')
 		useLayoutEffect(() => {
-			console.log('fetch-====')
 			getUser()
 		}, [])
 		return <Component user={user} code={code} type={type} />
