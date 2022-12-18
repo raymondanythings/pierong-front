@@ -5,6 +5,7 @@ options:
         branch: master
         url: https://github.com/6floorpeople/pierong-front.git
     docbase: /build
+    nodeversion: "18"
     spa: true
     buildenv:
         - name: REACT_APP_GOOGLE_AUTH_URL
