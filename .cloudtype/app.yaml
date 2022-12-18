@@ -1,12 +1,13 @@
-name: pierong
+name: pierong-front
 app: web
 options:
     git:
         branch: master
         url: https://github.com/6floorpeople/pierong-front.git
-    env:
-        - name: NODE_ENV
-          value: production
-    install: npm ci --production
-    ports: 3000
-    start: npm start
+    docbase: /build
+    # env:
+    #     - name: NODE_ENV
+    #       value: production
+    # install: npm ci --production
+    # ports: 3000
+    # start: npm start
