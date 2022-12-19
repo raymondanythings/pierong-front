@@ -56,7 +56,7 @@ const Splash = () => {
 						imgControls.start('visible')
 					}}
 				>
-					<AnimatedText className="text-[20px]" text="HAPPYㅤNEWㅤFAV" />
+					<AnimatedText className="text-[20px]" text="HAPPYㅤNEWㅤFÉVE" />
 				</motion.div>
 				<motion.img
 					initial="hidden"
