@@ -38,11 +38,11 @@ const AnimatedText = ({ className, text }: { className?: string; text: string })
 									key={index}
 								>
 									<motion.span
-										style={{ fontSize: element === 'ㅤ' ? '1px' : '' }}
+										// style={{ fontSize: element === ' ' ? '1px' : '' }}
 										className={'inline-block py-2 ' + className}
 										variants={item}
 									>
-										{element}
+										{element === ' ' ? String.fromCharCode(parseInt('U+0020', 16)) : element}
 									</motion.span>
 								</span>
 							)
