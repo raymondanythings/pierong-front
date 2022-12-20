@@ -53,7 +53,7 @@ const useAuth = () => {
 		} else if (type === 'google') {
 			urlSearchParam.append('scope', OAUTH_URLS[type].params.scope!)
 		}
-		window.location.assign(`${OAUTH_URLS[type].baseUrl}?${urlSearchParam.toString()}`)
+		window.location.assign(`${OAUTH_URLS[type].baseUrl}${urlSearchParam.toString()}`)
 	}
 
 	return { authLogin }
