@@ -1,4 +1,5 @@
 import axios from 'api'
+import Modal from 'components/Modal'
 import useAuth from 'hooks/useAuth'
 import withNavigation from 'layout/withNavigation'
 
@@ -10,7 +11,11 @@ const Main = () => {
 		console.log(res)
 	}
 
-	return <>Main</>
+	return (
+		<>
+			<Modal>????</Modal>
+		</>
+	)
 }
 
 export default withNavigation(Main)

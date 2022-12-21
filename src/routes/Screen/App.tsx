@@ -19,6 +19,7 @@ function App() {
 		<main className="max-w-screen-default h-screen mx-auto relative" ref={navigationRef}>
 			{showNav && <NavigationBar navigationRef={navigationRef} />}
 			<Outlet />
+			<div id="modal"></div>
 		</main>
 	)
 }
