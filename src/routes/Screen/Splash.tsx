@@ -80,10 +80,16 @@ const Splash = () => {
 						buttonControls.start('visible')
 					}}
 					initial="hidden"
-					animate={textControls}
+					animate="visible"
+					transition={{
+						duration: 0.2,
+						type: 'spring',
+						damping: 11,
+						delay: 1.5
+					}}
 					variants={container}
 				>
-					<AnimatedText className="text-[48px] font-medium" text="PIERONG" />
+					<AnimatedText className="text-[48px] font-medium" text="파이롱" />
 				</motion.div>
 			</div>
 			<motion.div initial="hidden" animate={buttonControls} variants={container} className="flex space-y-5 flex-col">

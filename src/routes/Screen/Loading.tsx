@@ -57,8 +57,8 @@ const IMAGE_LIST = [
 const Loading = () => {
 	return (
 		<>
-			{IMAGE_LIST.map((item) => (
-				<RotateIcon {...item} />
+			{IMAGE_LIST.map((item, index) => (
+				<RotateIcon key={item.uid + index} {...item} />
 			))}
 		</>
 	)

@@ -1,6 +1,7 @@
 import axios from 'api'
 import withAuth from 'layout/withAuth'
 import { FC, useEffect } from 'react'
+import Loading from './Loading'
 
 interface OAuthProps {
 	type: 'google' | 'naver' | 'kakao'
@@ -9,12 +10,7 @@ interface OAuthProps {
 }
 
 const OAuth: FC<OAuthProps> = ({ user, code, type }) => {
-	console.log(user)
-
-	if (type === 'kakao') {
-		return null
-	}
-	return null
+	return <Loading />
 }
 
 export default withAuth(OAuth)

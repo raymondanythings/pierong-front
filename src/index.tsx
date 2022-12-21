@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals'
 import { RouterProvider } from 'react-router-dom'
 import router from 'routes/Router'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const queryClient = new QueryClient()
 
@@ -13,6 +14,7 @@ root.render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<RouterProvider router={router} />
+			<ReactQueryDevtools />
 		</QueryClientProvider>
 	</React.StrictMode>
 )
