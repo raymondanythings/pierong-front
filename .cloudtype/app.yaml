@@ -36,3 +36,32 @@ options:
             var: REACT_APP_NAVER_STATE
         - name: REACT_APP_API_PATH
             var: REACT_APP_API_PATH
+    env:
+        - name: REACT_APP_GOOGLE_AUTH_URL
+            var: REACT_APP_GOOGLE_AUTH_URL
+        - name: REACT_APP_GOOGLE_CLIENT_ID
+            var: REACT_APP_GOOGLE_CLIENT_ID
+        - name: REACT_APP_RESPONSE_TYPE
+            var: REACT_APP_RESPONSE_TYPE
+        - name: REACT_APP_GOOGLE_REDIRECT_URI
+            var: REACT_APP_GOOGLE_REDIRECT_URI
+        - name: REACT_APP_GOOGLE_SCOPE
+            var: REACT_APP_GOOGLE_SCOPE
+        - name: REACT_APP_KAKAO_AUTH_URL
+            var: REACT_APP_KAKAO_AUTH_URL
+        - name: REACT_APP_KAKAO_CLIENT_ID
+            var: REACT_APP_KAKAO_CLIENT_ID
+        - name: REACT_APP_KAKAO_REDIRECT_URI
+            var: REACT_APP_KAKAO_REDIRECT_URI
+        - name: REACT_APP_NAVER_AUTH_URL
+            var: REACT_APP_NAVER_AUTH_URL
+        - name: REACT_APP_NAVER_CLIENT_ID
+            var: REACT_APP_NAVER_CLIENT_ID
+        - name: REACT_APP_NAVER_CLIENT_SECRET
+            var: REACT_APP_NAVER_CLIENT_SECRET
+        - name: REACT_APP_NAVER_REDIRECT_URI
+            var: REACT_APP_NAVER_REDIRECT_URI
+        - name: REACT_APP_NAVER_STATE
+            var: REACT_APP_NAVER_STATE
+        - name: REACT_APP_API_PATH
+            var: REACT_APP_API_PATH
