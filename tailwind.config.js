@@ -13,7 +13,8 @@ module.exports = {
 				default: '620px'
 			},
 			colors: {
-				mainTeal: '#EAE6DA'
+				mainTeal: '#57765E',
+				mainBeige: '#eae6da'
 			},
 			fontFamily: {
 				main: ['kreon', 'kyobo', 'sans-serif']

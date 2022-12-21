@@ -8,6 +8,8 @@ interface IStore {
 	atk: string | null
 	rtk: string | null
 	isLogin: boolean
+	errorMessage?: string
+	setErrorMessage: (message: string) => void
 	setUser: (user: any) => void
 	setNav: () => void
 	showNav: boolean
@@ -23,6 +25,8 @@ const store = create(
 				showNav: false,
 				atk: null,
 				rtk: null,
+				errorMessage: undefined,
+				setErrorMessage: (msg) => set({ errorMessage: msg }),
 				setUser: (user) => set({ user: user }),
 				setNav: () =>
 					set((state) => ({

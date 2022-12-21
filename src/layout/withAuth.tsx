@@ -21,19 +21,20 @@ const withAuth = (Component: ComponentType<any>) => {
 			staleTime: Infinity
 		})
 
-		const { setTokens } = store()
+		const { setTokens, setErrorMessage } = store()
 		if (token) {
 			setTokens(token)
 			return <Navigate to="/main" />
 		} else if (isError) {
-			return <Navigate to="" />
+			setErrorMessage('로그인실패')
+			return <Navigate to="/" />
 		} else {
 			return <Component code={code} type={type} />
 		}
 	}
 
 	function Redirect() {
-		return <Navigate to="login" />
+		return <Navigate to="/login" />
 	}
 
 	return WithAuthComponent

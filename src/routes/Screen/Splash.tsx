@@ -39,6 +39,7 @@ const Splash = () => {
 	const buttonControls = useAnimationControls()
 	const imgControls = useAnimationControls()
 	const { authLogin } = useAuth()
+
 	useLayoutEffect(() => {
 		titleControls.start('visible')
 	}, [])
