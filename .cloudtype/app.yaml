@@ -5,7 +5,7 @@ options:
         branch: master
         url: https://github.com/6floorpeople/pierong-front.git
     docbase: /build
-    nodeversion: "18"
+    nodeversion: '18'
     spa: true
     buildenv:
         - name: REACT_APP_GOOGLE_AUTH_URL
@@ -65,3 +65,9 @@ options:
             var: REACT_APP_NAVER_STATE
         - name: REACT_APP_API_PATH
             var: REACT_APP_API_PATH
+    context:
+    git:
+      url: https://github.com/6floorpeople/pierong-front.git
+      branch: master
+repository:
+  url: https://github.com/6floorpeople/pierong-front.git
