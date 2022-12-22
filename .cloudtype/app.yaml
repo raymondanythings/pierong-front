@@ -7,7 +7,7 @@ options:
     docbase: /build
     nodeversion: '18'
     spa: true
-    env:
+    buildenv:
         - name: REACT_APP_GOOGLE_AUTH_URL
             var: REACT_APP_GOOGLE_AUTH_URL
         - name: REACT_APP_GOOGLE_CLIENT_ID
