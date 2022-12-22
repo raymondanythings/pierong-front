@@ -44,12 +44,13 @@ const store = create(
 
 store.subscribe(
 	({ atk, rtk }) => ({ atk, rtk }),
-	({ atk }) => {
+	({ atk, rtk }) => {
 		if (atk) {
 			axios.defaults.headers['X-ACCESS-TOKEN'] = atk
 		} else {
-			axios.defaults.headers['X-ACCESS-TOKEN'] = ''
+			delete axios.defaults.headers['X-ACCESS-TOKEN']
 		}
+		rtk && localStorage.setItem('X-REFRESH-TOKEN', rtk)
 	},
 	{ fireImmediately: true }
 )
