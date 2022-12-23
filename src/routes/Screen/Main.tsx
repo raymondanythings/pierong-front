@@ -21,19 +21,51 @@ const Main = () => {
 	const pieceOutControl = useAnimationControls()
 	console.log(atk)
 	return (
-		<div className="h-full relative bg-[url('assets/main.png')] bg-cover bg-no-repeat bg-center ">
-			<motion.img className="absolute top-[] -left-[] w-3/5" src={PIES.CROWN} />
-			<div className="relative translate-x-[21%] translate-y-[63%]">
-				<motion.img className="" src={PIES.Dish} />
-				<motion.img className=" absolute object-contain top-0 left-[40vw] " src={PIES.Pie_1} />
-				<motion.img className=" absolute object-contain  top-[1vh] left-[17.4vw]" src={PIES.Pie_2} />
-				<motion.img className=" absolute object-contain top-[9.4vh] -left-[1vw]" src={PIES.Pie_3} />
-				<motion.img className=" absolute object-contain  top-[6.5vh] left-[41vw]" src={PIES.Pie_4} />
-				<motion.img className=" absolute object-contain  top-[33vh] left-[41vw]" src={PIES.Pie_5} />
-				<motion.img className=" absolute object-contain  top-[37.5vh] left-[40.5vw]" src={PIES.Pie_6} />
-				<motion.img className=" absolute object-contain  top-[37.5vh] -left-[0.7vw]" src={PIES.Pie_7} />
-				<motion.img className=" absolute object-contain  top-[37vh] left-[16vw]" src={PIES.Pie_8} />
+		<div className="h-full relative overflow-x-hidden">
+			<motion.img src={MAIN} className="aspect-[9/20] absolute" />
+			<div className="max-w-[56%] -translate-x-[19%] translate-y-[68%]">
+				<motion.img
+					className="object-contain"
+					src={PIES.CROWN}
+					style={{
+						filter: 'drop-shadow(1vw 0.5vh black)'
+					}}
+				/>
 			</div>
+			<div className="max-w-[70%] translate-x-[45%] translate-y-[93%]">
+				<div>
+					<motion.img className="" src={PIES.Dish} />
+				</div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[34%] top-[4%] left-[38.7%]">
+					<motion.img className="object-contain" src={PIES.Pie_1} />
+				</motion.div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[33%] top-[5%] left-[7%] ">
+					<motion.img className="object-contain" src={PIES.Pie_2} />
+				</motion.div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[55%] top-[15.7%] -left-[15%]">
+					<motion.img className="object-contain" src={PIES.Pie_3} />
+				</motion.div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[55%] top-[11%] left-[39%]">
+					<motion.img className="object-contain" src={PIES.Pie_4} />
+				</motion.div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[55%] top-[39%] left-[39%]">
+					<motion.img className="object-contain" src={PIES.Pie_5} />
+				</motion.div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[36%] top-[43.5%] left-[38.3%]">
+					<motion.img className="object-contain" src={PIES.Pie_6} />
+				</motion.div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[55%] top-[43%] -left-[15%]">
+					<motion.img className="object-contain" src={PIES.Pie_7} />
+				</motion.div>
+				<motion.div drag dragSnapToOrigin className="absolute max-w-[37%] top-[43%] left-[6%]">
+					<motion.img className="object-contain" src={PIES.Pie_8} />
+				</motion.div>
+			</div>
+			{/* 
+			
+			
+			
+			*/}
 		</div>
 	)
 }
