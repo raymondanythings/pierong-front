@@ -1,13 +1,29 @@
 import { motion } from 'framer-motion'
 import PIES from 'assets/seperated_pie'
-const Pies = () => {
+import { Dispatch, SetStateAction } from 'react'
+
+interface PiesProps {
+	toggle: boolean
+	setToggle: Dispatch<SetStateAction<boolean>>
+}
+
+const Pies = ({ toggle, setToggle }: PiesProps) => {
 	return (
 		<>
 			{PIES.Pies.map((pie) => (
 				<motion.div
 					key={pie.src}
+					onDragStart={() => {
+						setToggle(true)
+					}}
+					onDragEnd={() => {
+						setToggle(false)
+					}}
 					onDrag={(event, info) => {
-						console.log(info)
+						const {
+							point: { x, y }
+						} = info
+						console.log(x, y)
 					}}
 					drag
 					dragSnapToOrigin

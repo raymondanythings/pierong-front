@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useState } from 'react'
+import { ForwardedRef, MutableRefObject, useEffect, useState } from 'react'
 
 function useDraggablePosition(ref: MutableRefObject<HTMLDivElement | null>) {
 	const [positon, setPosition] = useState({
@@ -8,19 +8,18 @@ function useDraggablePosition(ref: MutableRefObject<HTMLDivElement | null>) {
 		endY: 0
 	})
 	useEffect(() => {
-		if (ref.current) {
-			if (ref?.current) {
-				const startY = ref.current.offsetTop
-				const endY = startY + ref.current.offsetHeight
-				const startX = ref.current.offsetLeft
-				const endX = startX + ref?.current.offsetWidth
-				setPosition(() => ({
-					startY,
-					endY,
-					startX,
-					endX
-				}))
-			}
+		if (ref?.current) {
+			console.log(ref)
+			const startY = ref.current.offsetTop
+			const endY = startY + ref.current.offsetHeight
+			const startX = ref.current.offsetLeft
+			const endX = startX + ref?.current.offsetWidth
+			setPosition(() => ({
+				startY,
+				endY,
+				startX,
+				endX
+			}))
 		}
 	}, [ref.current])
 	return positon
