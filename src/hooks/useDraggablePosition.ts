@@ -9,7 +9,6 @@ function useDraggablePosition(ref: MutableRefObject<HTMLDivElement | null>) {
 	})
 	useEffect(() => {
 		if (ref?.current) {
-			console.log(ref)
 			const startY = ref.current.offsetTop
 			const endY = startY + ref.current.offsetHeight
 			const startX = ref.current.offsetLeft

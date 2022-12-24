@@ -1,23 +1,24 @@
-import { AnimatePresence, HTMLMotionProps, motion, useAnimationControls, Variants } from 'framer-motion'
-import { useEffect, useState, HTMLAttributes, MutableRefObject, FC, Dispatch, SetStateAction } from 'react'
-import useDraggablePosition from 'hooks/useDraggablePosition'
+import { AnimatePresence, HTMLMotionProps, motion, Variants } from 'framer-motion'
+import { useState, HTMLAttributes, MutableRefObject, FC } from 'react'
+import store from 'store'
 type FramerDivElement = HTMLMotionProps<'div'> & HTMLAttributes<HTMLDivElement>
 
 interface CompleteButtonProps extends FramerDivElement {
 	refs: MutableRefObject<HTMLDivElement | null>
 	isEnter: boolean
-	trigger: boolean
-	setTrigger: Dispatch<SetStateAction<boolean>>
+	onCompleteEnd?: (props?: any) => any | void
+	onCompleteStart?: (props?: any) => any | void
 }
 
 const wrapperVariants: Variants = {
-	beforeTrigger: (isEnter: boolean) => {
-		const param = {
+	beforeTrigger: ({ isEnter, isDragging }) => {
+		let param: any = {
 			width: '7rem',
 			height: '3rem',
 			scale: 1,
 			backgroundColor: 'rgba(0,0,0,0)',
 			transition: {
+				duration: 0.25,
 				type: 'spring',
 				when: 'beforeChild',
 				bounce: 0.1
@@ -25,24 +26,84 @@ const wrapperVariants: Variants = {
 		}
 		if (isEnter) {
 			param.scale = 1.2
+			if (!isDragging) {
+				param = {
+					width: '3rem',
+					height: '3rem',
+					backgroundColor: '#D9EEE1',
+					scale: 0,
+					transition: {
+						backgroundColor: {
+							duration: 0.25,
+							type: 'keyframes',
+							when: 'afterChild',
+							bounce: 0.1
+						},
+						width: {
+							duration: 0.25,
+							type: 'keyframes',
+							when: 'afterChild',
+							bounce: 0.1
+						},
+						height: {
+							duration: 0.25,
+							type: 'keyframes',
+							when: 'afterChild',
+							bounce: 0.1
+						},
+						scale: {
+							delay: 2.5,
+							duration: 0.25
+						}
+					}
+				}
+			}
 		}
+
 		return param
 	},
-	afterTrigger: {
-		width: '3rem',
-		height: '3rem',
-		backgroundColor: '#D9EEE1',
-		transition: {
-			type: 'spring',
-			when: 'beforeChild',
-			bounce: 0.1
+	exitTrigger: (props) => {
+		const { isEnter = null } = props || {}
+
+		if (isEnter) {
+			return {
+				width: '3rem',
+				height: '3rem',
+				backgroundColor: '#D9EEE1',
+				scale: 0,
+				transition: {
+					backgroundColor: {
+						duration: 0.25,
+						type: 'keyframes',
+						when: 'afterChild',
+						bounce: 0.1
+					},
+					width: {
+						duration: 0.25,
+						type: 'keyframes',
+						when: 'afterChild',
+						bounce: 0.1
+					},
+					height: {
+						duration: 0.25,
+						type: 'keyframes',
+						when: 'afterChild',
+						bounce: 0.1
+					},
+					scale: {
+						delay: 10,
+						duration: 0.25
+					}
+				}
+			}
 		}
-	},
-	exitTrigger: {
-		scale: 0,
-		transition: {
-			duration: 0.25,
-			when: 'afterChild'
+
+		return {
+			scale: 0,
+			transition: {
+				duration: 0.25,
+				when: 'afterChild'
+			}
 		}
 	}
 }
@@ -52,93 +113,86 @@ const CheckVariants: Variants = {
 		opacity: 0,
 		rotateZ: 0,
 		scale: 0,
-		transition: {
-			// duration: 0.25
-			// delay: isExit ? 0 : 0.25
-		}
+		transition: {}
 	}),
 	afterTrigger: (isExit: boolean) => ({
 		opacity: 1,
 		rotateZ: 0,
 		scale: 1,
-		transition: {
-			// duration: 0.25
-			// delay: isExit ? 0 : 0.25
-		}
+		transition: {}
 	}),
 	exitTrigger: (isExit: boolean) => {
 		return {
 			opacity: 0,
 			rotateZ: 280,
 			scale: 0,
-			transition: {
-				// duration: isExit ? 0.01 : 0.25
-				// delay: isExit ? 0 : 0.25
-			}
+			transition: {}
 		}
 	}
 }
 
-const CompleteButton: FC<CompleteButtonProps> = ({ trigger, setTrigger, isEnter, ...rest }) => {
-	const wrapperControl = useAnimationControls()
+const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
-	// const { startX, startY, endY, endX } = useDraggablePosition(rest.refs || null)
-	useEffect(() => {
-		if (trigger) {
-			wrapperControl.start('afterTrigger')
-		} else {
-			wrapperControl.start('beforeTrigger')
-		}
-	}, [trigger, isEnter])
+	const { isDragging } = store()
 
-	console.log(trigger)
 	return (
-		<motion.div
-			animate={wrapperControl}
-			{...rest}
-			variants={wrapperVariants}
-			onAnimationStart={(def) => {
-				setIsExit((prev) => def === 'exitTrigger')
-			}}
-			onClick={(event) => {
-				setTrigger((prev) => !prev)
-				rest.onClick && rest.onClick(event)
-			}}
-			custom={isEnter}
-			exit="exitTrigger"
-			layout
-		>
-			<AnimatePresence mode="wait">
-				{trigger ? (
-					<motion.svg
-						key="test1"
-						className="w-8 h-8 opacity-0"
-						fill="none"
-						initial="beforeTrigger"
-						animate="afterTrigger"
-						exit="exitTrigger"
-						variants={CheckVariants}
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-						xmlns="http://www.w3.org/2000/svg"
-						custom={isExit}
-					>
-						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-					</motion.svg>
-				) : (
-					<motion.div
-						key="test2"
-						custom={isExit}
-						initial="beforeTrigger"
-						animate="afterTrigger"
-						exit="exitTrigger"
-						variants={CheckVariants}
-					>
-						선택하기
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</motion.div>
+		<AnimatePresence>
+			{((!isDragging && isEnter) || isDragging) && (
+				<motion.div
+					{...rest}
+					animate="beforeTrigger"
+					variants={wrapperVariants}
+					onClick={(event) => {
+						rest.onClick && rest.onClick(event)
+					}}
+					exit={'exitTrigger'}
+					onAnimationStart={(e) => {
+						if (!isDragging && isEnter) {
+							onCompleteStart && onCompleteStart()
+						}
+					}}
+					onAnimationComplete={() => {
+						if (!isDragging && isEnter) {
+							onCompleteEnd && onCompleteEnd()
+						}
+					}}
+					layout
+					custom={{
+						isEnter,
+						isDragging
+					}}
+				>
+					{!isDragging && isEnter ? (
+						<motion.svg
+							key="test1"
+							className="w-8 h-8 opacity-0"
+							fill="none"
+							initial="beforeTrigger"
+							animate="afterTrigger"
+							exit="exitTrigger"
+							variants={CheckVariants}
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg"
+							custom={isExit}
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+						</motion.svg>
+					) : (
+						<motion.div
+							key="test2"
+							custom={isExit}
+							initial="beforeTrigger"
+							animate="afterTrigger"
+							exit="exitTrigger"
+							variants={CheckVariants}
+						>
+							선택하기
+						</motion.div>
+					)}
+				</motion.div>
+			)}
+		</AnimatePresence>
 	)
 }
 

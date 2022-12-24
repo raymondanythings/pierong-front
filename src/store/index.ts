@@ -14,6 +14,8 @@ interface IStore {
 	setNav: () => void
 	showNav: boolean
 	setTokens: (tokens: Tokens) => void
+	isDragging: boolean
+	setIsDragging: (flag: boolean) => void
 }
 
 const store = create(
@@ -36,7 +38,12 @@ const store = create(
 					set((state) => ({
 						atk: atk || state.atk,
 						rtk: rtk || state.rtk
-					}))
+					})),
+				isDragging: false,
+				setIsDragging: (flag) =>
+					set({
+						isDragging: flag
+					})
 			}))
 		)
 	)

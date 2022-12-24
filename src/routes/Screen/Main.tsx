@@ -2,16 +2,15 @@ import withNavigation from 'layout/withNavigation'
 import store from 'store'
 import PIES from 'assets/seperated_pie'
 import MAIN from 'assets/main2.png'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
 
 const Main = () => {
-	const [dragAction, setDragAction] = useState(false)
 	const [isEnter, setIsEnter] = useState(false)
-	const [trigger, setTrigger] = useState(false)
-	const { atk } = store()
+	const [isPandding, setIsPandding] = useState(false)
+	const { atk, setIsDragging } = store()
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 
@@ -37,10 +36,10 @@ const Main = () => {
 					<motion.div
 						key={pie.src}
 						onDragStart={() => {
-							setDragAction(true)
+							setIsDragging(true)
 						}}
 						onDragEnd={() => {
-							setDragAction(false)
+							setIsDragging(false)
 						}}
 						onDrag={(event, info) => {
 							const {
@@ -52,7 +51,7 @@ const Main = () => {
 								isEnter && setIsEnter(false)
 							}
 						}}
-						drag
+						drag={!isPandding}
 						dragSnapToOrigin
 						className="absolute"
 						style={{ maxWidth: pie.width + '%', top: pie.top + '%', left: pie.left + '%' }}
@@ -62,18 +61,19 @@ const Main = () => {
 				))}
 			</div>
 			<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible" />
-
-			<AnimatePresence>
-				{(dragAction || isEnter) && (
-					<CompleteButton
-						trigger={trigger}
-						setTrigger={setTrigger}
-						refs={buttonAxios}
-						isEnter={isEnter}
-						className="fixed w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border-mainTeal border border-solid"
-					/>
-				)}
-			</AnimatePresence>
+			<CompleteButton
+				refs={buttonAxios}
+				isEnter={isEnter}
+				onCompleteStart={() => {
+					setIsPandding(true)
+					console.log('START???????????')
+				}}
+				onCompleteEnd={() => {
+					setIsPandding(false)
+					console.log('END???????????')
+				}}
+				className="fixed w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border-mainTeal border border-solid"
+			/>
 		</div>
 	)
 }
