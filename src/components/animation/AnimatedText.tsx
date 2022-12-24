@@ -42,7 +42,7 @@ const AnimatedText = ({ className, text }: { className?: string; text: string })
 										className={'inline-block py-2 ' + className}
 										variants={item}
 									>
-										{element === ' ' ? String.fromCharCode(parseInt('U+0020', 16)) : element}
+										{element}
 									</motion.span>
 								</span>
 							)

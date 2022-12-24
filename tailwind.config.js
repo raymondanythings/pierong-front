@@ -10,7 +10,7 @@ module.exports = {
 				main: 'url("https://wallpaperaccess.com/full/57166.jpg")'
 			},
 			screens: {
-				default: '620px'
+				default: '480px'
 			},
 			colors: {
 				mainTeal: '#57765E',
