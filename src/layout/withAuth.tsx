@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import axios, { getToken } from 'api'
 import { useQuery } from 'react-query'
 import store from 'store'
+import { Tokens } from 'types'
 const withAuth = (Component: ComponentType<any>) => {
 	const params = new URLSearchParams(window.location.search)
 	const type = params.get('type')
@@ -13,15 +14,18 @@ const withAuth = (Component: ComponentType<any>) => {
 
 	function WithAuthComponent() {
 		const {
-			data: token,
+			data: { data: { atk = undefined, rtk = undefined, ...user } = {} } = {},
 			isError,
 			error
 		} = useQuery(['user', 'login'], () => getToken({ type, code }), {
 			cacheTime: Infinity,
 			staleTime: Infinity
 		})
-
-		const { setTokens, setErrorMessage } = store()
+		const { setTokens, setErrorMessage, setUser } = store()
+		const token: Tokens = { atk, rtk }
+		if (user) {
+			setUser(user)
+		}
 		if (token) {
 			setTokens(token)
 			return <Navigate to="/main" />

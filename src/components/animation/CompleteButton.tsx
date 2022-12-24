@@ -52,7 +52,7 @@ const wrapperVariants: Variants = {
 							bounce: 0.1
 						},
 						scale: {
-							delay: 2.5,
+							delay: 1.25,
 							duration: 0.25
 						}
 					}

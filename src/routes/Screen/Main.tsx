@@ -28,7 +28,7 @@ const Main = () => {
 					/>
 				</motion.div>
 			</div>
-			<div className="max-w-[85%] translate-x-[40%] translate-y-[42%] z-30">
+			<div className="max-w-[85%] translate-x-[40%] translate-y-[42%] z-30 disabled-drag">
 				<div>
 					<motion.img className="" src={PIES.Dish} />
 				</div>

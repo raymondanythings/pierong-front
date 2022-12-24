@@ -1,10 +1,11 @@
-import { Tokens } from 'libs/type'
 import create from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import axios from 'api'
+import { Tokens, User } from 'types'
+
 interface IStore {
-	user: null | object
+	user?: null | User
 	atk: string | null
 	rtk: string | null
 	isLogin: boolean
