@@ -11,7 +11,7 @@ interface IStore {
 	isLogin: boolean
 	errorMessage?: string
 	setErrorMessage: (message: string) => void
-	setUser: (user: any) => void
+	setUser: (user: User) => void
 	setNav: () => void
 	showNav: boolean
 	setTokens: (tokens: Tokens) => void
@@ -29,8 +29,8 @@ const store = create(
 				atk: null,
 				rtk: null,
 				errorMessage: undefined,
-				setErrorMessage: (msg) => set({ errorMessage: msg }),
-				setUser: (user) => set({ user: user }),
+				setErrorMessage: (msg) => set((state) => ({ ...state, errorMessage: msg })),
+				setUser: (user) => set((state) => ({ ...state, user: user })),
 				setNav: () =>
 					set((state) => ({
 						showNav: !state.showNav
@@ -54,9 +54,11 @@ store.subscribe(
 	({ atk, rtk }) => ({ atk, rtk }),
 	({ atk, rtk }) => {
 		if (atk) {
+			localStorage.setItem('X-ACCESS-TOKEN', atk)
 			axios.defaults.headers['X-ACCESS-TOKEN'] = atk
 		} else {
 			delete axios.defaults.headers['X-ACCESS-TOKEN']
+			localStorage.removeItem('X-ACCESS-TOKEN')
 		}
 		rtk && localStorage.setItem('X-REFRESH-TOKEN', rtk)
 	},

@@ -13,8 +13,8 @@ type User = {
 	userSocialUniqueId: string
 }
 type Tokens = {
-	atk?: string
-	rtk?: string
+	atk?: string | null
+	rtk?: string | null
 }
 
 export type { Tokens, User }

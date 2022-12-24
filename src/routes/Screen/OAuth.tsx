@@ -1,6 +1,9 @@
-import axios from 'api'
-import withAuth from 'layout/withAuth'
-import { FC, useEffect } from 'react'
+import { getToken } from 'api'
+import { useEffect } from 'react'
+import { useQuery } from 'react-query'
+import { useLocation, useNavigate } from 'react-router-dom'
+import store from 'store'
+import { Tokens } from 'types'
 import Loading from './Loading'
 
 interface OAuthProps {
@@ -9,8 +12,35 @@ interface OAuthProps {
 	user: any
 }
 
-const OAuth: FC<OAuthProps> = ({ user, code, type }) => {
+const OAuth = () => {
+	const { search } = useLocation()
+	const navigate = useNavigate()
+	const { setTokens, setErrorMessage, setUser } = store()
+	const params = new URLSearchParams(search)
+	const type = params.get('type')
+	const code = params.get('code')
+	const {
+		data: { data: { atk, rtk, userInfo } = { rtk: null, atk: null, userInfo: null } } = {},
+		isError,
+		error
+	} = useQuery(['user', 'login'], () => getToken({ type, code }), {
+		retry: false,
+		cacheTime: Infinity,
+		staleTime: Infinity
+	})
+
+	useEffect(() => {
+		if (userInfo) {
+			const token: Tokens = { atk, rtk }
+			setUser(userInfo)
+			setTokens(token)
+			navigate('/main')
+		} else if (isError) {
+			setErrorMessage('로그인실패')
+			navigate('/')
+		}
+	}, [userInfo, isError])
 	return <Loading />
 }
 
-export default withAuth(OAuth)
+export default OAuth
