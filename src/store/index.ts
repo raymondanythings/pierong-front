@@ -9,6 +9,7 @@ interface IStore {
 	atk: string | null
 	rtk: string | null
 	isLogin: boolean
+	setIsLogin: (flag: boolean) => void
 	errorMessage?: string
 	setErrorMessage: (message: string) => void
 	setUser: (user: User) => void
@@ -25,6 +26,7 @@ const store = create(
 			immer<IStore>((set) => ({
 				user: null,
 				isLogin: false,
+				setIsLogin: (flag) => set((state) => ({ ...state, isLogin: flag })),
 				showNav: false,
 				atk: null,
 				rtk: null,
@@ -64,6 +66,12 @@ store.subscribe(
 	},
 	{ fireImmediately: true }
 )
+
+store.subscribe(
+	({ user, setIsLogin }) => ({ user, setIsLogin }),
+	({ user, setIsLogin }) => setIsLogin(!!user)
+)
+
 export const useCommonStore = store.getState()
 
 export default store
