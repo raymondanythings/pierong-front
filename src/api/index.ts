@@ -1,12 +1,28 @@
+import * as LoginApi from './login'
 import api from 'axios'
-import { Tokens, User } from 'types'
-import { Response } from 'types/Response'
 
-const axios = api.create({ baseURL: process.env.REACT_APP_API_PATH })
+export const axios = api.create({ baseURL: process.env.REACT_APP_API_PATH })
+axios.interceptors.response.use(
+	(response) => {
+		return response
+	},
+	async (rejected) => {
+		if (rejected.response?.status === 401 && rejected.response.config.url === '/login/checkAccessToken') {
+			const refreshToken = localStorage.getItem('X-REFRESH-TOKEN')
+			if (refreshToken) {
+				const atk = await LoginApi.checkRefreshToken(refreshToken)
+				if (atk) {
+					rejected.config.headers['X-ACCESS-TOKEN'] = atk
+					const res = await axios.request(rejected.config)
 
-export const getToken = async ({ type, code }: { type?: string | null; code?: string | null }) => {
-	const { data: response } = await axios.post<Response<Tokens & { userInfo: User }>>(`/login/${type}`, { code })
-	return response
-}
+					res.data.data.atk = atk
+					return res
+				}
+			}
+		}
 
-export default axios
+		return Promise.reject(rejected)
+	}
+)
+
+export { LoginApi }

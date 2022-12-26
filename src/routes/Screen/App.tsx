@@ -1,9 +1,10 @@
 import NavigationBar from 'layout/NavigationBar'
 import { useLayoutEffect, useRef } from 'react'
 import Logo from 'assets/icons/logo.png'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLoaderData } from 'react-router-dom'
 import store from 'store'
 import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
+import { User } from 'types'
 
 const modalVariants: Variants = {
 	initial: {
@@ -15,8 +16,9 @@ const modalVariants: Variants = {
 }
 
 function App() {
+	const loader = useLoaderData() as { userInfo?: User; atk?: string } | null
 	const navigationRef = useRef(document.querySelector('main'))
-	const { showNav, errorMessage, setErrorMessage } = store()
+	const { showNav, errorMessage, setErrorMessage, setTokens, setUser } = store()
 	const modalControl = useAnimationControls()
 	useLayoutEffect(() => {
 		function setScreenSize() {
@@ -25,8 +27,17 @@ function App() {
 		}
 		setScreenSize()
 		window.addEventListener('resize', setScreenSize)
+		if (loader) {
+			const { atk, userInfo } = loader
+			if (atk) {
+				setTokens({ atk })
+			}
+			if (userInfo) {
+				setUser(userInfo)
+			}
+		}
 		return () => window.removeEventListener('resize', setScreenSize)
-	})
+	}, [])
 	return (
 		<main className="max-w-screen-default overflow-y-hidden h-screen mx-auto relative" ref={navigationRef}>
 			{showNav && <NavigationBar navigationRef={navigationRef} />}

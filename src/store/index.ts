@@ -1,7 +1,7 @@
 import create from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
-import axios from 'api'
+import { axios } from 'api'
 import { Tokens, User } from 'types'
 
 interface IStore {
@@ -35,11 +35,12 @@ const store = create(
 					set((state) => ({
 						showNav: !state.showNav
 					})),
-				setTokens: ({ atk, rtk }: Tokens) =>
-					set((state) => ({
+				setTokens: ({ atk, rtk }: Tokens) => {
+					return set((state) => ({
 						atk: atk || state.atk,
 						rtk: rtk || state.rtk
-					})),
+					}))
+				},
 				isDragging: false,
 				setIsDragging: (flag) =>
 					set({
@@ -58,11 +59,14 @@ store.subscribe(
 			axios.defaults.headers['X-ACCESS-TOKEN'] = atk
 		} else {
 			delete axios.defaults.headers['X-ACCESS-TOKEN']
-			localStorage.removeItem('X-ACCESS-TOKEN')
 		}
 		rtk && localStorage.setItem('X-REFRESH-TOKEN', rtk)
 	},
-	{ fireImmediately: true }
+	{
+		equalityFn(a, b) {
+			return a.atk === b.atk || a.rtk === b.rtk
+		}
+	}
 )
 export const useCommonStore = store.getState()
 

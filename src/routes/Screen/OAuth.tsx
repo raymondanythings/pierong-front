@@ -1,4 +1,4 @@
-import { getToken } from 'api'
+import { LoginApi } from 'api'
 import { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -23,7 +23,7 @@ const OAuth = () => {
 		data: { data: { atk, rtk, userInfo } = { rtk: null, atk: null, userInfo: null } } = {},
 		isError,
 		error
-	} = useQuery(['user', 'login'], () => getToken({ type, code }), {
+	} = useQuery(['user', 'login'], () => LoginApi.getToken({ type, code }), {
 		retry: false,
 		cacheTime: Infinity,
 		staleTime: Infinity
