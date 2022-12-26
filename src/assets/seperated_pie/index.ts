@@ -12,15 +12,17 @@ import CROWN from '../crown.png'
 import GREEN_PAPER from './green-paper.png'
 import WhitePaper from './white-paper.png'
 import Books from './book.png'
+import HowTo from './howTo.png'
+import Arrow from './arrow-fave.png'
 const Pies: { src: string; width: number; top: number; left: number; z?: number }[] = [
 	{ src: Pie_1, width: 31, top: -38, left: 41.7 },
-	{ src: Pie_4, width: 50, top: -29.8, left: 43 },
-	{ src: Pie_5, width: 48, top: 7, left: 43 },
-	{ src: Pie_6, width: 34, top: 10.5, left: 40.3 },
-	{ src: Pie_7, width: 34, top: 11, left: 13.5 },
-	{ src: Pie_8, width: 50, top: 10, left: -6, z: 3 },
-	{ src: Pie_3, width: 48, top: -24.5, left: -4.5, z: 2 },
-	{ src: Pie_2, width: 28, top: -37, left: 15, z: 1 }
+	{ src: Pie_2, width: 50, top: -29.8, left: 43 },
+	{ src: Pie_3, width: 48, top: 7, left: 43 },
+	{ src: Pie_4, width: 32.5, top: 10.5, left: 41.7 },
+	{ src: Pie_5, width: 34, top: 11, left: 13.5 },
+	{ src: Pie_6, width: 50, top: 10, left: -6, z: 3 },
+	{ src: Pie_7, width: 48, top: -24.5, left: -4.5, z: 2 },
+	{ src: Pie_8, width: 28, top: -37, left: 15, z: 1 }
 ]
 const PIES = {
 	Pies,
@@ -29,7 +31,9 @@ const PIES = {
 	GREEN_PAPER,
 	Piece,
 	WhitePaper,
-	Books
+	Books,
+	HowTo,
+	Arrow
 }
 
 export default PIES

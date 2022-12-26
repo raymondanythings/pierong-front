@@ -4,7 +4,6 @@ import store from 'store'
 type FramerDivElement = HTMLMotionProps<'div'> & HTMLAttributes<HTMLDivElement>
 
 interface CompleteButtonProps extends FramerDivElement {
-	refs: MutableRefObject<HTMLDivElement | null>
 	isEnter: boolean
 	onCompleteEnd?: (props?: any) => any | void
 	onCompleteStart?: (props?: any) => any | void
@@ -16,7 +15,7 @@ const wrapperVariants: Variants = {
 			width: '7rem',
 			height: '3rem',
 			scale: 1,
-			backgroundColor: 'rgba(0,0,0,0)',
+			backgroundColor: 'rgba(255,255,255,1)',
 			transition: {
 				duration: 0.25,
 				type: 'spring',
@@ -133,11 +132,11 @@ const CheckVariants: Variants = {
 
 const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
-	const { isDragging } = store()
+	const { dragState } = store()
 
 	return (
 		<AnimatePresence>
-			{((!isDragging && isEnter) || isDragging) && (
+			{((!dragState.state && isEnter) || dragState.state) && (
 				<motion.div
 					{...rest}
 					animate="beforeTrigger"
@@ -147,22 +146,22 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 					}}
 					exit={'exitTrigger'}
 					onAnimationStart={(e) => {
-						if (!isDragging && isEnter) {
+						if (!dragState.state && isEnter) {
 							onCompleteStart && onCompleteStart()
 						}
 					}}
 					onAnimationComplete={() => {
-						if (!isDragging && isEnter) {
+						if (!dragState.state && isEnter) {
 							onCompleteEnd && onCompleteEnd()
 						}
 					}}
 					layout
 					custom={{
 						isEnter,
-						isDragging
+						isDragging: dragState.state
 					}}
 				>
-					{!isDragging && isEnter ? (
+					{!dragState.state && isEnter ? (
 						<motion.svg
 							key="test1"
 							className="w-8 h-8 opacity-0"

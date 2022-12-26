@@ -11,25 +11,27 @@ import CompleteButton from 'components/animation/CompleteButton'
 const Main = () => {
 	const [isEnter, setIsEnter] = useState(false)
 	const [isPandding, setIsPandding] = useState(false)
-	const { atk, setIsDragging } = store()
+	const { dragState, setIsDragging } = store()
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
-				<img src={MAIN} />
+				<img src="image/main_board.png" />
+				<motion.div className="absolute top-[4.5%] max-w-[60%] left-[30%]">
+					<img src={PIES.HowTo} />
+				</motion.div>
+				<motion.div className="absolute top-[23%] max-w-[11%] left-[55%]">
+					<img src={PIES.Arrow} />
+				</motion.div>
 			</div>
 			<div className="h-full bg-mainBeige">
-				<div className="max-w-[58%] -translate-x-[9%] top-[20%] absolute z-50">
-					<motion.div drag dragSnapToOrigin>
-						<img draggable={false} className="object-contain drop-shadow-bottom" src={CROWN.CROWN_1} />
-					</motion.div>
-				</div>
+				<motion.div drag dragSnapToOrigin className="max-w-[58%] -translate-x-[14%] translate-y-[100%] absolute z-50">
+					<img draggable={false} className="object-contain drop-shadow-bottom" src={CROWN.CROWN_1} />
+				</motion.div>
+
 				<div className="relative max-w-[85%] translate-x-[40%] translate-y-[188%] z-30 disabled-drag">
-					<div className="absolute -left-[54%] max-w-full -top-[76%] -z-[1]">
-						<img src={PIES.Books} />
-					</div>
 					<div className="relative -left-[9%] z-[1]">
 						<img className="drop-shadow-bottom" src={PIES.Plate} />
 					</div>
@@ -42,10 +44,16 @@ const Main = () => {
 						<motion.div
 							key={pie.src}
 							onDragStart={() => {
-								setIsDragging(true)
+								setIsDragging({
+									state: true,
+									dragged: pie
+								})
 							}}
 							onDragEnd={() => {
-								setIsDragging(false)
+								setIsDragging({
+									state: false,
+									dragged: pie
+								})
 							}}
 							onDrag={(event, info) => {
 								const {
@@ -69,20 +77,22 @@ const Main = () => {
 
 				<div className="max-w-[59%] top-[65.5%]" draggable={false}></div>
 
-				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible" />
-				<CompleteButton
-					refs={buttonAxios}
-					isEnter={isEnter}
-					onCompleteStart={() => {
-						setIsPandding(true)
-						console.log('START???????????')
-					}}
-					onCompleteEnd={() => {
-						setIsPandding(false)
-						console.log('END???????????')
-					}}
-					className="fixed w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border-mainTeal border border-solid"
-				/>
+				<div className="">
+					<CompleteButton
+						isEnter={isEnter}
+						onCompleteStart={() => {
+							setIsPandding(true)
+							console.log('START???????????')
+						}}
+						onCompleteEnd={() => {
+							setIsPandding(false)
+							console.log('END???????????')
+						}}
+						className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid"
+					/>
+				</div>
+
+				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>
 		</div>
 	)

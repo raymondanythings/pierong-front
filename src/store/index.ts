@@ -1,10 +1,10 @@
-import create from 'zustand'
+import create, { UseBoundStore } from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { axios } from 'api'
 import { Tokens, User } from 'types'
 
-interface IStore {
+interface IStore<T = any> {
 	user?: null | User
 	atk: string | null
 	rtk: string | null
@@ -15,8 +15,11 @@ interface IStore {
 	setNav: () => void
 	showNav: boolean
 	setTokens: (tokens: Tokens) => void
-	isDragging: boolean
-	setIsDragging: (flag: boolean) => void
+	dragState: {
+		state: boolean
+		dragged: T
+	}
+	setIsDragging: (flag: { state: boolean; dragged: T }) => void
 }
 
 const store = create(
@@ -41,10 +44,16 @@ const store = create(
 						rtk: rtk || state.rtk
 					}))
 				},
-				isDragging: false,
-				setIsDragging: (flag) =>
+				dragState: {
+					state: false,
+					dragged: null
+				},
+				setIsDragging: ({ state, dragged }) =>
 					set({
-						isDragging: flag
+						dragState: {
+							state,
+							dragged
+						}
 					})
 			}))
 		)

@@ -16,6 +16,9 @@ const router = createBrowserRouter(
 			loader={async () => {
 				const atk = localStorage.getItem('X-ACCESS-TOKEN')
 				try {
+					if (!atk) {
+						return null
+					}
 					const userInfo = await LoginApi.checkAccessToken(atk || '')
 					return { userInfo, atk }
 				} catch (err: any) {
