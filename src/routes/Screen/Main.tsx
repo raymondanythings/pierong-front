@@ -29,7 +29,8 @@ const Main = ({ userId }: { userId: string }) => {
 		cacheTime: Infinity,
 		retry: false,
 		refetchOnWindowFocus: false,
-		enabled: false
+		enabled: !!userId,
+		refetchOnMount: false
 	})
 
 	const [isEnter, setIsEnter] = useState(false)
@@ -43,6 +44,7 @@ const Main = ({ userId }: { userId: string }) => {
 
 	const handleCreatePie = useCallback(async () => {
 		const isCreateSuccess = await PieApi.createPie()
+		console.log(isCreateSuccess)
 		if (isCreateSuccess) {
 			refetch()
 		}
@@ -51,7 +53,7 @@ const Main = ({ userId }: { userId: string }) => {
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
-				<img src="/image/main_board.png" />
+				<img src="/image/main_board.png" />0
 				{!toggle && (
 					<motion.div
 						layoutId="howTo"
@@ -146,9 +148,13 @@ const Main = ({ userId }: { userId: string }) => {
 							</motion.div>
 						))
 					) : (
-						<div onClick={handleCreatePie} className="absolute z-30 top-[12%] left-[8%] max-w-[70%]">
+						<motion.div
+							layoutId="pieSection"
+							onClick={handleCreatePie}
+							className="absolute z-30 top-[12%] left-[8%] max-w-[70%]"
+						>
 							<img src="/image/baking/letter.png" />
-						</div>
+						</motion.div>
 					)}
 				</div>
 

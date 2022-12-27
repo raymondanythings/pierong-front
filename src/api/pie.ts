@@ -13,7 +13,7 @@ const createPie = async (pieType: number = 1) => {
 	const res = await axios.post<Response<any>>(`/cake/bake`, {
 		cakeId: pieType
 	})
-	if (res.data.message === 'SUCCESS') {
+	if (res.data.message !== 'SUCCESS') {
 		return false
 	}
 	return true
