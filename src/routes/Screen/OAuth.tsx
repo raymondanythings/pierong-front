@@ -34,9 +34,9 @@ const OAuth = () => {
 			const token: Tokens = { atk, rtk }
 			setUser(userInfo)
 			setTokens(token)
-
+			const url = sessionStorage.getItem('redirect_url') || '/main'
 			sessionStorage.removeItem('redirect_url')
-			navigate('/main')
+			navigate(url)
 		} else if (isError) {
 			setErrorMessage('로그인실패')
 			navigate('/')
