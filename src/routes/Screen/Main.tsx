@@ -4,11 +4,13 @@ import PIES from 'assets/seperated_pie'
 import MAIN from 'assets/bg.png'
 import CROWN from 'assets/crown'
 import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
 import { useLocation } from 'react-router-dom'
 import Modal from 'components/Modal'
+import { useQuery } from 'react-query'
+import { PieApi } from 'api'
 
 const crownVariants: Variants = {
 	animate: {
@@ -22,7 +24,14 @@ const crownVariants: Variants = {
 	}
 }
 
-const Main = () => {
+const Main = ({ userId }: { userId: string }) => {
+	const { data, isLoading, refetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
+		cacheTime: Infinity,
+		retry: false,
+		refetchOnWindowFocus: false,
+		enabled: false
+	})
+
 	const [isEnter, setIsEnter] = useState(false)
 	const [isPandding, setIsPandding] = useState(false)
 	const [toggle, setToggle] = useState(false)
@@ -32,10 +41,17 @@ const Main = () => {
 	const crownControl = useAnimationControls()
 	const howToControl = useAnimationControls()
 
+	const handleCreatePie = useCallback(async () => {
+		const isCreateSuccess = await PieApi.createPie()
+		if (isCreateSuccess) {
+			refetch()
+		}
+	}, [userId])
+
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
-				<img src="image/main_board.png" />
+				<img src="/image/main_board.png" />
 				{!toggle && (
 					<motion.div
 						layoutId="howTo"
@@ -87,47 +103,53 @@ const Main = () => {
 						<img className="absolute -left-[57%] top-[41%] -z-[1]" draggable={false} src={PIES.WhitePaper} />
 						<img className="absolute top-[13%] -left-[43%] max-w-[73.5%] z-10" draggable={false} src={PIES.Piece} />
 					</div>
-					{PIES.Pies.map((pie, index) => (
-						<motion.div
-							key={pie.src}
-							onDragStart={() => {
-								setIsDragging({
-									state: true,
-									dragged: {
-										...pie,
-										index
+					{data ? (
+						PIES.Pies.map((pie, index) => (
+							<motion.div
+								key={pie.src}
+								onDragStart={() => {
+									setIsDragging({
+										state: true,
+										dragged: {
+											...pie,
+											index
+										}
+									})
+								}}
+								onDragEnd={() => {
+									setIsDragging({
+										state: false,
+										dragged: null
+									})
+								}}
+								onDrag={(event, info) => {
+									const {
+										point: { x, y }
+									} = info
+									if (x <= endX && x >= startX && y <= endY && y >= startY) {
+										!isEnter && setIsEnter(true)
+									} else {
+										isEnter && setIsEnter(false)
 									}
-								})
-							}}
-							onDragEnd={() => {
-								setIsDragging({
-									state: false,
-									dragged: null
-								})
-							}}
-							onDrag={(event, info) => {
-								const {
-									point: { x, y }
-								} = info
-								if (x <= endX && x >= startX && y <= endY && y >= startY) {
-									!isEnter && setIsEnter(true)
-								} else {
-									isEnter && setIsEnter(false)
-								}
-							}}
-							drag={!isPandding}
-							dragSnapToOrigin
-							className="absolute"
-							style={{
-								maxWidth: pie.width + '%',
-								top: pie.top + '%',
-								left: pie.left + '%',
-								zIndex: dragState?.dragged?.index === index ? 55 : pie.z ? pie.z : 4
-							}}
-						>
-							<img draggable={false} className="object-contain" src={pie.src} />
-						</motion.div>
-					))}
+								}}
+								drag={!isPandding}
+								dragSnapToOrigin
+								className="absolute"
+								style={{
+									maxWidth: pie.width + '%',
+									top: pie.top + '%',
+									left: pie.left + '%',
+									zIndex: dragState?.dragged?.index === index ? 55 : pie.z ? pie.z : 4
+								}}
+							>
+								<img draggable={false} className="object-contain" src={pie.src} />
+							</motion.div>
+						))
+					) : (
+						<div onClick={handleCreatePie} className="absolute z-30 top-[12%] left-[8%] max-w-[70%]">
+							<img src="/image/baking/letter.png" />
+						</div>
+					)}
 				</div>
 
 				<div className="max-w-[59%] top-[65.5%]" draggable={false}></div>
@@ -138,11 +160,10 @@ const Main = () => {
 						isEnter={isEnter}
 						onCompleteStart={() => {
 							setIsPandding(true)
-							console.log('START???????????')
 						}}
 						onCompleteEnd={() => {
 							setIsPandding(false)
-							console.log('END???????????')
+							setIsEnter(false)
 						}}
 						className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid"
 					/>
@@ -165,4 +186,4 @@ const Main = () => {
 	)
 }
 
-export default withNavigation(Main)
+export default Main

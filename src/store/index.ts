@@ -20,6 +20,7 @@ interface IStore<T = any> {
 		dragged: T
 	}
 	setIsDragging: (flag: { state: boolean; dragged: T }) => void
+	refreshAccount: () => void
 }
 
 const store = create(
@@ -54,27 +55,46 @@ const store = create(
 							state,
 							dragged
 						}
-					})
+					}),
+				refreshAccount: () => {
+					localStorage.removeItem('X-ACCESS-TOKEN')
+					localStorage.removeItem('X-REFRESH-TOKEN')
+					return set({ atk: null, rtk: null, isLogin: false, user: null })
+				}
 			}))
 		)
 	)
 )
 
 store.subscribe(
-	({ atk, rtk }) => ({ atk, rtk }),
-	({ atk, rtk }) => {
+	({ atk }) => ({ atk }),
+	({ atk }) => {
 		if (atk) {
 			localStorage.setItem('X-ACCESS-TOKEN', atk)
 			axios.defaults.headers['X-ACCESS-TOKEN'] = atk
 		} else {
 			delete axios.defaults.headers['X-ACCESS-TOKEN']
 		}
-		rtk && localStorage.setItem('X-REFRESH-TOKEN', rtk)
 	},
 	{
 		equalityFn(a, b) {
-			return a.atk === b.atk || a.rtk === b.rtk
+			return a.atk === b.atk
+		},
+		fireImmediately: true
+	}
+)
+store.subscribe(
+	({ rtk }) => ({ rtk }),
+	({ rtk }) => {
+		if (rtk) {
+			localStorage.setItem('X-REFRESH-TOKEN', rtk)
 		}
+	},
+	{
+		equalityFn(a, b) {
+			return a.rtk === b.rtk
+		},
+		fireImmediately: true
 	}
 )
 export const useCommonStore = store.getState()

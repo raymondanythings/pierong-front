@@ -91,7 +91,7 @@ const wrapperVariants: Variants = {
 						bounce: 0.1
 					},
 					scale: {
-						delay: 10,
+						// delay: 1,
 						duration: 0.25
 					}
 				}
@@ -134,7 +134,7 @@ const CheckVariants: Variants = {
 const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, isPandding, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
 	const { dragState } = store()
-
+	console.log((!dragState.state && isEnter) || dragState.state || isPandding)
 	return (
 		<AnimatePresence>
 			{((!dragState.state && isEnter) || dragState.state || isPandding) && (
@@ -147,12 +147,12 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 					}}
 					exit={'exitTrigger'}
 					onAnimationStart={(e) => {
-						if (!dragState.state && isEnter) {
+						if (e === 'beforeTrigger' && !dragState.state && isEnter) {
 							onCompleteStart && onCompleteStart()
 						}
 					}}
-					onAnimationComplete={() => {
-						if (!dragState.state && isEnter) {
+					onAnimationComplete={(e) => {
+						if (e === 'beforeTrigger' && !dragState.state && isEnter) {
 							onCompleteEnd && onCompleteEnd()
 						}
 					}}

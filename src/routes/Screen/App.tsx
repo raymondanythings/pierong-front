@@ -2,13 +2,12 @@ import NavigationBar from 'layout/NavigationBar'
 import { useLayoutEffect, useRef } from 'react'
 import { Outlet, useLoaderData } from 'react-router-dom'
 import store from 'store'
-import { motion, useAnimationControls } from 'framer-motion'
 import { User } from 'types'
 
 function App() {
 	const loader = useLoaderData() as { userInfo?: User; atk?: string } | null
 	const navigationRef = useRef(document.querySelector('main'))
-	const { showNav, errorMessage, setErrorMessage, setTokens, setUser } = store()
+	const { showNav, setTokens, setUser } = store()
 
 	useLayoutEffect(() => {
 		function setScreenSize() {

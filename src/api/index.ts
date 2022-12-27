@@ -1,4 +1,5 @@
 import * as LoginApi from './login'
+import * as PieApi from './pie'
 import api from 'axios'
 
 export const axios = api.create({ baseURL: process.env.REACT_APP_API_PATH })
@@ -7,7 +8,7 @@ axios.interceptors.response.use(
 		return response
 	},
 	async (rejected) => {
-		if (rejected.response?.status === 401 && rejected.response.config.url === '/login/checkAccessToken') {
+		if (rejected.response?.status === 401 && rejected.response?.data.code !== '1005') {
 			const refreshToken = localStorage.getItem('X-REFRESH-TOKEN')
 			if (refreshToken) {
 				const atk = await LoginApi.checkRefreshToken(refreshToken)
@@ -25,4 +26,4 @@ axios.interceptors.response.use(
 	}
 )
 
-export { LoginApi }
+export { LoginApi, PieApi }

@@ -7,6 +7,8 @@ import useAuth from 'hooks/useAuth'
 import Google from 'assets/icons/google.png'
 import Kakao from 'assets/icons/kakao.png'
 import Naver from 'assets/icons/naver.png'
+import store from 'store'
+import { Link } from 'react-router-dom'
 
 const container: Variants = {
 	hidden: {
@@ -38,7 +40,8 @@ const Splash = () => {
 	const titleControls = useAnimationControls()
 	const buttonControls = useAnimationControls()
 	const imgControls = useAnimationControls()
-	const { authLogin } = useAuth()
+	const { authLogin, logout } = useAuth()
+	const userInfo = store((state) => state.user)
 
 	useLayoutEffect(() => {
 		titleControls.start('visible')
@@ -94,27 +97,56 @@ const Splash = () => {
 				</motion.div>
 			</div>
 			<motion.div initial="hidden" animate={buttonControls} variants={container} className="flex space-y-5 flex-col">
-				<h1 className="text-center text-xl">sns로 간편 가입하기</h1>
-				<div className="flex justify-between space-x-6">
-					<button
-						onClick={() => authLogin('naver')}
-						className="bg-[#03C75A]  flex  justify-center items-center rounded-full shadow-md w-10 h-10"
-					>
-						<img className="w-5/12" src={Naver} />
-					</button>
-					<button
-						onClick={() => authLogin('kakao')}
-						className="bg-[#FEE500] flex  justify-center items-center rounded-full shadow-md w-10 h-10"
-					>
-						<img className="w-7/12" src={Kakao} />
-					</button>
-					<button
-						onClick={() => authLogin('google')}
-						className="bg-white flex  justify-center items-center rounded-full shadow-md w-10 h-10"
-					>
-						<img className="w-7/12" src={Google} />
-					</button>
-				</div>
+				{userInfo ? (
+					<div className="flex flex-col justify-center items-center">
+						<h1>로그인한 계정</h1>
+						<h1 className="text-center text-xl">{userInfo.nickname || userInfo.email}</h1>
+						<div className="mt-5 flex space-x-2">
+							<button
+								onClick={logout}
+								className="flex items-center rounded-2xl border-black border border-solid bg-white p-4"
+							>
+								다른계정
+								<br />
+								사용하기
+							</button>
+							<Link
+								className="flex items-center rounded-2xl border-black border border-solid bg-white p-4"
+								to={`/room/${userInfo.email}`}
+							>
+								계속하기
+							</Link>
+						</div>
+					</div>
+				) : (
+					<>
+						<h1 className="text-center text-xl">sns로 간편 가입하기</h1>
+						<div className="flex justify-between space-x-6">
+							<button
+								onClick={() => authLogin('naver')}
+								className="bg-[#03C75A]  flex  justify-center items-center rounded-full shadow-md w-10 h-10"
+							>
+								<img className="w-5/12" src={Naver} />
+							</button>
+							<button
+								onClick={() => authLogin('kakao')}
+								className="bg-[#FEE500] flex  justify-center items-center rounded-full shadow-md w-10 h-10"
+							>
+								<img className="w-7/12" src={Kakao} />
+							</button>
+							<button
+								onClick={() => authLogin('google')}
+								className="bg-white flex  justify-center items-center rounded-full shadow-md w-10 h-10"
+							>
+								<img className="w-7/12" src={Google} />
+							</button>
+						</div>
+						<h3 className="text-center text-xs leading-4">
+							파이롱 가입 시 <ins className="text-[#57765E] underline-offset-4">서비스 이용 약관</ins>에<br />
+							동의하였음으로 간주됩니다.
+						</h3>
+					</>
+				)}
 			</motion.div>
 		</div>
 	)
