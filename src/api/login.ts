@@ -30,8 +30,8 @@ const checkRefreshToken = async (refreshToken: string) => {
 	return atk || null
 }
 
-const getToken = async ({ type, code }: { type?: string | null; code?: string | null }) => {
-	const { data: response } = await axios.post<Response<Tokens & { userInfo: User }>>(`/login/${type}`, { code })
+const getToken = async ({ type, code, url }: { type?: string | null; code?: string | null; url: string }) => {
+	const { data: response } = await axios.post<Response<Tokens & { userInfo: User }>>(`/login/${type}`, { code, type, url })
 	return response
 }
 export { checkAccessToken, getToken, checkRefreshToken }

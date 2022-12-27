@@ -1,4 +1,4 @@
-import { ForwardedRef, MutableRefObject, useEffect, useState } from 'react'
+import { ForwardedRef, MutableRefObject, useCallback, useEffect, useState } from 'react'
 
 function useDraggablePosition(ref: MutableRefObject<HTMLDivElement | null>) {
 	const [positon, setPosition] = useState({
@@ -7,7 +7,8 @@ function useDraggablePosition(ref: MutableRefObject<HTMLDivElement | null>) {
 		startY: 0,
 		endY: 0
 	})
-	useEffect(() => {
+
+	const setSizePerTarget = useCallback(() => {
 		if (ref?.current) {
 			const startY = ref.current.offsetTop
 			const endY = startY + ref.current.offsetHeight
@@ -20,6 +21,10 @@ function useDraggablePosition(ref: MutableRefObject<HTMLDivElement | null>) {
 				endX
 			}))
 		}
+	}, [ref.current])
+
+	useEffect(() => {
+		setSizePerTarget()
 	}, [ref.current])
 	return positon
 }

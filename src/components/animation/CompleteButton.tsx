@@ -5,6 +5,7 @@ type FramerDivElement = HTMLMotionProps<'div'> & HTMLAttributes<HTMLDivElement>
 
 interface CompleteButtonProps extends FramerDivElement {
 	isEnter: boolean
+	isPandding: boolean
 	onCompleteEnd?: (props?: any) => any | void
 	onCompleteStart?: (props?: any) => any | void
 }
@@ -130,13 +131,13 @@ const CheckVariants: Variants = {
 	}
 }
 
-const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, ...rest }) => {
+const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, isPandding, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
 	const { dragState } = store()
 
 	return (
 		<AnimatePresence>
-			{((!dragState.state && isEnter) || dragState.state) && (
+			{((!dragState.state && isEnter) || dragState.state || isPandding) && (
 				<motion.div
 					{...rest}
 					animate="beforeTrigger"

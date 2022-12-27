@@ -23,7 +23,7 @@ const OAuth = () => {
 		data: { data: { atk, rtk, userInfo } = { rtk: null, atk: null, userInfo: null } } = {},
 		isError,
 		error
-	} = useQuery(['user', 'login'], () => LoginApi.getToken({ type, code }), {
+	} = useQuery(['user', 'login'], () => LoginApi.getToken({ type, code, url: sessionStorage.getItem('redirect_url') || '/' }), {
 		retry: false,
 		cacheTime: Infinity,
 		staleTime: Infinity
@@ -34,6 +34,8 @@ const OAuth = () => {
 			const token: Tokens = { atk, rtk }
 			setUser(userInfo)
 			setTokens(token)
+
+			sessionStorage.removeItem('redirect_url')
 			navigate('/main')
 		} else if (isError) {
 			setErrorMessage('로그인실패')

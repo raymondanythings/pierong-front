@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import { oauthService } from 'types'
 
 type IOAuth = {
@@ -43,6 +44,7 @@ const OAUTH_URLS: IOAuth = {
 }
 
 const useAuth = () => {
+	const location = useLocation()
 	const authLogin = (type: oauthService) => {
 		const urlSearchParam = new URLSearchParams()
 		urlSearchParam.append('client_id', OAUTH_URLS[type].params.client_id)
@@ -53,6 +55,7 @@ const useAuth = () => {
 		} else if (type === 'google') {
 			urlSearchParam.append('scope', OAUTH_URLS[type].params.scope!)
 		}
+		sessionStorage.setItem('redirect_url', location.pathname)
 		window.location.assign(`${OAUTH_URLS[type].baseUrl}${urlSearchParam.toString()}`)
 	}
 
