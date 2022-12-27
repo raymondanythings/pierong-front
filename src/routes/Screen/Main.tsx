@@ -3,11 +3,12 @@ import store from 'store'
 import PIES from 'assets/seperated_pie'
 import MAIN from 'assets/bg.png'
 import CROWN from 'assets/crown'
-import { motion, useAnimationControls, Variants } from 'framer-motion'
+import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
 import { useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
 import { useLocation } from 'react-router-dom'
+import Modal from 'components/Modal'
 
 const crownVariants: Variants = {
 	animate: {
@@ -24,21 +25,45 @@ const crownVariants: Variants = {
 const Main = () => {
 	const [isEnter, setIsEnter] = useState(false)
 	const [isPandding, setIsPandding] = useState(false)
+	const [toggle, setToggle] = useState(false)
 	const { dragState, setIsDragging } = store()
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const crownControl = useAnimationControls()
+	const howToControl = useAnimationControls()
 
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
 				<img src="image/main_board.png" />
-				<motion.div className="absolute top-[4.5%] max-w-[60%] left-[35%]">
-					<img src={PIES.HowTo} />
-				</motion.div>
-				<motion.div className="absolute top-[23%] max-w-[11%] left-[61%]">
-					<img src={PIES.Arrow} />
-				</motion.div>
+				{!toggle && (
+					<motion.div
+						layoutId="howTo"
+						animate={howToControl}
+						className="absolute top-[4.5%] max-w-[60%] left-[35%]"
+						variants={{
+							animate: {
+								left: '50%',
+								top: '50%',
+								translate: '-50% -50%',
+								zIndex: 101
+							}
+						}}
+						onAnimationComplete={(def) => {
+							setToggle(true)
+						}}
+						onClick={() => {
+							howToControl.start('animate')
+						}}
+					>
+						<motion.div className="relative">
+							<img src={PIES.HowTo} />
+							<motion.div className="absolute max-w-[15%] left-[61%]">
+								<img src={PIES.Arrow} />
+							</motion.div>
+						</motion.div>
+					</motion.div>
+				)}
 			</div>
 			<div className="h-full bg-mainBeige">
 				<div className="max-w-[58%] -translate-x-[14%] translate-y-[100%] absolute z-50">
@@ -47,9 +72,6 @@ const Main = () => {
 						animate={crownControl}
 						onTouchStart={() => {
 							crownControl.start('animate')
-						}}
-						onTouchEnd={(e) => {
-							console.log('????', e)
 						}}
 					>
 						<img draggable={false} className="object-contain drop-shadow-bottom" src={CROWN.CROWN_1} />
@@ -128,6 +150,17 @@ const Main = () => {
 
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>
+			<AnimatePresence>
+				{toggle && (
+					<motion.div
+						onClick={() => setToggle(false)}
+						className="absolute max-w-full left-0 top-0 h-full w-full z-[101]"
+						layoutId="howTo"
+					>
+						????
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	)
 }
