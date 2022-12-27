@@ -137,7 +137,7 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 	console.log((!dragState.state && isEnter) || dragState.state || isPandding)
 	return (
 		<AnimatePresence>
-			{((!dragState.state && isEnter) || dragState.state || isPandding) && (
+			{(!dragState.state && isEnter) || dragState.state || isPandding ? (
 				<motion.div
 					{...rest}
 					animate="beforeTrigger"
@@ -191,7 +191,7 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 						</motion.div>
 					)}
 				</motion.div>
-			)}
+			) : null}
 		</AnimatePresence>
 	)
 }

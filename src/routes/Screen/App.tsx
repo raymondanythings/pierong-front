@@ -29,7 +29,7 @@ function App() {
 	}, [])
 	return (
 		<main className="max-w-screen-default overflow-y-hidden h-screen mx-auto relative" ref={navigationRef}>
-			{showNav && <NavigationBar navigationRef={navigationRef} />}
+			{showNav ? <NavigationBar navigationRef={navigationRef} /> : null}
 			<Outlet />
 			<div id="modal"></div>
 		</main>

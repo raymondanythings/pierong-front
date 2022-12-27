@@ -53,8 +53,8 @@ const Main = ({ userId }: { userId: string }) => {
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
-				<img src="/image/main_board.png" />0
-				{!toggle && (
+				<img src="/image/main_board.png" />
+				{!toggle ? (
 					<motion.div
 						layoutId="howTo"
 						animate={howToControl}
@@ -81,7 +81,7 @@ const Main = ({ userId }: { userId: string }) => {
 							</motion.div>
 						</motion.div>
 					</motion.div>
-				)}
+				) : null}
 			</div>
 			<div className="h-full bg-mainBeige">
 				<div className="max-w-[58%] -translate-x-[14%] translate-y-[100%] absolute z-50">
@@ -178,7 +178,7 @@ const Main = ({ userId }: { userId: string }) => {
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>
 			<AnimatePresence>
-				{toggle && (
+				{toggle ? (
 					<motion.div
 						onClick={() => setToggle(false)}
 						className="absolute max-w-full left-0 top-0 h-full w-full z-[101]"
@@ -186,7 +186,7 @@ const Main = ({ userId }: { userId: string }) => {
 					>
 						????
 					</motion.div>
-				)}
+				) : null}
 			</AnimatePresence>
 		</div>
 	)
