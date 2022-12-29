@@ -7,7 +7,7 @@ export interface NickNameChange {
 	nickname: string
 }
 
-const NickNameChangePopup = ({ refetch }: { refetch?: () => void }) => {
+const NickNameChangePopup = ({ refetch }: { refetch?: (data?: any) => void }) => {
 	const [user, setUser] = store((state) => [state.user, state.setUser])
 	const popup = store((state) => state.popup)
 	const { handleSubmit, register } = useForm<NickNameChange>({
@@ -21,7 +21,7 @@ const NickNameChangePopup = ({ refetch }: { refetch?: () => void }) => {
 		if (user) {
 			setUser({ ...user, nickname: data.nickname || '' })
 		}
-		refetch && refetch()
+		refetch && refetch(data.nickname)
 		popup?.payload?.cancel && popup?.payload?.cancel()
 	}
 	return (

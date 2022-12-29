@@ -9,6 +9,8 @@ import Kakao from 'assets/icons/kakao.png'
 import Naver from 'assets/icons/naver.png'
 import store from 'store'
 import { Link } from 'react-router-dom'
+import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
+import CustomModal from 'components/Modal'
 
 const container: Variants = {
 	hidden: {
@@ -41,7 +43,11 @@ const Splash = () => {
 	const buttonControls = useAnimationControls()
 	const imgControls = useAnimationControls()
 	const { authLogin, logout } = useAuth()
-	const userInfo = store((state) => state.user)
+	const [userInfo, setUser] = store((state) => [state.user, state.setUser])
+	const [popup, setPopup] = store((state) => [state.popup, state.setPopup])
+	const refetch = (nickname: string) => {
+		userInfo && setUser({ ...userInfo, nickname })
+	}
 
 	useLayoutEffect(() => {
 		titleControls.start('visible')
@@ -100,7 +106,18 @@ const Splash = () => {
 							<h1 className="font-bold">로그인한 계정</h1>
 							<div className="text-center text-xl flex items-center relative">
 								{userInfo.nickname || '임시닉네임'}
-								<img className="w-5 h-5 absolute left-full" src="/image/pancel.png" />
+								<img
+									onClick={() => {
+										setPopup({
+											message: '닉네임변경',
+											key: 'changeNickName',
+											isOpen: true,
+											btnHide: true
+										})
+									}}
+									className="w-5 h-5 absolute left-full"
+									src="/image/pancel.png"
+								/>
 							</div>
 						</div>
 						<div className="mt-2 flex w-full justify-between space-x-2">
@@ -152,6 +169,11 @@ const Splash = () => {
 					</>
 				)}
 			</motion.div>
+			{popup?.key === 'changeNickName' ? (
+				<CustomModal>
+					<NickNameChangePopup refetch={refetch} />
+				</CustomModal>
+			) : null}
 		</div>
 	)
 }
