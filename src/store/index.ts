@@ -40,16 +40,13 @@ const store = create(
 				atk: null,
 				rtk: null,
 				popup: undefined,
-				setPopup: ({
-					btnText = '확인',
-					payload = {
-						confirm: () => {}
-					},
-					...rest
-				}) =>
+				setPopup: ({ btnText = '확인', payload = {}, ...rest }) =>
 					set((state) => {
 						if (!payload.cancel) {
 							payload.cancel = state.refreshPopup
+						}
+						if (!payload.confirm) {
+							payload.confirm = state.refreshPopup
 						}
 						return {
 							popup: {
