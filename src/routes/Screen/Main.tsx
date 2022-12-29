@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom'
 import Modal from 'components/Modal'
 import { useQuery } from 'react-query'
 import { PieApi } from 'api'
+import { PopupType } from 'types'
 
 const crownVariants: Variants = {
 	animate: {
@@ -35,8 +36,7 @@ const Main = ({ userId }: { userId: string }) => {
 
 	const [isEnter, setIsEnter] = useState(false)
 	const [isPandding, setIsPandding] = useState(false)
-	const [toggle, setToggle] = useState(false)
-	const { dragState, setIsDragging } = store()
+	const { dragState, setIsDragging, popup, setPopup } = store()
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const crownControl = useAnimationControls()
@@ -44,7 +44,6 @@ const Main = ({ userId }: { userId: string }) => {
 
 	const handleCreatePie = useCallback(async () => {
 		const isCreateSuccess = await PieApi.createPie()
-		console.log(isCreateSuccess)
 		if (isCreateSuccess) {
 			refetch()
 		}
@@ -54,24 +53,16 @@ const Main = ({ userId }: { userId: string }) => {
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
 				<img src="/image/main_board.png" />
-				{!toggle ? (
+				{!popup?.isOpen ? (
 					<motion.div
 						layoutId="howTo"
-						animate={howToControl}
 						className="absolute top-[4.5%] max-w-[60%] left-[35%]"
-						variants={{
-							animate: {
-								left: '50%',
-								top: '50%',
-								translate: '-50% -50%',
-								zIndex: 101
-							}
-						}}
-						onAnimationComplete={(def) => {
-							setToggle(true)
-						}}
 						onClick={() => {
-							howToControl.start('animate')
+							setPopup('', true, {
+								confirm: () => {
+									setPopup('', false)
+								}
+							})
 						}}
 					>
 						<motion.div className="relative">
@@ -177,17 +168,14 @@ const Main = ({ userId }: { userId: string }) => {
 
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>
-			<AnimatePresence>
-				{toggle ? (
-					<motion.div
-						onClick={() => setToggle(false)}
-						className="absolute max-w-full left-0 top-0 h-full w-full z-[101]"
-						layoutId="howTo"
-					>
-						????
-					</motion.div>
-				) : null}
-			</AnimatePresence>
+
+			<Modal>
+				<div className="p-5 flex flex-col space-y-6">
+					<img src="/image/howTo/1.png" />
+					<img src="/image/howTo/2.png" />
+					<img src="/image/howTo/3.png" />
+				</div>
+			</Modal>
 		</div>
 	)
 }

@@ -15,7 +15,11 @@ const loginCheckLoader = async () => {
 		return defer({ userInfo, atk: atkResponse })
 	} catch (err: any) {
 		if (err) {
-			console.log(err, '???')
+			if (err.response.status === 417) {
+				localStorage.removeItem('X-ACCESS-TOKEN')
+				localStorage.removeItem('X-REFRESH-TOKEN')
+				return { expired: true }
+			}
 			// 무조건 재로그인  ㄱ
 		}
 		return null

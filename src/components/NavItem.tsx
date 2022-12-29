@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { ReactComponent as Home } from 'assets/icons/home.svg'
 import { ReactComponent as Mark } from 'assets/icons/mark.svg'
 import { ReactComponent as Load } from 'assets/icons/load.svg'
-import { NavItemProps } from 'mock/navItem'
+// import { NavItemProps } from 'mock/navItem'
 
 const navItemVariants: Variants = {
 	initial: {
@@ -31,6 +31,12 @@ const navItemVariants: Variants = {
 			duration: 0.1
 		}
 	}
+}
+
+interface NavItemProps {
+	icon: string
+	title: string
+	path: string
 }
 
 const NavItem: FC<NavItemProps> = ({ icon, title, path }) => {

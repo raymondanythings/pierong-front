@@ -2,7 +2,7 @@ import create, { UseBoundStore } from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { axios } from 'api'
-import { Tokens, User } from 'types'
+import { PopupType, Tokens, User } from 'types'
 
 interface IStore<T = any> {
 	user?: null | User
@@ -10,8 +10,8 @@ interface IStore<T = any> {
 	rtk: string | null
 	isLogin: boolean
 	setIsLogin: (flag: boolean) => void
-	errorMessage?: string
-	setErrorMessage: (message: string) => void
+	popup?: PopupType
+	setPopup: (message?: string, status?: boolean, payload?: PopupType['payload'], btnText?: string) => void
 	setUser: (user: User) => void
 	setNav: () => void
 	showNav: boolean
@@ -34,8 +34,40 @@ const store = create(
 				showNav: false,
 				atk: null,
 				rtk: null,
-				errorMessage: undefined,
-				setErrorMessage: (msg) => set((state) => ({ ...state, errorMessage: msg })),
+				popup: undefined,
+				setPopup: (
+					msg,
+					status,
+					payload = {
+						confirm: () => {},
+						cancel: () =>
+							set({
+								popup: {
+									isOpen: false
+								}
+							})
+					},
+					btnText = '확인'
+				) =>
+					set((state) => {
+						if (!payload.cancel) {
+							payload.cancel = () =>
+								set({
+									popup: {
+										isOpen: false
+									}
+								})
+						}
+						return {
+							popup: {
+								...state.popup,
+								btnText,
+								message: msg,
+								isOpen: status,
+								payload
+							}
+						}
+					}),
 				setUser: (user) => set((state) => ({ ...state, user: user })),
 				setNav: () =>
 					set((state) => ({
@@ -98,11 +130,6 @@ store.subscribe(
 		},
 		fireImmediately: true
 	}
-)
-
-store.subscribe(
-	({ user, setIsLogin }) => ({ user, setIsLogin }),
-	({ user, setIsLogin }) => setIsLogin(!!user)
 )
 
 export const useCommonStore = store.getState()

@@ -17,4 +17,14 @@ type Tokens = {
 	rtk?: string | null
 }
 
-export type { Tokens, User }
+interface PopupType {
+	isOpen?: boolean
+	message?: string
+	btnText?: string
+	payload?: {
+		confirm?: (data?: any) => any | void
+		cancel?: (data?: any) => any | void
+	}
+}
+
+export type { Tokens, User, PopupType }

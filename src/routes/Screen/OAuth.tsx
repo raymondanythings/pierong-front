@@ -15,7 +15,7 @@ interface OAuthProps {
 const OAuth = () => {
 	const { search } = useLocation()
 	const navigate = useNavigate()
-	const { setTokens, setErrorMessage, setUser } = store()
+	const { setTokens, setIsLogin, setPopup, setUser } = store()
 	const params = new URLSearchParams(search)
 	const type = params.get('type')
 	const code = params.get('code')
@@ -33,11 +33,12 @@ const OAuth = () => {
 			const token: Tokens = { atk, rtk }
 			setUser(userInfo)
 			setTokens(token)
+			setIsLogin(true)
 			const url = sessionStorage.getItem('redirect_url')
 			sessionStorage.removeItem('redirect_url')
 			navigate(url || `/room/${userInfo.email}`)
 		} else if (isError) {
-			setErrorMessage('로그인실패')
+			setPopup('로그인실패')
 			navigate('/')
 		}
 	}, [userInfo, isError])

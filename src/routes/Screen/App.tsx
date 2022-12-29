@@ -5,9 +5,17 @@ import store from 'store'
 import { User } from 'types'
 
 function App() {
-	const loader = useLoaderData() as { userInfo?: User; atk?: string } | null
+	const loader = useLoaderData() as { userInfo?: User; atk?: string; expired?: boolean } | null
 	const navigationRef = useRef(document.querySelector('main'))
-	const { showNav, setTokens, setUser } = store()
+	const { showNav, setTokens, setUser, setPopup } = store()
+
+	if (loader?.expired) {
+		// setPopup('message', {
+		// 	confirm(data) {
+		// 		console.log(data)
+		// 	}
+		// })
+	}
 
 	useLayoutEffect(() => {
 		function setScreenSize() {
@@ -31,7 +39,7 @@ function App() {
 		<main className="max-w-screen-default overflow-y-hidden h-screen mx-auto relative" ref={navigationRef}>
 			{showNav ? <NavigationBar navigationRef={navigationRef} /> : null}
 			<Outlet />
-			<div id="modal"></div>
+			<div id="modal" className="fixed max-w-screen-default top-0 left-0 z-50"></div>
 		</main>
 	)
 }

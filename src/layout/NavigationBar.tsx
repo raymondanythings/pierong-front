@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 import { MutableRefObject, useRef, useState } from 'react'
-import { navItems } from 'mock/navItem'
+
 import NavItem from 'components/NavItem'
 interface NavigationBarProps {
 	navigationRef: MutableRefObject<HTMLElement | null>
@@ -61,9 +61,9 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 							animate="start"
 							exit="exit"
 						>
-							{navItems.map((item, index) => (
+							{/* {navItems.map((item, index) => (
 								<NavItem key={item.title + index} {...item} />
-							))}
+							))} */}
 						</motion.div>
 					)}
 				</AnimatePresence>
