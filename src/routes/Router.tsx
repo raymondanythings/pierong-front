@@ -1,5 +1,5 @@
 import App from 'routes/Screen/App'
-import { createRoutesFromElements, Outlet, Route } from 'react-router'
+import { createRoutesFromElements, Navigate, Outlet, Route } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
 import OAuth from './Screen/OAuth'
 import Splash from './Screen/Splash'
@@ -14,7 +14,7 @@ const router = createBrowserRouter(
 			<Route path="splash" element={<Splash />} />
 			<Route path="room" element={<Outlet />}>
 				<Route path=":userId" element={<BakingRoom />} />
-				{/* <Route path="*" element={<BakingRoom />} /> */}
+				<Route path="*" element={<Navigate to="/" />} />
 			</Route>
 		</Route>
 	)

@@ -47,11 +47,8 @@ const Splash = () => {
 		titleControls.start('visible')
 	}, [])
 	return (
-		<div className="relative flex h-full  items-end justify-center pb-14">
-			<div
-				className="absolute w-full left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-[11px] items-center"
-				style={{ top: 'calc(var(--vh, 1vh) * 45)' }}
-			>
+		<div className="relative flex flex-col h-full items-center justify-center">
+			<div className="w-full flex flex-col justify-center items-center flex-grow">
 				<motion.div
 					initial="hidden"
 					animate={titleControls}
@@ -96,24 +93,31 @@ const Splash = () => {
 					<AnimatedText className="text-[48px] font-medium" text="파이롱" />
 				</motion.div>
 			</div>
-			<motion.div initial="hidden" animate={buttonControls} variants={container} className="flex space-y-5 flex-col">
+			<motion.div initial="hidden" animate={buttonControls} variants={container} className="flex space-y-5 flex-col pb-8">
 				{userInfo ? (
 					<div className="flex flex-col justify-center items-center">
-						<h1>로그인한 계정</h1>
-						<h1 className="text-center text-xl">{userInfo.nickname || userInfo.email}</h1>
-						<div className="mt-5 flex space-x-2">
+						<div className="flex flex-col items-center text-center border border-solid rounded-2xl w-full py-2 space-y-1">
+							<h1 className="font-bold">로그인한 계정</h1>
+							<div className="text-center text-xl flex items-center relative">
+								{userInfo.nickname || '임시닉네임'}
+								<img className="w-5 h-5 absolute left-full" src="/image/pancel.png" />
+							</div>
+						</div>
+						<div className="mt-2 flex w-full justify-between space-x-2">
 							<button
 								onClick={logout}
-								className="flex items-center rounded-2xl border-black border border-solid bg-white p-4"
+								className="flex items-center rounded-2xl border-mainTeal border-2 border-solid bg-white p-7 py-2 shadow-b text-center"
 							>
 								다른계정
 								<br />
 								사용하기
 							</button>
 							<Link
-								className="flex items-center rounded-2xl border-black border border-solid bg-white p-4"
+								className="flex items-center rounded-2xl border-mainTeal border-2 border-solid bg-white p-7 py-2 shadow-b text-center"
 								to={`/room/${userInfo.email}`}
 							>
+								내계정
+								<br />
 								계속하기
 							</Link>
 						</div>

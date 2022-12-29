@@ -134,7 +134,6 @@ const CheckVariants: Variants = {
 const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, isPandding, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
 	const { dragState } = store()
-	console.log((!dragState.state && isEnter) || dragState.state || isPandding)
 	return (
 		<AnimatePresence>
 			{(!dragState.state && isEnter) || dragState.state || isPandding ? (

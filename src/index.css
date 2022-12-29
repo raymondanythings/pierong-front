@@ -58,6 +58,12 @@
 	.loading-container > div:nth-child(even) {
 		justify-content: space-between;
 	}
+
+	.shadow-b {
+		-webkit-box-shadow: 5px 5px 0px -1px #57765e;
+		-moz-box-shadow: 5px 5px 0px -1px #57765e;
+		box-shadow: 5px 5px 0px -1px #57765e;
+	}
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 

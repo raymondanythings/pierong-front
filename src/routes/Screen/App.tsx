@@ -1,26 +1,24 @@
+import CustomModal from 'components/Modal'
 import NavigationBar from 'layout/NavigationBar'
 import { useLayoutEffect, useRef } from 'react'
-import { Outlet, useLoaderData } from 'react-router-dom'
+import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import store from 'store'
 import { User } from 'types'
 
 function App() {
 	const loader = useLoaderData() as { userInfo?: User; atk?: string; expired?: boolean } | null
 	const navigationRef = useRef(document.querySelector('main'))
-	const { showNav, setTokens, setUser, setPopup } = store()
-
-	if (loader?.expired) {
-		// setPopup('message', {
-		// 	confirm(data) {
-		// 		console.log(data)
-		// 	}
-		// })
-	}
+	const { showNav, setTokens, setUser, setPopup, popup, refreshPopup } = store()
+	const navigate = useNavigate()
 
 	useLayoutEffect(() => {
 		function setScreenSize() {
 			let vh = window.innerHeight * 0.01
 			document.documentElement.style.setProperty('--vh', `${vh}px`)
+			const main = document.querySelector('main')
+			if (main) {
+				document.documentElement.style.setProperty('--main-mr', `${main.offsetLeft}px`)
+			}
 		}
 		setScreenSize()
 		window.addEventListener('resize', setScreenSize)
@@ -35,11 +33,31 @@ function App() {
 		}
 		return () => window.removeEventListener('resize', setScreenSize)
 	}, [])
+	useLayoutEffect(() => {
+		if (loader?.expired) {
+			setPopup({
+				message: '세션이 만료되었습니다.',
+				key: 'session',
+				isOpen: true,
+				payload: {
+					confirm: () => {
+						refreshPopup()
+						navigate('/')
+					},
+					cancel: () => {
+						refreshPopup()
+						navigate('/')
+					}
+				}
+			})
+		}
+	}, [loader?.expired])
 	return (
 		<main className="max-w-screen-default overflow-y-hidden h-screen mx-auto relative" ref={navigationRef}>
 			{showNav ? <NavigationBar navigationRef={navigationRef} /> : null}
 			<Outlet />
 			<div id="modal" className="fixed max-w-screen-default top-0 left-0 z-50"></div>
+			{popup?.key === 'session' ? <CustomModal></CustomModal> : null}
 		</main>
 	)
 }

@@ -7,11 +7,12 @@ import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-
 import { useCallback, useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
-import { useLocation } from 'react-router-dom'
 import Modal from 'components/Modal'
 import { useQuery } from 'react-query'
-import { PieApi } from 'api'
+import { PieApi, UserApi } from 'api'
 import { PopupType } from 'types'
+import { UserDetail } from 'types'
+import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
 
 const crownVariants: Variants = {
 	animate: {
@@ -24,31 +25,53 @@ const crownVariants: Variants = {
 		}
 	}
 }
+const signTitleVariants: Variants = {
+	initial: {
+		y: 100
+	},
+	animate: {
+		y: 0
+	},
+	exit: {
+		y: 100
+	}
+}
 
-const Main = ({ userId }: { userId: string }) => {
-	const { data, isLoading, refetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
+const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
+	const { dragState, isMainChange, setIsDragging, popup, setPopup, user: loggedInUser } = store()
+	const { data: PieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
 		cacheTime: Infinity,
+		staleTime: 1000 * 60 * 5,
 		retry: false,
 		refetchOnWindowFocus: false,
-		enabled: !!userId,
-		refetchOnMount: false
+		enabled: !!userId
+	})
+	const { data: userResponse, refetch: userRefetch } = useQuery(['room', 'user', userId], () => UserApi.getUserDetail(userId), {
+		cacheTime: Infinity,
+		staleTime: 1000 * 60 * 5,
+		retry: false,
+		refetchOnWindowFocus: false,
+		enabled: !!userId
 	})
 
 	const [isEnter, setIsEnter] = useState(false)
 	const [isPandding, setIsPandding] = useState(false)
-	const { dragState, setIsDragging, popup, setPopup } = store()
+
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const crownControl = useAnimationControls()
-	const howToControl = useAnimationControls()
-
+	const refetch = () => {
+		pieRefetch()
+		userRefetch()
+	}
 	const handleCreatePie = useCallback(async () => {
 		const isCreateSuccess = await PieApi.createPie()
 		if (isCreateSuccess) {
 			refetch()
 		}
 	}, [userId])
-
+	const isMe = loggedInUser?.email === userId
+	const data = { ...PieData, ...userResponse }
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
@@ -58,10 +81,9 @@ const Main = ({ userId }: { userId: string }) => {
 						layoutId="howTo"
 						className="absolute top-[4.5%] max-w-[60%] left-[35%]"
 						onClick={() => {
-							setPopup('', true, {
-								confirm: () => {
-									setPopup('', false)
-								}
+							setPopup({
+								isOpen: true,
+								key: 'howTo'
 							})
 						}}
 					>
@@ -169,13 +191,62 @@ const Main = ({ userId }: { userId: string }) => {
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>
 
-			<Modal>
-				<div className="p-5 flex flex-col space-y-6">
-					<img src="/image/howTo/1.png" />
-					<img src="/image/howTo/2.png" />
-					<img src="/image/howTo/3.png" />
-				</div>
-			</Modal>
+			{popup?.key === 'howTo' ? (
+				<Modal>
+					<div className="p-5 flex flex-col space-y-6">
+						<img src="/image/howTo/1.png" />
+						<img src="/image/howTo/2.png" />
+						<img src="/image/howTo/3.png" />
+					</div>
+				</Modal>
+			) : null}
+			<AnimatePresence>
+				{!dragState.state ? (
+					<motion.div
+						variants={signTitleVariants}
+						exit="exit"
+						animate="animate"
+						initial="initial"
+						className="fixed bottom-0 w-[180px] h-[60px] flex justify-center items-center bg-mainTeal p-2 z-30 border border-solid max-w-screen-default"
+						style={{
+							right: 'var(--main-mr)'
+						}}
+					>
+						<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5">
+							<div className="relative">
+								{user.nickname || '123'}
+								<small
+									className="ml-1"
+									style={{
+										fontSize: '0.75em'
+									}}
+								>
+									의 베이킹룸
+								</small>
+								{isMe ? (
+									<img
+										onClick={() => {
+											setPopup({
+												message: '닉네임변경',
+												key: 'changeNickName',
+												isOpen: true,
+												btnHide: true
+											})
+										}}
+										className="w-3 h-3 ml-1 absolute top-1/2  -translate-y-1/2 left-full"
+										src="/image/pancel.png"
+									/>
+								) : null}
+								{popup?.key === 'changeNickName' ? (
+									<Modal>
+										<NickNameChangePopup refetch={refetch} />
+									</Modal>
+								) : null}
+							</div>
+						</div>
+					</motion.div>
+				) : null}
+			</AnimatePresence>
 		</div>
 	)
 }

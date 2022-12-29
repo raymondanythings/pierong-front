@@ -1,9 +1,8 @@
-import { PieApi } from 'api'
+import { PieApi, UserApi } from 'api'
 import Loading from 'components/animation/Loading'
 import withNavigation from 'layout/withNavigation'
-import React from 'react'
 import { useQuery } from 'react-query'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Main from './Main'
 
 const BakingRoom = () => {
@@ -13,13 +12,24 @@ const BakingRoom = () => {
 		navigate('/')
 		return null
 	} else {
-		const { data, isLoading } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
+		const { data, isLoading: isPieLoading } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
 			cacheTime: Infinity,
+			staleTime: 1000 * 60 * 5,
 			retry: false,
 			refetchOnWindowFocus: false,
 			enabled: !!userId
 		})
-		return isLoading ? <Loading /> : <Main userId={userId} />
+		const { data: userResponse, isLoading: isUserLoading } = useQuery(['room', 'user', userId], () => UserApi.getUserDetail(userId), {
+			cacheTime: Infinity,
+			staleTime: 1000 * 60 * 5,
+			retry: false,
+			refetchOnWindowFocus: false,
+			enabled: !!userId
+		})
+
+		const user = userResponse?.data
+		const isLoading = isPieLoading || isUserLoading || !user
+		return isLoading ? <Loading /> : <Main userId={userId} user={user} />
 	}
 }
 

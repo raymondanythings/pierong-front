@@ -50,12 +50,14 @@ const CustomModal: React.FC<ModalProps> = ({ children, ...rest }) => {
 							</div>
 							<div className="grow rounded-2xl flex  flex-col items-center bg-mainBeige border-black border border-solid py-5 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)]">
 								{children ? children : <p>{popup?.message}</p>}
-								<button
-									onClick={popup?.payload?.confirm}
-									className="min-w-[100px] rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
-								>
-									{popup?.btnText ?? '확인'}
-								</button>
+								{popup && !popup.btnHide ? (
+									<button
+										onClick={popup?.payload?.confirm}
+										className="min-w-[100px] rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
+									>
+										{popup?.btnText ?? '확인'}
+									</button>
+								) : null}
 							</div>
 						</div>
 					</motion.div>

@@ -2,12 +2,13 @@ import { defer } from 'react-router-dom'
 import { LoginApi } from 'api'
 import axios from 'axios'
 
-const loginCheckLoader = async () => {
+const loginCheckLoader = async (data: any) => {
 	const atk = localStorage.getItem('X-ACCESS-TOKEN')
 	try {
 		if (!atk) {
-			return null
+			return { expired: false }
 		}
+
 		const { userInfo, atk: atkResponse } = await LoginApi.checkAccessToken(atk || '')
 		if (atkResponse) {
 			axios.defaults.headers['X-ACCESS-TOKEN'] = atkResponse
@@ -22,7 +23,7 @@ const loginCheckLoader = async () => {
 			}
 			// 무조건 재로그인  ㄱ
 		}
-		return null
+		return { expired: false }
 	}
 }
 

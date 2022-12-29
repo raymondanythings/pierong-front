@@ -1,5 +1,6 @@
 import * as LoginApi from './login'
 import * as PieApi from './pie'
+import * as UserApi from './user'
 import api from 'axios'
 
 export const axios = api.create({ baseURL: process.env.REACT_APP_API_PATH })
@@ -26,4 +27,4 @@ axios.interceptors.response.use(
 	}
 )
 
-export { LoginApi, PieApi }
+export { LoginApi, PieApi, UserApi }

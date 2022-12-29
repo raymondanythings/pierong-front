@@ -9,9 +9,11 @@ interface IStore<T = any> {
 	atk: string | null
 	rtk: string | null
 	isLogin: boolean
+	isMainChange: boolean
+	setIsMainChange: (flag: boolean) => void
 	setIsLogin: (flag: boolean) => void
 	popup?: PopupType
-	setPopup: (message?: string, status?: boolean, payload?: PopupType['payload'], btnText?: string) => void
+	setPopup: (payload: PopupType) => void
 	setUser: (user: User) => void
 	setNav: () => void
 	showNav: boolean
@@ -22,6 +24,7 @@ interface IStore<T = any> {
 	}
 	setIsDragging: (flag: { state: boolean; dragged: T }) => void
 	refreshAccount: () => void
+	refreshPopup: () => void
 }
 
 const store = create(
@@ -30,41 +33,30 @@ const store = create(
 			immer<IStore>((set) => ({
 				user: null,
 				isLogin: false,
+				isMainChange: false,
+				setIsMainChange: (flag) => set({ isMainChange: flag }),
 				setIsLogin: (flag) => set((state) => ({ ...state, isLogin: flag })),
 				showNav: false,
 				atk: null,
 				rtk: null,
 				popup: undefined,
-				setPopup: (
-					msg,
-					status,
+				setPopup: ({
+					btnText = '확인',
 					payload = {
-						confirm: () => {},
-						cancel: () =>
-							set({
-								popup: {
-									isOpen: false
-								}
-							})
+						confirm: () => {}
 					},
-					btnText = '확인'
-				) =>
+					...rest
+				}) =>
 					set((state) => {
 						if (!payload.cancel) {
-							payload.cancel = () =>
-								set({
-									popup: {
-										isOpen: false
-									}
-								})
+							payload.cancel = state.refreshPopup
 						}
 						return {
 							popup: {
 								...state.popup,
 								btnText,
-								message: msg,
-								isOpen: status,
-								payload
+								payload,
+								...rest
 							}
 						}
 					}),
@@ -94,7 +86,21 @@ const store = create(
 					localStorage.removeItem('X-ACCESS-TOKEN')
 					localStorage.removeItem('X-REFRESH-TOKEN')
 					return set({ atk: null, rtk: null, isLogin: false, user: null })
-				}
+				},
+				refreshPopup: () =>
+					set({
+						popup: {
+							isOpen: false,
+							key: '',
+							message: '',
+							btnText: '',
+							btnHide: false,
+							payload: {
+								confirm: () => {},
+								cancel: () => {}
+							}
+						}
+					})
 			}))
 		)
 	)

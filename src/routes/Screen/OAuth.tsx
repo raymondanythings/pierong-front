@@ -38,7 +38,7 @@ const OAuth = () => {
 			sessionStorage.removeItem('redirect_url')
 			navigate(url || `/room/${userInfo.email}`)
 		} else if (isError) {
-			setPopup('로그인실패')
+			// setPopup('로그인실패')
 			navigate('/')
 		}
 	}, [userInfo, isError])
