@@ -1,10 +1,10 @@
-import create from 'zustand'
+import create, { UseBoundStore } from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
-import axios from 'api'
+import { axios } from 'api'
 import { Tokens, User } from 'types'
 
-interface IStore {
+interface IStore<T = any> {
 	user?: null | User
 	atk: string | null
 	rtk: string | null
@@ -16,8 +16,12 @@ interface IStore {
 	setNav: () => void
 	showNav: boolean
 	setTokens: (tokens: Tokens) => void
-	isDragging: boolean
-	setIsDragging: (flag: boolean) => void
+	dragState: {
+		state: boolean
+		dragged: T
+	}
+	setIsDragging: (flag: { state: boolean; dragged: T }) => void
+	refreshAccount: () => void
 }
 
 const store = create(
@@ -37,34 +41,63 @@ const store = create(
 					set((state) => ({
 						showNav: !state.showNav
 					})),
-				setTokens: ({ atk, rtk }: Tokens) =>
-					set((state) => ({
+				setTokens: ({ atk, rtk }: Tokens) => {
+					return set((state) => ({
 						atk: atk || state.atk,
 						rtk: rtk || state.rtk
-					})),
-				isDragging: false,
-				setIsDragging: (flag) =>
+					}))
+				},
+				dragState: {
+					state: false,
+					dragged: null
+				},
+				setIsDragging: ({ state, dragged }) =>
 					set({
-						isDragging: flag
-					})
+						dragState: {
+							state,
+							dragged
+						}
+					}),
+				refreshAccount: () => {
+					localStorage.removeItem('X-ACCESS-TOKEN')
+					localStorage.removeItem('X-REFRESH-TOKEN')
+					return set({ atk: null, rtk: null, isLogin: false, user: null })
+				}
 			}))
 		)
 	)
 )
 
 store.subscribe(
-	({ atk, rtk }) => ({ atk, rtk }),
-	({ atk, rtk }) => {
+	({ atk }) => ({ atk }),
+	({ atk }) => {
 		if (atk) {
 			localStorage.setItem('X-ACCESS-TOKEN', atk)
 			axios.defaults.headers['X-ACCESS-TOKEN'] = atk
 		} else {
 			delete axios.defaults.headers['X-ACCESS-TOKEN']
-			localStorage.removeItem('X-ACCESS-TOKEN')
 		}
-		rtk && localStorage.setItem('X-REFRESH-TOKEN', rtk)
 	},
-	{ fireImmediately: true }
+	{
+		equalityFn(a, b) {
+			return a.atk === b.atk
+		},
+		fireImmediately: true
+	}
+)
+store.subscribe(
+	({ rtk }) => ({ rtk }),
+	({ rtk }) => {
+		if (rtk) {
+			localStorage.setItem('X-REFRESH-TOKEN', rtk)
+		}
+	},
+	{
+		equalityFn(a, b) {
+			return a.rtk === b.rtk
+		},
+		fireImmediately: true
+	}
 )
 
 store.subscribe(

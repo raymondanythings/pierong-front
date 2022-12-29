@@ -4,8 +4,8 @@ import store from 'store'
 type FramerDivElement = HTMLMotionProps<'div'> & HTMLAttributes<HTMLDivElement>
 
 interface CompleteButtonProps extends FramerDivElement {
-	refs: MutableRefObject<HTMLDivElement | null>
 	isEnter: boolean
+	isPandding: boolean
 	onCompleteEnd?: (props?: any) => any | void
 	onCompleteStart?: (props?: any) => any | void
 }
@@ -16,7 +16,7 @@ const wrapperVariants: Variants = {
 			width: '7rem',
 			height: '3rem',
 			scale: 1,
-			backgroundColor: 'rgba(0,0,0,0)',
+			backgroundColor: 'rgba(255,255,255,1)',
 			transition: {
 				duration: 0.25,
 				type: 'spring',
@@ -91,7 +91,7 @@ const wrapperVariants: Variants = {
 						bounce: 0.1
 					},
 					scale: {
-						delay: 10,
+						// delay: 1,
 						duration: 0.25
 					}
 				}
@@ -131,13 +131,13 @@ const CheckVariants: Variants = {
 	}
 }
 
-const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, ...rest }) => {
+const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, isPandding, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
-	const { isDragging } = store()
-
+	const { dragState } = store()
+	console.log((!dragState.state && isEnter) || dragState.state || isPandding)
 	return (
 		<AnimatePresence>
-			{((!isDragging && isEnter) || isDragging) && (
+			{(!dragState.state && isEnter) || dragState.state || isPandding ? (
 				<motion.div
 					{...rest}
 					animate="beforeTrigger"
@@ -147,22 +147,22 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 					}}
 					exit={'exitTrigger'}
 					onAnimationStart={(e) => {
-						if (!isDragging && isEnter) {
+						if (e === 'beforeTrigger' && !dragState.state && isEnter) {
 							onCompleteStart && onCompleteStart()
 						}
 					}}
-					onAnimationComplete={() => {
-						if (!isDragging && isEnter) {
+					onAnimationComplete={(e) => {
+						if (e === 'beforeTrigger' && !dragState.state && isEnter) {
 							onCompleteEnd && onCompleteEnd()
 						}
 					}}
 					layout
 					custom={{
 						isEnter,
-						isDragging
+						isDragging: dragState.state
 					}}
 				>
-					{!isDragging && isEnter ? (
+					{!dragState.state && isEnter ? (
 						<motion.svg
 							key="test1"
 							className="w-8 h-8 opacity-0"
@@ -191,7 +191,7 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 						</motion.div>
 					)}
 				</motion.div>
-			)}
+			) : null}
 		</AnimatePresence>
 	)
 }

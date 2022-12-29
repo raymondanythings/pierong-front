@@ -28,7 +28,7 @@ const Pies = ({ toggle, setToggle }: PiesProps) => {
 					drag
 					dragSnapToOrigin
 					className="absolute"
-					style={{ maxWidth: pie.width + '%', top: pie.top + '%', left: pie.left + '%' }}
+					style={{ maxWidth: pie.width + '%', top: pie.top + '%', left: pie.left + '%', zIndex: pie.z ?? 1 }}
 				>
 					<img draggable={false} className="object-contain" src={pie.src} />
 				</motion.div>

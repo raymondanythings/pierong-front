@@ -3,6 +3,9 @@ module.exports = {
 	content: ['./src/**/*.{js,jsx,ts,tsx}'],
 	theme: {
 		extend: {
+			dropShadow: {
+				bottom: '5px 8px 6px rgba(0, 0, 0, 0.8)'
+			},
 			transitionProperty: {
 				width: 'max-width'
 			},

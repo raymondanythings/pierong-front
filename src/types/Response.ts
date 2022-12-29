@@ -1,7 +1,7 @@
 interface Response<T> {
 	code: string
 	data: T
-	message: String
+	message: 'SUCCESS' | 'FAIL' | String
 }
 
 export type { Response }

@@ -1,10 +1,10 @@
-import { getToken } from 'api'
+import { LoginApi } from 'api'
+import Loading from 'components/animation/Loading'
 import { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import store from 'store'
 import { Tokens } from 'types'
-import Loading from './Loading'
 
 interface OAuthProps {
 	type: 'google' | 'naver' | 'kakao'
@@ -23,9 +23,8 @@ const OAuth = () => {
 		data: { data: { atk, rtk, userInfo } = { rtk: null, atk: null, userInfo: null } } = {},
 		isError,
 		error
-	} = useQuery(['user', 'login'], () => getToken({ type, code }), {
+	} = useQuery(['user', 'login'], () => LoginApi.getToken({ type, code, url: sessionStorage.getItem('redirect_url') || '/' }), {
 		retry: false,
-		cacheTime: Infinity,
 		staleTime: Infinity
 	})
 
@@ -34,7 +33,9 @@ const OAuth = () => {
 			const token: Tokens = { atk, rtk }
 			setUser(userInfo)
 			setTokens(token)
-			navigate('/main')
+			const url = sessionStorage.getItem('redirect_url')
+			sessionStorage.removeItem('redirect_url')
+			navigate(url || `/room/${userInfo.email}`)
 		} else if (isError) {
 			setErrorMessage('로그인실패')
 			navigate('/')

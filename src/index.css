@@ -47,6 +47,17 @@
 		-ms-user-select: none; /* Internet Explorer/Edge*/
 		user-select: none;
 	}
+	.loading-container > div {
+		top: -8rem;
+		position: relative;
+		display: flex;
+	}
+	.loading-container > div:nth-child(odd) {
+		justify-content: center;
+	}
+	.loading-container > div:nth-child(even) {
+		justify-content: space-between;
+	}
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 

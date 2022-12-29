@@ -1,3 +1,7 @@
+import { LoginApi } from 'api'
+import { useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
+import store from 'store'
 import { oauthService } from 'types'
 
 type IOAuth = {
@@ -42,7 +46,9 @@ const OAUTH_URLS: IOAuth = {
 	}
 }
 
-const useAuth = () => {
+const useAuth = (url?: string) => {
+	const user = store((state) => state.user)
+	const refreshAccount = store((state) => state.refreshAccount)
 	const authLogin = (type: oauthService) => {
 		const urlSearchParam = new URLSearchParams()
 		urlSearchParam.append('client_id', OAUTH_URLS[type].params.client_id)
@@ -53,10 +59,23 @@ const useAuth = () => {
 		} else if (type === 'google') {
 			urlSearchParam.append('scope', OAUTH_URLS[type].params.scope!)
 		}
+		if (url) {
+			sessionStorage.setItem('redirect_url', url ?? '/')
+		}
 		window.location.assign(`${OAUTH_URLS[type].baseUrl}${urlSearchParam.toString()}`)
 	}
 
-	return { authLogin }
+	const logout = useCallback(async () => {
+		if (user?.email) {
+			const isLoggedOut = await LoginApi.logOut({ email: user?.email })
+
+			if (isLoggedOut) {
+				refreshAccount()
+			}
+		}
+	}, [user?.email])
+
+	return { authLogin, logout }
 }
 
 export default useAuth
