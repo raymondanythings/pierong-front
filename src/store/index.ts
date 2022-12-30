@@ -4,6 +4,8 @@ import { immer } from 'zustand/middleware/immer'
 import { axios } from 'api'
 import { PopupType, Tokens, User } from 'types'
 
+type DragState = 'idle' | 'dragging' | 'pending' | 'complete'
+
 interface IStore<T = any> {
 	user?: null | User
 	atk: string | null
@@ -19,10 +21,10 @@ interface IStore<T = any> {
 	showNav: boolean
 	setTokens: (tokens: Tokens) => void
 	dragState: {
-		state: boolean
+		state: DragState
 		dragged: T
 	}
-	setIsDragging: (flag: { state: boolean; dragged: T }) => void
+	setDragState: (flag: { state: DragState; dragged: T }) => void
 	refreshAccount: () => void
 	refreshPopup: () => void
 }
@@ -69,10 +71,10 @@ const store = create(
 					}))
 				},
 				dragState: {
-					state: false,
+					state: 'idle',
 					dragged: null
 				},
-				setIsDragging: ({ state, dragged }) =>
+				setDragState: ({ state, dragged }) =>
 					set({
 						dragState: {
 							state,

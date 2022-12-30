@@ -6,7 +6,8 @@ const loginCheckLoader = async (data: any) => {
 		if (!atk) {
 			return { expired: false }
 		}
-		return LoginApi.checkAccessToken(atk)
+		const res = await LoginApi.checkAccessToken(atk)
+		return res
 	} catch (err: any) {
 		return { expired: false }
 	}

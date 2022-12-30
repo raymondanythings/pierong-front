@@ -137,9 +137,10 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 	const { dragState } = store()
 	const pie = dragState.dragged as Pie | null
 	const ref = useRef<HTMLDivElement | null>(null)
+	const isDragged = dragState.state === 'dragging' || dragState.state === 'pending'
 	return (
 		<AnimatePresence>
-			{dragState.state || isPandding ? (
+			{isDragged ? (
 				<motion.div
 					{...rest}
 					ref={ref}
@@ -150,12 +151,12 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 					}}
 					exit={'exitTrigger'}
 					onAnimationStart={(e) => {
-						if (e === 'beforeTrigger' && !dragState.state && isEnter) {
+						if (e === 'beforeTrigger' && !isDragged) {
 							onCompleteStart && onCompleteStart()
 						}
 					}}
 					onAnimationComplete={(e) => {
-						if (e === 'beforeTrigger' && !dragState.state && isEnter) {
+						if (e === 'beforeTrigger' && !isDragged) {
 							onCompleteEnd && onCompleteEnd()
 						}
 					}}
@@ -165,7 +166,7 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 						isDragging: dragState.state
 					}}
 				>
-					{!dragState.state && isEnter ? (
+					{!dragState.state ? (
 						<motion.svg
 							key="test1"
 							className="w-8 h-8 opacity-0"

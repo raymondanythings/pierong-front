@@ -13,6 +13,7 @@ import { PieApi, UserApi } from 'api'
 import { PopupType } from 'types'
 import { UserDetail } from 'types'
 import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
+import SendMessage from 'components/popup/SendMessage'
 
 const crownVariants: Variants = {
 	animate: {
@@ -38,8 +39,8 @@ const signTitleVariants: Variants = {
 }
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
-	const { dragState, setIsDragging, popup, setPopup, user: loggedInUser, refreshPopup } = store()
-	const { data: PieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
+	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup } = store()
+	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
 		retry: false,
@@ -75,18 +76,20 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			refetch()
 		}
 	}, [userId])
+
 	const isMe = loggedInUser?.email === userId
-	const data = { ...PieData, ...userResponse }
+	const data = { ...pieData, ...userResponse }
+	const selectedList = pieData?.userCakePiece?.map((item) => +item.pieceIndex)
 	const pies = PIES.Pies.filter((item) => {
-		return item.id !== dragState?.dragged?.id
+		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
 	})
+	console.log(pieData, pies)
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
 				<img src="/image/main_board.png" />
 				{!popup?.isOpen ? (
 					<motion.div
-						layoutId="howTo"
 						className="absolute top-[4.5%] max-w-[60%] left-[35%]"
 						onClick={() => {
 							setPopup({
@@ -133,8 +136,8 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 								layoutId={`pie-${pie.id}`}
 								dragSnapToOrigin
 								onDragStart={() => {
-									setIsDragging({
-										state: true,
+									setDragState({
+										state: 'dragging',
 										dragged: null
 									})
 								}}
@@ -143,15 +146,24 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 										setPopup({
 											isOpen: true,
 											key: 'sendMessage',
-											btnHide: true
+											btnHide: true,
+											payload: {
+												cancel: () => {
+													setDragState({
+														state: 'idle',
+														dragged: null
+													})
+													refreshPopup()
+												}
+											}
 										})
-										setIsDragging({
-											state: false,
+										setDragState({
+											state: 'pending',
 											dragged: { ...pie }
 										})
 									} else {
-										setIsDragging({
-											state: false,
+										setDragState({
+											state: 'idle',
 											dragged: null
 										})
 									}
@@ -197,13 +209,13 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					<CompleteButton
 						isPandding={isPandding}
 						isEnter={isEnter}
-						onCompleteStart={() => {
-							setIsPandding(true)
-						}}
-						onCompleteEnd={() => {
-							setIsPandding(false)
-							setIsEnter(false)
-						}}
+						// onCompleteStart={() => {
+						// 	setIsPandding(true)
+						// }}
+						// onCompleteEnd={() => {
+						// 	setIsPandding(false)
+						// 	setIsEnter(false)
+						// }}
 						className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid"
 					/>
 				</div>
@@ -222,25 +234,11 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			) : null}
 			{popup?.key === 'sendMessage' ? (
 				<Modal>
-					<div className="p-5 flex flex-col space-y-6">
-						<span>MESSAGE ? </span>
-						<button
-							onClick={() => {
-								setIsDragging({
-									state: false,
-									dragged: null
-								})
-								setIsEnter(false)
-								refreshPopup()
-							}}
-						>
-							confirm
-						</button>
-					</div>
+					<SendMessage userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} />
 				</Modal>
 			) : null}
 			<AnimatePresence>
-				{!dragState.state ? (
+				{dragState.state === 'idle' ? (
 					<motion.div
 						variants={signTitleVariants}
 						exit="exit"
