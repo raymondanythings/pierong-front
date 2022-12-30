@@ -21,6 +21,10 @@ axios.interceptors.response.use(
 					return res
 				}
 			}
+		} else if (rejected.response?.status === 417) {
+			localStorage.removeItem('X-ACCESS-TOKEN')
+			localStorage.removeItem('X-REFRESH-TOKEN')
+			return Promise.resolve({ expired: true })
 		}
 
 		return Promise.reject(rejected)

@@ -1,16 +1,16 @@
 import CustomModal from 'components/Modal'
 import NavigationBar from 'layout/NavigationBar'
 import { useLayoutEffect, useRef } from 'react'
-import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
+import { Outlet, useLoaderData, useNavigate, useNavigation } from 'react-router-dom'
 import store from 'store'
 import { User } from 'types'
+import axios from 'axios'
 
 function App() {
 	const loader = useLoaderData() as { userInfo?: User; atk?: string; expired?: boolean } | null
 	const navigationRef = useRef(document.querySelector('main'))
 	const { showNav, setTokens, setUser, setPopup, popup, refreshPopup } = store()
 	const navigate = useNavigate()
-
 	useLayoutEffect(() => {
 		function setScreenSize() {
 			let vh = window.innerHeight * 0.01
@@ -24,8 +24,16 @@ function App() {
 		window.addEventListener('resize', setScreenSize)
 		if (loader) {
 			const { atk, userInfo } = loader
-			if (atk) {
-				setTokens({ atk })
+			const rtk = localStorage.getItem('X-REFRESH-TOKEN')
+			if (atk && rtk) {
+				axios.defaults.headers['X-ACCESS-TOKEN'] = atk
+				setTokens({ atk, rtk })
+			} else {
+				const aToken = localStorage.getItem('X-ACCESS-TOKEN')
+				if (aToken && rtk) {
+					axios.defaults.headers['X-ACCESS-TOKEN'] = aToken
+					setTokens({ atk: aToken, rtk: rtk })
+				}
 			}
 			if (userInfo) {
 				setUser(userInfo)
@@ -42,11 +50,9 @@ function App() {
 				payload: {
 					confirm: () => {
 						refreshPopup()
-						navigate('/')
 					},
 					cancel: () => {
 						refreshPopup()
-						navigate('/')
 					}
 				}
 			})
