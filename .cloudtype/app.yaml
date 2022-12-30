@@ -2,7 +2,7 @@ name: pierong-front
 app: web
 options:
     git:
-        branch: master
+        branch: dev
         url: https://github.com/6floorpeople/pierong-front.git
     docbase: /build
     nodeversion: '18'
@@ -39,6 +39,6 @@ options:
     context:
     git:
       url: https://github.com/6floorpeople/pierong-front.git
-      branch: master
+      branch: dev
 repository:
   url: https://github.com/6floorpeople/pierong-front.git

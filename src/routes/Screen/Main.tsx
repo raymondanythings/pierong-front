@@ -13,7 +13,6 @@ import { PieApi, UserApi } from 'api'
 import { PopupType } from 'types'
 import { UserDetail } from 'types'
 import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
 const crownVariants: Variants = {
 	animate: {
@@ -78,9 +77,9 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	}, [userId])
 	const isMe = loggedInUser?.email === userId
 	const data = { ...PieData, ...userResponse }
-	useEffect(() => {
-		console.log(isEnter)
-	}, [isEnter])
+	const pies = PIES.Pies.filter((item) => {
+		return item.id !== dragState?.dragged?.id
+	})
 	return (
 		<div className="h-full relative overflow-x-hidden ">
 			<div className="aspect-[9/20] absolute ">
@@ -128,32 +127,58 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						<img className="absolute top-[13%] -left-[43%] max-w-[73.5%] z-10" draggable={false} src={PIES.Piece} />
 					</div>
 					{data ? (
-						PIES.Pies.map((pie, index) => (
-							<DragDropContext
-								onDragEnd={(e) => {
-									console.log(e)
+						pies.map((pie) => (
+							<motion.div
+								key={pie.src}
+								layoutId={`pie-${pie.id}`}
+								dragSnapToOrigin
+								onDragStart={() => {
+									setIsDragging({
+										state: true,
+										dragged: null
+									})
+								}}
+								onDragEnd={(event, info) => {
+									if (isEnter) {
+										setPopup({
+											isOpen: true,
+											key: 'sendMessage',
+											btnHide: true
+										})
+										setIsDragging({
+											state: false,
+											dragged: { ...pie }
+										})
+									} else {
+										setIsDragging({
+											state: false,
+											dragged: null
+										})
+									}
+								}}
+								onDrag={(event, info) => {
+									const {
+										point: { x, y }
+									} = info
+									if (x <= endX && x >= startX && y <= endY && y >= startY) {
+										if (!isEnter) {
+											setIsEnter(true)
+										}
+									} else {
+										isEnter && setIsEnter(false)
+									}
+								}}
+								drag={!isPandding}
+								className="absolute"
+								style={{
+									maxWidth: pie.width + '%',
+									top: pieCapture.x || pie.top + '%',
+									left: pieCapture.y || pie.left + '%',
+									zIndex: dragState?.dragged?.id === pie.id ? 55 : pie.z ? pie.z : 4
 								}}
 							>
-								<Draggable draggableId="pie" index={index}>
-									{(provider) => (
-										<div
-											ref={provider.innerRef}
-											{...provider.draggableProps}
-											{...provider.dragHandleProps}
-											key={pie.src}
-											className="absolute"
-											style={{
-												maxWidth: pie.width + '%',
-												top: pieCapture.x || pie.top + '%',
-												left: pieCapture.y || pie.left + '%',
-												zIndex: dragState?.dragged?.index === index ? 55 : pie.z ? pie.z : 4
-											}}
-										>
-											<img draggable={false} className="object-contain" src={pie.src} />
-										</div>
-									)}
-								</Draggable>
-							</DragDropContext>
+								<img draggable={false} className="object-contain" src={pie.src} />
+							</motion.div>
 						))
 					) : (
 						<motion.div
@@ -168,30 +193,20 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 
 				<div className="max-w-[59%] top-[65.5%]" draggable={false}></div>
 
-				<DragDropContext
-					onDragEnd={(e) => {
-						console.log(e)
-					}}
-				>
-					<Droppable droppableId="button">
-						{(provider) => (
-							<div className="" ref={provider.innerRef} {...provider.droppableProps}>
-								<CompleteButton
-									isPandding={isPandding}
-									isEnter={isEnter}
-									onCompleteStart={() => {
-										setIsPandding(true)
-									}}
-									onCompleteEnd={() => {
-										setIsPandding(false)
-										setIsEnter(false)
-									}}
-									className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid"
-								/>
-							</div>
-						)}
-					</Droppable>
-				</DragDropContext>
+				<div className="">
+					<CompleteButton
+						isPandding={isPandding}
+						isEnter={isEnter}
+						onCompleteStart={() => {
+							setIsPandding(true)
+						}}
+						onCompleteEnd={() => {
+							setIsPandding(false)
+							setIsEnter(false)
+						}}
+						className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid"
+					/>
+				</div>
 
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>

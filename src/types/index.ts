@@ -39,5 +39,12 @@ interface UserDetail {
 	crownImageUrl: string
 	userFeve: any[]
 }
-
-export type { Tokens, User, PopupType, UserDetail }
+interface Pie {
+	id: number
+	src: string
+	width: number
+	top: number
+	left: number
+	z?: number
+}
+export type { Tokens, User, PopupType, UserDetail, Pie }

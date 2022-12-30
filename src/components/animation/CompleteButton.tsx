@@ -1,6 +1,7 @@
 import { AnimatePresence, HTMLMotionProps, motion, Variants } from 'framer-motion'
-import { useState, HTMLAttributes, MutableRefObject, FC } from 'react'
+import { useState, HTMLAttributes, MutableRefObject, FC, useRef } from 'react'
 import store from 'store'
+import { Pie } from 'types'
 type FramerDivElement = HTMLMotionProps<'div'> & HTMLAttributes<HTMLDivElement>
 
 interface CompleteButtonProps extends FramerDivElement {
@@ -134,11 +135,14 @@ const CheckVariants: Variants = {
 const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, isPandding, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
 	const { dragState } = store()
+	const pie = dragState.dragged as Pie | null
+	const ref = useRef<HTMLDivElement | null>(null)
 	return (
 		<AnimatePresence>
-			{(!dragState.state && isEnter) || dragState.state || isPandding ? (
+			{dragState.state || isPandding ? (
 				<motion.div
 					{...rest}
+					ref={ref}
 					animate="beforeTrigger"
 					variants={wrapperVariants}
 					onClick={(event) => {
@@ -189,6 +193,18 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 							선택하기
 						</motion.div>
 					)}
+					{isEnter && pie ? (
+						<motion.div
+							drag={!isPandding}
+							key={pie.src}
+							layoutId={`pie-${pie.id}`}
+							dragConstraints={ref}
+							dragSnapToOrigin={!isEnter}
+							className="absolute"
+						>
+							{/* <img draggable={false} className="object-contain" src={pie.src} /> */}
+						</motion.div>
+					) : null}
 				</motion.div>
 			) : null}
 		</AnimatePresence>
