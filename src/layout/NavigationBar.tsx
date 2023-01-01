@@ -38,22 +38,26 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 		{
 			icon: 'crown',
 			title: 'home',
-			path: ''
+			path: '/'
 		},
 		{
 			icon: 'alert',
 			title: 'alert',
-			path: ''
+			path: '/'
 		},
 		{
 			icon: 'message',
 			title: 'message',
-			path: ''
+			path: '/'
 		},
 		{
 			icon: 'person',
 			title: 'person',
-			path: ''
+			path: '/'
+		},
+		{
+			icon: 'share',
+			title: 'share'
 		}
 	]
 	return (

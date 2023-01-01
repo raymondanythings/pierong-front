@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { motion, Variants } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import store from 'store'
 
 const navItemVariants: Variants = {
 	initial: {
@@ -29,17 +30,28 @@ const navItemVariants: Variants = {
 interface NavItemProps {
 	icon: string
 	title: string
-	path: string
+	path?: string
 }
 
 const NavItem: FC<NavItemProps> = ({ icon, title, path }) => {
 	const navigate = useNavigate()
+	const { isLogin, user } = store()
 	const onMoveRoute = (route: string) => {
 		navigate(route)
 	}
 	return (
-		<motion.button className="will-change-auto w-10" variants={navItemVariants} onClick={() => onMoveRoute(path)}>
-			<img src={`/image/nav/${icon}.svg`} />
+		<motion.button
+			className="w-10"
+			variants={navItemVariants}
+			onClick={() => {
+				if (path) {
+					onMoveRoute(path)
+				} else if (icon === 'share' && isLogin) {
+					window.navigator.clipboard.writeText(window.location.origin + '/room/' + user?.email).then((res) => console.log(res))
+				}
+			}}
+		>
+			<img className="stroke-white" src={`/image/nav/${icon}.svg`} />
 		</motion.button>
 	)
 }
