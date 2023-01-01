@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes, memo } from 'react'
 import { motion, Variants } from 'framer-motion'
 
 interface LoadingCustom {
@@ -118,4 +118,4 @@ const Loading = () => {
 	)
 }
 
-export default Loading
+export default memo(Loading)

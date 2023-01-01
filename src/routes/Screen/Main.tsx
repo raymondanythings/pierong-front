@@ -1,7 +1,7 @@
 import store from 'store'
 import PIES from 'assets/seperated_pie'
 import { AnimatePresence, motion, PanInfo, Variants } from 'framer-motion'
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
 import Modal from 'components/Modal'
@@ -47,7 +47,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const isMe = loggedInUser?.email === userId
-	const data = { ...pieData, ...userResponse }
+	const data = useMemo(() => ({ ...pieData, ...userResponse }), [pieData, userResponse])
 	const selectedList = pieData?.userCakePiece?.map((item) => +item.pieceIndex)
 	const pies: Pie[] | [] = PIES.Pies.filter((item) => {
 		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
@@ -166,7 +166,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						<img className="absolute -left-[57%] top-[41%] -z-[1]" draggable={false} src={PIES.WhitePaper} />
 						<img className="absolute top-[13%] -left-[43%] max-w-[73.5%] z-10" draggable={false} src={PIES.Piece} />
 					</div>
-					{data ? (
+					{data.userCakeId ? (
 						pies.map((pie) => (
 							<motion.div
 								key={pie.src}
@@ -215,7 +215,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					) : (
 						<motion.div
 							layoutId="pieSection"
-							onClick={handleCreatePie}
+							onClick={isMe ? handleCreatePie : () => {}}
 							className="absolute z-30 top-[12%] left-[8%] max-w-[70%]"
 						>
 							<img src="/image/baking/letter.png" />
@@ -294,7 +294,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				</Modal>
 			) : popup?.key === 'sendMessage' ? (
 				<Modal icon="message">
-					<SendMessage userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} />
+					<SendMessage refetch={refetch} userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} />
 				</Modal>
 			) : popup?.key === 'alert' ? (
 				<Modal />
