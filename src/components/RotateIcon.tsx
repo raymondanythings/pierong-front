@@ -1,5 +1,5 @@
 import { motion, Variants } from 'framer-motion'
-import { FC, useCallback, useId, useState } from 'react'
+import { FC, useId, useState } from 'react'
 
 interface RotateIconProps {
 	src: string

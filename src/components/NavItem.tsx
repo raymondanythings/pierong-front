@@ -14,10 +14,7 @@ const navItemVariants: Variants = {
 	start: {
 		originX: 'right',
 		transform: 'translateX(0%)',
-		opacity: 1,
-		transition: {
-			// duration: 0.1
-		}
+		opacity: 1
 	},
 	exit: {
 		originX: 'right',

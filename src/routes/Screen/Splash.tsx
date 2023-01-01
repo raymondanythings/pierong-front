@@ -1,6 +1,5 @@
-import { useLayoutEffect, useState } from 'react'
 import Logo from 'assets/icons/logo.png'
-import { motion, useAnimationControls, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import AnimatedText from 'components/animation/AnimatedText'
 import useAuth from 'hooks/useAuth'
 
@@ -13,14 +12,25 @@ import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
 import CustomModal from 'components/Modal'
 
 const container: Variants = {
+	hidden: {},
+	visible: {
+		transition: {
+			delayChildren: 0.5,
+			staggerChildren: 0.1,
+			when: 'beforeChild'
+		}
+	}
+}
+const btnContainer: Variants = {
 	hidden: {
 		opacity: 0
 	},
 	visible: {
 		opacity: 1,
 		transition: {
-			staggerChildren: 0.1
-			// when: 'afterChild'
+			delay: 2,
+			staggerChildren: 0.1,
+			when: 'beforeChild'
 		}
 	}
 }
@@ -38,10 +48,6 @@ const imgVariants: Variants = {
 	}
 }
 const Splash = () => {
-	const textControls = useAnimationControls()
-	const titleControls = useAnimationControls()
-	const buttonControls = useAnimationControls()
-	const imgControls = useAnimationControls()
 	const { authLogin, logout } = useAuth()
 	const [userInfo, setUser] = store((state) => [state.user, state.setUser])
 	const [popup, setPopup] = store((state) => [state.popup, state.setPopup])
@@ -49,57 +55,31 @@ const Splash = () => {
 		userInfo && setUser({ ...userInfo, nickname })
 	}
 
-	useLayoutEffect(() => {
-		titleControls.start('visible')
-	}, [])
 	return (
 		<div className="relative flex flex-col h-full items-center justify-center">
 			<div className="w-full flex flex-col justify-center items-center flex-grow">
-				<motion.div
-					initial="hidden"
-					animate={titleControls}
-					variants={container}
-					onAnimationComplete={() => {
-						imgControls.start('visible')
-					}}
-				>
+				<motion.div initial="hidden" animate="visible" variants={container}>
 					<AnimatedText className="text-[20px]" text="HAPPY NEW FÉVE" />
 				</motion.div>
+
 				<motion.img
 					initial="hidden"
 					animate="visible"
 					transition={{
 						duration: 0.2,
 						type: 'spring',
-						damping: 11,
-						delay: 1.5
+						damping: 11
 					}}
 					className="w-[194px]"
 					variants={imgVariants}
-					onAnimationComplete={() => {
-						textControls.start('visible')
-					}}
 					src={Logo}
 				/>
 
-				<motion.div
-					onAnimationComplete={() => {
-						buttonControls.start('visible')
-					}}
-					initial="hidden"
-					animate="visible"
-					transition={{
-						duration: 0.2,
-						type: 'spring',
-						damping: 11,
-						delay: 1.5
-					}}
-					variants={container}
-				>
+				<motion.div initial="hidden" animate="visible" variants={container}>
 					<AnimatedText className="text-[48px] font-medium" text="파이롱" />
 				</motion.div>
 			</div>
-			<motion.div initial="hidden" animate={buttonControls} variants={container} className="flex space-y-5 flex-col pb-8">
+			<motion.div initial="hidden" animate="visible" variants={btnContainer} className="flex space-y-5 flex-col pb-8">
 				{userInfo ? (
 					<div className="flex flex-col justify-center items-center">
 						<div className="flex flex-col items-center text-center border border-solid rounded-2xl w-full py-2 space-y-1">

@@ -8,14 +8,10 @@ const AnimatedText = ({ className, text }: { className?: string; text: string })
 	const item: Variants = {
 		hidden: {
 			y: '200%',
-			// color: '#0055FF',
-			// transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.85 }
 			transition: { duration: 0.5, type: 'spring', damping: 15 }
 		},
 		visible: {
 			y: 0,
-			// color: '#FF0088',
-			// transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 1 }
 			transition: { duration: 0.5, type: 'spring', bounce: 0.5, stiffness: 85 }
 		}
 	}
@@ -37,11 +33,7 @@ const AnimatedText = ({ className, text }: { className?: string; text: string })
 									}}
 									key={index}
 								>
-									<motion.span
-										// style={{ fontSize: element === ' ' ? '1px' : '' }}
-										className={'inline-block py-2 ' + className}
-										variants={item}
-									>
+									<motion.span className={'inline-block py-2 ' + className} variants={item}>
 										{element}
 									</motion.span>
 								</span>
