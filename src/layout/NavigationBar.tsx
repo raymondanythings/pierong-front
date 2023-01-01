@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, Variants } from 'framer-motion'
+import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
 import { MutableRefObject, useRef, useState } from 'react'
 
 import NavItem from 'components/NavItem'
@@ -23,9 +23,39 @@ const navVariants: Variants = {
 	}
 }
 
+const toggleVariants: Variants = {
+	initial: { rotateZ: 0 },
+	animate: {
+		rotateZ: 180
+	}
+}
+
 const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
+	const toggleControl = useAnimationControls()
 	const navBarRef = useRef<HTMLElement | null>(null)
 	const [open, setOpen] = useState(false)
+	const navItems = [
+		{
+			icon: 'crown',
+			title: 'home',
+			path: ''
+		},
+		{
+			icon: 'alert',
+			title: 'alert',
+			path: ''
+		},
+		{
+			icon: 'message',
+			title: 'message',
+			path: ''
+		},
+		{
+			icon: 'person',
+			title: 'person',
+			path: ''
+		}
+	]
 	return (
 		<>
 			<motion.nav
@@ -33,22 +63,28 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 				drag="y"
 				dragConstraints={navigationRef}
 				dragElastic={0.3}
-				// dragMomentum={false}
 				layout
 				className="flex align-center absolute h-11 bg-[#57765E] right-0 overflow-hidden rounded-l-lg z-40"
 			>
-				<svg
+				<motion.svg
+					variants={toggleVariants}
+					animate={toggleControl}
 					onClick={() => {
+						if (open) {
+							toggleControl.start('initial')
+						} else {
+							toggleControl.start('animate')
+						}
 						setOpen((prev) => !prev)
 					}}
-					className="w-6"
+					className="w-6 stroke-white"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
 					xmlns="http://www.w3.org/2000/svg"
 				>
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-				</svg>
+				</motion.svg>
 
 				<AnimatePresence mode="wait">
 					{open && (
@@ -61,9 +97,9 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 							animate="start"
 							exit="exit"
 						>
-							{/* {navItems.map((item, index) => (
+							{navItems.map((item, index) => (
 								<NavItem key={item.title + index} {...item} />
-							))} */}
+							))}
 						</motion.div>
 					)}
 				</AnimatePresence>

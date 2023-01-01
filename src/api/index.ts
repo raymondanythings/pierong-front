@@ -9,7 +9,7 @@ axios.interceptors.response.use(
 		return response
 	},
 	async (rejected) => {
-		if (rejected.response?.status === 401 && rejected.response?.data.code !== '1005') {
+		if (rejected.response?.status === 401 && rejected.response?.data.code === '1002') {
 			const refreshToken = localStorage.getItem('X-REFRESH-TOKEN')
 			if (refreshToken) {
 				const atk = await LoginApi.checkRefreshToken(refreshToken)
@@ -24,7 +24,7 @@ axios.interceptors.response.use(
 		} else if (rejected.response?.status === 417) {
 			localStorage.removeItem('X-ACCESS-TOKEN')
 			localStorage.removeItem('X-REFRESH-TOKEN')
-			return Promise.resolve({ expired: true })
+			return Promise.reject({ expired: true })
 		}
 
 		return Promise.reject(rejected)

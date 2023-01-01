@@ -49,9 +49,11 @@ function App() {
 				isOpen: true,
 				payload: {
 					confirm: () => {
+						navigate('/')
 						refreshPopup()
 					},
 					cancel: () => {
+						navigate('/')
 						refreshPopup()
 					}
 				}

@@ -6,7 +6,7 @@ type FramerDivElement = HTMLMotionProps<'div'> & HTMLAttributes<HTMLDivElement>
 
 interface CompleteButtonProps extends FramerDivElement {
 	isEnter: boolean
-	isPandding: boolean
+	// isPandding: boolean
 	onCompleteEnd?: (props?: any) => any | void
 	onCompleteStart?: (props?: any) => any | void
 }
@@ -132,9 +132,9 @@ const CheckVariants: Variants = {
 	}
 }
 
-const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, isPandding, ...rest }) => {
+const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
-	const { dragState } = store()
+	const { dragState, isLogin } = store()
 	const pie = dragState.dragged as Pie | null
 	const ref = useRef<HTMLDivElement | null>(null)
 	const isDragged = dragState.state === 'dragging' || dragState.state === 'pending'
@@ -191,12 +191,12 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 							exit="exitTrigger"
 							variants={CheckVariants}
 						>
-							선택하기
+							{isLogin ? '선택하기' : '로그인하기'}
 						</motion.div>
 					)}
 					{isEnter && pie ? (
 						<motion.div
-							drag={!isPandding}
+							drag
 							key={pie.src}
 							layoutId={`pie-${pie.id}`}
 							dragConstraints={ref}

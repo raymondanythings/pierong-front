@@ -1,5 +1,5 @@
 import { PieApi } from 'api'
-import { FC, useState } from 'react'
+import { FC, useCallback, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import store from 'store'
 import { ErrorMessage } from '@hookform/error-message'
@@ -22,6 +22,12 @@ const SendMessage: FC<SendMessageProps> = ({ ownerEmail, userCakeId }) => {
 		refreshPopup: state.refreshPopup,
 		setPopup: state.setPopup
 	}))
+	const textRef = useRef<HTMLTextAreaElement | null>(null)
+	const handleResizeHeight = useCallback(() => {
+		if (textRef?.current) {
+			textRef.current.style.height = textRef.current.scrollHeight + 'px'
+		}
+	}, [textRef?.current])
 	const {
 		register,
 		handleSubmit,
@@ -29,11 +35,16 @@ const SendMessage: FC<SendMessageProps> = ({ ownerEmail, userCakeId }) => {
 		formState: { errors }
 	} = useForm<MessageForm>()
 
+	const { ref, ...rest } = register('memoContent', {
+		maxLength: 100
+	})
+
 	const onChoosePie = async (data: MessageForm) => {
 		if (!ownerEmail || !userCakeId) {
 			setDragState({
 				state: 'idle',
-				dragged: null
+				dragged: null,
+				item: null
 			})
 			refreshPopup()
 			return
@@ -50,17 +61,19 @@ const SendMessage: FC<SendMessageProps> = ({ ownerEmail, userCakeId }) => {
 			setIsDone(true)
 		}
 	}
-	console.log(errors)
 	return !isDone ? (
 		<form className="flex flex-col w-full px-4" onSubmit={handleSubmit(onChoosePie)}>
 			<div className="border-dashed border rounded-lg flex flex-col items-center space-y-4 py-3">
 				<h1 className="text-sm text-[#767676]">from. {nickname}</h1>
 				<textarea
-					className="bg-transparent outline-none"
+					{...rest}
+					className="bg-transparent outline-none resize-none"
 					rows={4}
-					{...register('memoContent', {
-						maxLength: 100
-					})}
+					ref={(e) => {
+						ref(e)
+						textRef.current = e
+					}}
+					onInput={handleResizeHeight}
 				/>
 			</div>
 			<ErrorMessage className="text-center" errors={errors} name="memoContent" as={'h3'} />
@@ -78,7 +91,8 @@ const SendMessage: FC<SendMessageProps> = ({ ownerEmail, userCakeId }) => {
 				onClick={() => {
 					setDragState({
 						state: 'idle',
-						dragged: null
+						dragged: null,
+						item: null
 					})
 					refreshPopup()
 				}}

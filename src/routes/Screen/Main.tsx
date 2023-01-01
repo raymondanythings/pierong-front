@@ -1,31 +1,19 @@
-import withNavigation from 'layout/withNavigation'
 import store from 'store'
 import PIES from 'assets/seperated_pie'
-import MAIN from 'assets/bg.png'
-import CROWN from 'assets/crown'
-import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, PanInfo, Variants } from 'framer-motion'
+import { useCallback, useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
 import Modal from 'components/Modal'
 import { useQuery } from 'react-query'
 import { PieApi, UserApi } from 'api'
-import { PopupType } from 'types'
+import { Pie } from 'types'
 import { UserDetail } from 'types'
 import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
 import SendMessage from 'components/popup/SendMessage'
+import Login from 'components/popup/Login'
+import Crown from 'components/Crown'
 
-const crownVariants: Variants = {
-	animate: {
-		translateZ: [-100, 0, 100, 0],
-		rotateZ: [-10, 0, 10, 0, -5, 0, 5, 0, -3, 0, 3, 0, -1, 0, 1, 0],
-		transition: {
-			duration: 0.3,
-			type: 'spring',
-			damping: 2
-		}
-	}
-}
 const signTitleVariants: Variants = {
 	initial: {
 		y: 100
@@ -39,7 +27,7 @@ const signTitleVariants: Variants = {
 }
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
-	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup } = store()
+	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin } = store()
 	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -56,16 +44,15 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	})
 
 	const [isEnter, setIsEnter] = useState(false)
-	const [isPandding, setIsPandding] = useState(false)
-
-	const [pieCapture, setPieCapture] = useState({
-		x: 0,
-		y: 0
-	})
-
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
-	const crownControl = useAnimationControls()
+	const isMe = loggedInUser?.email === userId
+	const data = { ...pieData, ...userResponse }
+	const selectedList = pieData?.userCakePiece?.map((item) => +item.pieceIndex)
+	const pies: Pie[] | [] = PIES.Pies.filter((item) => {
+		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
+	})
+
 	const refetch = () => {
 		pieRefetch()
 		userRefetch()
@@ -77,48 +64,86 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		}
 	}, [userId])
 
-	const isMe = loggedInUser?.email === userId
-	const data = { ...pieData, ...userResponse }
-	const selectedList = pieData?.userCakePiece?.map((item) => +item.pieceIndex)
-	const pies = PIES.Pies.filter((item) => {
-		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
-	})
-	console.log(pieData, pies)
+	const onDragEnd = useCallback(
+		(event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo, pie: Pie) => {
+			if (!isLogin) {
+				setPopup({
+					isOpen: true,
+					key: 'login',
+					payload: {
+						cancel(data) {
+							setDragState({
+								state: 'idle',
+								dragged: null,
+								item: null
+							})
+							refreshPopup()
+						}
+					}
+				})
+				return
+			} else {
+				if (isMe) {
+					setPopup({
+						isOpen: true,
+						key: 'alert',
+						message: '직접 만든 파이는 선택할 수 없어요.'
+					})
+					setDragState({
+						state: 'idle',
+						dragged: null,
+						item: null
+					})
+				} else {
+					setPopup({
+						isOpen: true,
+						key: 'sendMessage',
+						btnHide: true,
+						payload: {
+							cancel: () => {
+								setDragState({
+									state: 'idle',
+									dragged: null,
+									item: null
+								})
+								refreshPopup()
+							}
+						}
+					})
+					setDragState({
+						state: 'pending',
+						dragged: { ...pie },
+						item: { ...pie }
+					})
+				}
+			}
+		},
+		[userId]
+	)
+
 	return (
-		<div className="h-full relative overflow-x-hidden ">
+		<div className="h-full relative overflow-x-hidden">
 			<div className="aspect-[9/20] absolute ">
 				<img src="/image/main_board.png" />
-				{!popup?.isOpen ? (
-					<motion.div
-						className="absolute top-[4.5%] max-w-[60%] left-[35%]"
-						onClick={() => {
-							setPopup({
-								isOpen: true,
-								key: 'howTo'
-							})
-						}}
-					>
-						<motion.div className="relative">
-							<img src={PIES.HowTo} />
-							<motion.div className="absolute max-w-[15%] left-[61%]">
-								<img src={PIES.Arrow} />
-							</motion.div>
+				<motion.div
+					className="absolute top-[4.5%] max-w-[60%] left-[35%]"
+					onClick={() => {
+						setPopup({
+							isOpen: true,
+							key: 'howTo'
+						})
+					}}
+				>
+					<motion.div className="relative">
+						<img src={PIES.HowTo} />
+						<motion.div className="absolute max-w-[15%] left-[61%]">
+							<img src={PIES.Arrow} />
 						</motion.div>
 					</motion.div>
-				) : null}
+				</motion.div>
 			</div>
 			<div className="h-full bg-mainBeige">
-				<div className="max-w-[58%] -translate-x-[14%] translate-y-[100%] absolute z-50">
-					<motion.div
-						variants={crownVariants}
-						animate={crownControl}
-						onTouchStart={() => {
-							crownControl.start('animate')
-						}}
-					>
-						<img draggable={false} className="object-contain drop-shadow-bottom" src={CROWN.CROWN_1} />
-					</motion.div>
-				</div>
+				<Crown />
 
 				<div className="relative max-w-[85%] translate-x-[40%] translate-y-[188%] z-30 disabled-drag">
 					<div className="relative -left-[9%] z-[1]">
@@ -138,36 +163,19 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 								onDragStart={() => {
 									setDragState({
 										state: 'dragging',
+										item: { ...pie },
 										dragged: null
 									})
 								}}
-								onDragEnd={(event, info) => {
-									if (isEnter) {
-										setPopup({
-											isOpen: true,
-											key: 'sendMessage',
-											btnHide: true,
-											payload: {
-												cancel: () => {
-													setDragState({
-														state: 'idle',
-														dragged: null
-													})
-													refreshPopup()
-												}
-											}
-										})
-										setDragState({
-											state: 'pending',
-											dragged: { ...pie }
-										})
-									} else {
-										setDragState({
-											state: 'idle',
-											dragged: null
-										})
-									}
-								}}
+								onDragEnd={(event, info) =>
+									isEnter
+										? onDragEnd(event, info, pie)
+										: setDragState({
+												state: 'idle',
+												dragged: null,
+												item: null
+										  })
+								}
 								onDrag={(event, info) => {
 									const {
 										point: { x, y }
@@ -180,13 +188,13 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 										isEnter && setIsEnter(false)
 									}
 								}}
-								drag={!isPandding}
+								drag
 								className="absolute"
 								style={{
 									maxWidth: pie.width + '%',
-									top: pieCapture.x || pie.top + '%',
-									left: pieCapture.y || pie.left + '%',
-									zIndex: dragState?.dragged?.id === pie.id ? 55 : pie.z ? pie.z : 4
+									top: pie.top + '%',
+									left: pie.left + '%',
+									zIndex: dragState?.item?.id === pie.id ? 100 : pie.z ? pie.z : 4
 								}}
 							>
 								<img draggable={false} className="object-contain" src={pie.src} />
@@ -207,7 +215,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 
 				<div className="">
 					<CompleteButton
-						isPandding={isPandding}
 						isEnter={isEnter}
 						// onCompleteStart={() => {
 						// 	setIsPandding(true)
@@ -224,19 +231,29 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			</div>
 
 			{popup?.key === 'howTo' ? (
-				<Modal>
+				<Modal icon="book">
 					<div className="p-5 flex flex-col space-y-6">
 						<img src="/image/howTo/1.png" />
 						<img src="/image/howTo/2.png" />
 						<img src="/image/howTo/3.png" />
 					</div>
 				</Modal>
-			) : null}
-			{popup?.key === 'sendMessage' ? (
-				<Modal>
+			) : popup?.key === 'sendMessage' ? (
+				<Modal icon="message">
 					<SendMessage userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} />
 				</Modal>
+			) : popup?.key === 'alert' ? (
+				<Modal />
+			) : popup?.key === 'changeNickName' ? (
+				<Modal icon="pancel">
+					<NickNameChangePopup refetch={refetch} />
+				</Modal>
+			) : popup?.key === 'login' ? (
+				<Modal>
+					<Login />
+				</Modal>
 			) : null}
+
 			<AnimatePresence>
 				{dragState.state === 'idle' ? (
 					<motion.div
@@ -271,13 +288,8 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 											})
 										}}
 										className="w-3 h-3 ml-1 absolute top-1/2  -translate-y-1/2 left-full"
-										src="/image/pancel.png"
+										src="/image/icon/pancel.png"
 									/>
-								) : null}
-								{popup?.key === 'changeNickName' ? (
-									<Modal>
-										<NickNameChangePopup refetch={refetch} />
-									</Modal>
 								) : null}
 							</div>
 						</div>

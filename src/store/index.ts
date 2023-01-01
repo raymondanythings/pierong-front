@@ -1,4 +1,4 @@
-import create, { UseBoundStore } from 'zustand'
+import create from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { axios } from 'api'
@@ -6,7 +6,7 @@ import { PopupType, Tokens, User } from 'types'
 
 type DragState = 'idle' | 'dragging' | 'pending' | 'complete'
 
-interface IStore<T = any> {
+interface IStore<T = any, S = any> {
 	user?: null | User
 	atk: string | null
 	rtk: string | null
@@ -22,9 +22,10 @@ interface IStore<T = any> {
 	setTokens: (tokens: Tokens) => void
 	dragState: {
 		state: DragState
-		dragged: T
+		item: T
+		dragged: S
 	}
-	setDragState: (flag: { state: DragState; dragged: T }) => void
+	setDragState: (flag: { state: DragState; dragged: T; item: T }) => void
 	refreshAccount: () => void
 	refreshPopup: () => void
 }
@@ -72,13 +73,15 @@ const store = create(
 				},
 				dragState: {
 					state: 'idle',
-					dragged: null
+					dragged: null,
+					item: null
 				},
-				setDragState: ({ state, dragged }) =>
+				setDragState: ({ state, dragged, item }) =>
 					set({
 						dragState: {
 							state,
-							dragged
+							dragged,
+							item
 						}
 					}),
 				refreshAccount: () => {
@@ -132,6 +135,19 @@ store.subscribe(
 	{
 		equalityFn(a, b) {
 			return a.rtk === b.rtk
+		},
+		fireImmediately: true
+	}
+)
+
+store.subscribe(
+	({ user }) => ({ user }),
+	({ user }) => {
+		store.setState({ isLogin: !!user })
+	},
+	{
+		equalityFn(a, b) {
+			return a.user?.email === b.user?.email
 		},
 		fireImmediately: true
 	}

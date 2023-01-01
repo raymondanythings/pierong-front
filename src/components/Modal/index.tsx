@@ -1,10 +1,10 @@
 import { motion, AnimatePresence, Variants, useAnimationControls, HTMLMotionProps } from 'framer-motion'
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom'
-import Logo from 'assets/icons/logo.png'
 import store from 'store'
 interface ModalProps extends HTMLMotionProps<'div'> {
 	children?: ReactNode
+	icon?: 'logo' | 'info' | 'message' | 'pancel' | 'book'
 }
 
 const modalVariants: Variants = {
@@ -25,7 +25,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
 	return null
 }
 
-const CustomModal: React.FC<ModalProps> = ({ children, ...rest }) => {
+const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', ...rest }) => {
 	const modalControl = useAnimationControls()
 	const popup = store((state) => state.popup)
 	return (
@@ -45,10 +45,13 @@ const CustomModal: React.FC<ModalProps> = ({ children, ...rest }) => {
 						<div className="w-4/5 min-h-[150px] rounded-2xl bg-mainTeal p-2 flex justify-center items-stretch border-black border border-solid relative">
 							<div className="absolute w-12 h-12 bg-mainTeal -top-6 rounded-full border-black border border-solid p-1 flex items-stretch">
 								<div className="bg-mainBeige border-black border border-solid flex justify-center items-center grow rounded-full">
-									<img src={Logo} className="w-3/4" />
+									<img src={`/image/icon/${icon}.png`} className="w-3/4 max-w-[23px] max-h-[23px]" />
 								</div>
 							</div>
-							<div className="grow rounded-2xl flex  flex-col items-center bg-mainBeige border-black border border-solid py-5 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)]">
+							<div
+								className="grow rounded-2xl flex  flex-col items-center bg-mainBeige border-black border border-solid py-5 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)]"
+								style={{ justifyContent: !children ? 'flex-end' : '' }}
+							>
 								{children ? children : <p>{popup?.message}</p>}
 								{popup && !popup.btnHide ? (
 									<button
