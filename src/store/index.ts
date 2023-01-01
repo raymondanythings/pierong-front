@@ -5,7 +5,9 @@ import { axios } from 'api'
 import { PopupType, Tokens, User } from 'types'
 
 type DragState = 'idle' | 'dragging' | 'pending' | 'complete'
-
+interface PopupTypeArgs extends PopupType {
+	cancelDisabled?: boolean
+}
 interface IStore<T = any, S = any> {
 	user?: null | User
 	atk: string | null
@@ -14,8 +16,8 @@ interface IStore<T = any, S = any> {
 	isMainChange: boolean
 	setIsMainChange: (flag: boolean) => void
 	setIsLogin: (flag: boolean) => void
-	popup?: PopupType
-	setPopup: (payload: PopupType) => void
+	popup?: PopupTypeArgs
+	setPopup: (payload: PopupTypeArgs) => void
 	setUser: (user: User) => void
 	setNav: () => void
 	showNav: boolean
@@ -45,10 +47,10 @@ const store = create(
 				popup: undefined,
 				setPopup: ({ btnText = '확인', payload = {}, ...rest }) =>
 					set((state) => {
-						if (!payload.cancel) {
+						if (!rest.cancelDisabled && !payload.cancel) {
 							payload.cancel = state.refreshPopup
 						}
-						if (!payload.confirm) {
+						if (!rest.cancelDisabled && !payload.confirm) {
 							payload.confirm = state.refreshPopup
 						}
 						return {

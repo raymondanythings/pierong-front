@@ -1,7 +1,7 @@
 import store from 'store'
 import PIES from 'assets/seperated_pie'
 import { AnimatePresence, motion, PanInfo, Variants } from 'framer-motion'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
 import Modal from 'components/Modal'
@@ -61,6 +61,18 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		const isCreateSuccess = await PieApi.createPie()
 		if (isCreateSuccess) {
 			refetch()
+		}
+	}, [userId])
+
+	useLayoutEffect(() => {
+		if (isLogin && !user.nickname) {
+			setPopup({
+				isOpen: true,
+				cancelDisabled: true,
+				key: 'initialNickname',
+				btnHide: true,
+				payload: {}
+			})
 		}
 	}, [userId])
 
@@ -230,30 +242,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>
 
-			{popup?.key === 'howTo' ? (
-				<Modal icon="book">
-					<div className="p-5 flex flex-col space-y-6">
-						<img src="/image/howTo/1.png" />
-						<img src="/image/howTo/2.png" />
-						<img src="/image/howTo/3.png" />
-					</div>
-				</Modal>
-			) : popup?.key === 'sendMessage' ? (
-				<Modal icon="message">
-					<SendMessage userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} />
-				</Modal>
-			) : popup?.key === 'alert' ? (
-				<Modal />
-			) : popup?.key === 'changeNickName' ? (
-				<Modal icon="pancel">
-					<NickNameChangePopup refetch={refetch} />
-				</Modal>
-			) : popup?.key === 'login' ? (
-				<Modal>
-					<Login />
-				</Modal>
-			) : null}
-
 			<AnimatePresence>
 				{dragState.state === 'idle' ? (
 					<motion.div
@@ -296,6 +284,33 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					</motion.div>
 				) : null}
 			</AnimatePresence>
+			{popup?.key === 'howTo' ? (
+				<Modal icon="book">
+					<div className="p-5 flex flex-col space-y-6">
+						<img src="/image/howTo/1.png" />
+						<img src="/image/howTo/2.png" />
+						<img src="/image/howTo/3.png" />
+					</div>
+				</Modal>
+			) : popup?.key === 'sendMessage' ? (
+				<Modal icon="message">
+					<SendMessage userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} />
+				</Modal>
+			) : popup?.key === 'alert' ? (
+				<Modal />
+			) : popup?.key === 'changeNickName' ? (
+				<Modal icon="pancel">
+					<NickNameChangePopup refetch={refetch} />
+				</Modal>
+			) : popup?.key === 'login' ? (
+				<Modal>
+					<Login />
+				</Modal>
+			) : popup?.key === 'initialNickname' ? (
+				<Modal icon="pancel">
+					<NickNameChangePopup refetch={refetch} title="닉네임을 설정해 주세요." />
+				</Modal>
+			) : null}
 		</div>
 	)
 }
