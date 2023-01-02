@@ -63,6 +63,11 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 				memoContent: data.memoContent,
 				pieceIndex: dragState.dragged.id
 			})
+			// 당첨자 응답값 {"data":{"feveId":"2","feveName":"연꽃페브","feveDescription":"연꽃페브","feveImageUrl":"/image/feve/example2.png","userCakeFeveId":"14","userCakeId":"36","feveIndex":"4","ownerEmail":"neung.gwon@gmail.com"},"code":"0000","message":"SUCCESS"}
+			/**
+			 * 타인이 조각 선택 시 feve 당첨여부 조회 == choose한 시점
+					각자 feve를 소유하는 시점 == baking_status가 02가 되는 시점
+			 */
 			if (res?.code === '3003') {
 				setError('memoContent', { message: '파이당 한 조각만 선택 가능합니다.', type: 'validate' })
 			} else if (res?.code === '0000') {
@@ -79,13 +84,14 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 				<textarea
 					{...rest}
 					className="bg-transparent outline-none resize-none text-center"
-					rows={4}
+					rows={8}
 					ref={(e) => {
 						ref(e)
 						textRef.current = e
 					}}
 					onKeyDown={handleResizeHeight}
 				/>
+				<h1 className="text-xs font-bold text-mainTeal">최대 100자까지 입력가능</h1>
 			</div>
 			<ErrorMessage className="text-center text-red-300 mt-2" errors={errors} name="memoContent" as="h3" />
 			<button
