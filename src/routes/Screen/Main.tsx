@@ -46,7 +46,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const [isEnter, setIsEnter] = useState(false)
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
-	const isMe = loggedInUser?.email === userId
+	const isMe = loggedInUser && btoa(loggedInUser.email) === userId
 	const data = useMemo(() => ({ ...pieData, ...userResponse }), [pieData, userResponse])
 	const selectedList = pieData?.userCakePiece?.map((item) => +item.pieceIndex)
 	const pies: Pie[] | [] = PIES.Pies.filter((item) => {

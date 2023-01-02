@@ -20,7 +20,7 @@ const crownVariants: Variants = {
 const Crown = ({ rank = '1' }: CrownProps) => {
 	const crownControl = useAnimationControls()
 	return (
-		<div className={'max-w-[58%] -translate-x-[14%] absolute z-50 ' + (+rank >= 4 ? 'translate-y-[77%]' : 'translate-y-[100%]')}>
+		<div className={'max-w-[58%] -translate-x-[14%] absolute z-[1] ' + (+rank >= 4 ? 'translate-y-[77%]' : 'translate-y-[100%]')}>
 			<motion.div
 				variants={crownVariants}
 				animate={crownControl}

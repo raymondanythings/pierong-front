@@ -14,6 +14,7 @@ const checkAccessToken = async (token: string) => {
 			data: { atk, ...userInfo }
 		}
 	} = res
+	// userInfo.email = btoa(userInfo.email)
 	return { userInfo, atk }
 }
 

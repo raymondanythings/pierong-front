@@ -35,7 +35,7 @@ interface NavItemProps {
 
 const NavItem: FC<NavItemProps> = ({ icon, title, path }) => {
 	const navigate = useNavigate()
-	const { isLogin, user } = store()
+	const { isLogin, user, setPopup } = store()
 	const onMoveRoute = (route: string) => {
 		navigate(route)
 	}
@@ -46,8 +46,14 @@ const NavItem: FC<NavItemProps> = ({ icon, title, path }) => {
 			onClick={() => {
 				if (path) {
 					onMoveRoute(path)
-				} else if (icon === 'share' && isLogin) {
-					window.navigator.clipboard.writeText(window.location.origin + '/room/' + user?.email).then((res) => console.log(res))
+				} else if (icon === 'share' && isLogin && user?.email) {
+					window.navigator.clipboard.writeText(window.location.origin + '/room/' + btoa(user?.email)).then((res) => {
+						setPopup({
+							key: 'session',
+							isOpen: true,
+							message: 'URL이 클립보드에 복사되었습니다.'
+						})
+					})
 				}
 			}}
 		>

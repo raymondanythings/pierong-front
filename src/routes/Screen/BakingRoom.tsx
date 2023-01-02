@@ -23,14 +23,12 @@ const BakingRoom = () => {
 			refetchOnWindowFocus: false,
 			enabled: !!userId,
 			onError(err: any) {
-				if (err.response.data.code === '2003') {
-					setPopup({
-						isOpen: true,
-						message: '유저가 존재하지 않습니다.',
-						key: 'session'
-					})
-					navigate('/')
-				}
+				setPopup({
+					isOpen: true,
+					message: '유저가 존재하지 않습니다.',
+					key: 'session'
+				})
+				navigate('/')
 			}
 		})
 		const { data: userResponse, isLoading: isUserLoading } = useQuery(['room', 'user', userId], () => UserApi.getUserDetail(userId), {

@@ -111,7 +111,7 @@ const Splash = () => {
 							</button>
 							<Link
 								className="flex items-center rounded-2xl border-mainTeal border-2 border-solid bg-white p-7 py-2 shadow-b text-center"
-								to={`/room/${userInfo.email}`}
+								to={`/room/${btoa(userInfo.email)}`}
 							>
 								내계정
 								<br />
