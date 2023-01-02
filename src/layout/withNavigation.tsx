@@ -2,7 +2,7 @@ import { ComponentType, useLayoutEffect } from 'react'
 import store from 'store'
 
 const withNavigation = (Component: ComponentType<any>) => {
-	return function () {
+	return function (props?: any) {
 		const { setNav, isLogin } = store()
 		useLayoutEffect(() => {
 			if (isLogin) {
@@ -12,11 +12,7 @@ const withNavigation = (Component: ComponentType<any>) => {
 				isLogin && setNav()
 			}
 		}, [])
-		return (
-			<>
-				<Component />
-			</>
-		)
+		return <Component {...props} />
 	}
 }
 

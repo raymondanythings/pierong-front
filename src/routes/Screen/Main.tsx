@@ -14,6 +14,7 @@ import SendMessage from 'components/popup/SendMessage'
 import Login from 'components/popup/Login'
 import Crown from 'components/Crown'
 import { urlSafebtoa } from 'libs/utils'
+import withNavigation from 'layout/withNavigation'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -316,4 +317,4 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	)
 }
 
-export default Main
+export default withNavigation(Main)

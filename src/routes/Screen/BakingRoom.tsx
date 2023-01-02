@@ -45,4 +45,4 @@ const BakingRoom = () => {
 	}
 }
 
-export default withNavigation(BakingRoom)
+export default BakingRoom
