@@ -1,7 +1,8 @@
-import { FC } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 import { motion, Variants } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import store from 'store'
+import { urlSafebtoa } from 'libs/utils'
 
 const navItemVariants: Variants = {
 	initial: {
@@ -31,11 +32,12 @@ interface NavItemProps {
 	icon: string
 	title: string
 	path?: string
+	setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const NavItem: FC<NavItemProps> = ({ icon, title, path }) => {
+const NavItem: FC<NavItemProps> = ({ icon, title, path, setOpen }) => {
 	const navigate = useNavigate()
-	const { isLogin, user, setPopup } = store()
+	const { isLogin, user, setPopup, refreshPopup } = store()
 	const onMoveRoute = (route: string) => {
 		navigate(route)
 	}
@@ -47,13 +49,25 @@ const NavItem: FC<NavItemProps> = ({ icon, title, path }) => {
 				if (path) {
 					onMoveRoute(path)
 				} else if (icon === 'share' && isLogin && user?.email) {
-					window.navigator.clipboard.writeText(window.location.origin + '/room/' + btoa(user?.email)).then((res) => {
-						setPopup({
-							key: 'session',
-							isOpen: true,
-							message: 'URL이 클립보드에 복사되었습니다.'
+					window.navigator.clipboard
+						.writeText(window.location.origin + '/room/' + urlSafebtoa(user?.email).replace(/=/g, ''))
+						.then((res) => {
+							setPopup({
+								key: 'session',
+								isOpen: true,
+								message: 'URL이 클립보드에 복사되었습니다.',
+								payload: {
+									confirm: () => {
+										setOpen(false)
+										refreshPopup()
+									},
+									cancel: () => {
+										setOpen(false)
+										refreshPopup()
+									}
+								}
+							})
 						})
-					})
 				}
 			}}
 		>

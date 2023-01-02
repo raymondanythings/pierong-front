@@ -1,5 +1,6 @@
 import { LoginApi } from 'api'
 import Loading from 'components/animation/Loading'
+import { urlSafebtoa } from 'libs/utils'
 import { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -36,7 +37,7 @@ const OAuth = () => {
 			setIsLogin(true)
 			const url = sessionStorage.getItem('redirect_url')
 			sessionStorage.removeItem('redirect_url')
-			navigate(url || `/room/${userInfo.email}`)
+			navigate(url || `/room/${urlSafebtoa(userInfo.email)}`)
 		} else if (isError) {
 			setPopup({
 				message: '로그인실패',

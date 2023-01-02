@@ -102,7 +102,7 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 							exit="exit"
 						>
 							{navItems.map((item, index) => (
-								<NavItem key={item.title + index} {...item} />
+								<NavItem setOpen={setOpen} key={item.title + index} {...item} />
 							))}
 						</motion.div>
 					)}

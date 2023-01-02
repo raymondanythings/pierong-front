@@ -13,6 +13,7 @@ import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
 import SendMessage from 'components/popup/SendMessage'
 import Login from 'components/popup/Login'
 import Crown from 'components/Crown'
+import { urlSafebtoa } from 'libs/utils'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -46,7 +47,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const [isEnter, setIsEnter] = useState(false)
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
-	const isMe = loggedInUser && btoa(loggedInUser.email) === userId
+	const isMe = loggedInUser && urlSafebtoa(loggedInUser.email) === userId
 	const data = useMemo(() => ({ ...pieData, ...userResponse }), [pieData, userResponse])
 	const selectedList = pieData?.userCakePiece?.map((item) => +item.pieceIndex)
 	const pies: Pie[] | [] = PIES.Pies.filter((item) => {

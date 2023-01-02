@@ -10,6 +10,7 @@ import store from 'store'
 import { Link } from 'react-router-dom'
 import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
 import CustomModal from 'components/Modal'
+import { urlSafebtoa } from 'libs/utils'
 
 const container: Variants = {
 	hidden: {},
@@ -111,7 +112,7 @@ const Splash = () => {
 							</button>
 							<Link
 								className="flex items-center rounded-2xl border-mainTeal border-2 border-solid bg-white p-7 py-2 shadow-b text-center"
-								to={`/room/${btoa(userInfo.email)}`}
+								to={`/room/${urlSafebtoa(userInfo.email)}`}
 							>
 								내계정
 								<br />
