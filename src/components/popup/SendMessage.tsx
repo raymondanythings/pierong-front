@@ -40,7 +40,10 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 	} = useForm<MessageForm>()
 
 	const { ref, ...rest } = register('memoContent', {
-		maxLength: 100
+		maxLength: {
+			value: 100,
+			message: '최대 100글자 까지 가능합니다.'
+		}
 	})
 
 	const onChoosePie = useCallback(
@@ -61,7 +64,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 				pieceIndex: dragState.dragged.id
 			})
 			if (res?.code === '3003') {
-				setError('memoContent', { message: '파이당 한 조각만 선택 가능합니다..', type: 'validate' })
+				setError('memoContent', { message: '파이당 한 조각만 선택 가능합니다.', type: 'validate' })
 			} else if (res?.code === '0000') {
 				setIsDone(true)
 				refetch()

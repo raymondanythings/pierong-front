@@ -8,7 +8,7 @@ interface NavigationBarProps {
 
 const navVariants: Variants = {
 	start: {
-		maxWidth: 680,
+		maxWidth: 480,
 		transition: {
 			when: 'afterChild',
 			staggerChildren: 0.03
@@ -68,7 +68,7 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 				dragConstraints={navigationRef}
 				dragElastic={0.3}
 				layout
-				className="flex align-center absolute h-11 bg-[#57765E] right-0 overflow-hidden rounded-l-lg z-40"
+				className="flex align-center absolute h-11 bg-[#57765E] right-0 overflow-hidden rounded-l-lg z-40 top-[35%]"
 			>
 				<motion.svg
 					variants={toggleVariants}

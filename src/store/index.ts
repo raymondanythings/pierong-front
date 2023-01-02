@@ -106,7 +106,8 @@ const store = create(
 						}
 					})
 			}))
-		)
+		),
+		{ enabled: process.env.NODE_ENV !== 'production' }
 	)
 )
 
