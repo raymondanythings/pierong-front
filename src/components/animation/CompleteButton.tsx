@@ -5,7 +5,6 @@ import { Pie } from 'types'
 type FramerDivElement = HTMLMotionProps<'div'> & HTMLAttributes<HTMLDivElement>
 
 interface CompleteButtonProps extends FramerDivElement {
-	isEnter: boolean
 	// isPandding: boolean
 	onCompleteEnd?: (props?: any) => any | void
 	onCompleteStart?: (props?: any) => any | void
@@ -132,7 +131,7 @@ const CheckVariants: Variants = {
 	}
 }
 
-const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, isEnter, ...rest }) => {
+const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEnd, ...rest }) => {
 	const [isExit, setIsExit] = useState(false)
 	const { dragState, isLogin } = store()
 	const pie = dragState.dragged as Pie | null
@@ -162,7 +161,7 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 					}}
 					layout
 					custom={{
-						isEnter,
+						isEnter: dragState.enter,
 						isDragging: dragState.state
 					}}
 				>
@@ -194,13 +193,13 @@ const CompleteButton: FC<CompleteButtonProps> = ({ onCompleteStart, onCompleteEn
 							{isLogin ? '선택하기' : '로그인하기'}
 						</motion.div>
 					)}
-					{isEnter && pie ? (
+					{dragState.enter && pie ? (
 						<motion.div
 							drag
 							key={pie.src}
 							layoutId={`pie-${pie.id}`}
 							dragConstraints={ref}
-							dragSnapToOrigin={!isEnter}
+							dragSnapToOrigin={!dragState.enter}
 							className="absolute"
 						>
 							{/* <img draggable={false} className="object-contain" src={pie.src} /> */}

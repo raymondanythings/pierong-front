@@ -15,6 +15,7 @@ import Login from 'components/popup/Login'
 import Crown from 'components/Crown'
 import { urlSafebtoa } from 'libs/utils'
 import withNavigation from 'layout/withNavigation'
+import PiePiece from 'components/PiePiece'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -44,8 +45,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		refetchOnWindowFocus: false,
 		enabled: !!userId
 	})
-
-	const [isEnter, setIsEnter] = useState(false)
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const isMe = loggedInUser && urlSafebtoa(loggedInUser.email) === userId
@@ -170,49 +169,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					</div>
 					{data.userCakeId ? (
 						pies.map((pie) => (
-							<motion.div
-								key={pie.src}
-								layoutId={`pie-${pie.id}`}
-								dragSnapToOrigin
-								onDragStart={() => {
-									setDragState({
-										state: 'dragging',
-										item: { ...pie },
-										dragged: null
-									})
-								}}
-								onDragEnd={(event, info) =>
-									isEnter
-										? onDragEnd(event, info, pie)
-										: setDragState({
-												state: 'idle',
-												dragged: null,
-												item: null
-										  })
-								}
-								onDrag={(event, info) => {
-									const {
-										point: { x, y }
-									} = info
-									if (x <= endX && x >= startX && y <= endY && y >= startY) {
-										if (!isEnter) {
-											setIsEnter(true)
-										}
-									} else {
-										isEnter && setIsEnter(false)
-									}
-								}}
-								drag
-								className="absolute"
-								style={{
-									maxWidth: pie.width + '%',
-									top: pie.top + '%',
-									left: pie.left + '%',
-									zIndex: dragState?.item?.id === pie.id ? 100 : pie.z ? pie.z : 4
-								}}
-							>
-								<img draggable={false} className="object-contain" src={pie.src} />
-							</motion.div>
+							<PiePiece pie={pie} startX={startX} startY={startY} endX={endX} endY={endY} onDragEnd={onDragEnd} />
 						))
 					) : (
 						<motion.div
@@ -228,17 +185,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				<div className="max-w-[59%] top-[65.5%]" draggable={false}></div>
 
 				<div className="">
-					<CompleteButton
-						isEnter={isEnter}
-						// onCompleteStart={() => {
-						// 	setIsPandding(true)
-						// }}
-						// onCompleteEnd={() => {
-						// 	setIsPandding(false)
-						// 	setIsEnter(false)
-						// }}
-						className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid"
-					/>
+					<CompleteButton className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid" />
 				</div>
 
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>

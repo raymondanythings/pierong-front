@@ -64,6 +64,10 @@
 		-moz-box-shadow: 5px 5px 0px -1px #57765e;
 		box-shadow: 5px 5px 0px -1px #57765e;
 	}
+
+	.modal-btn {
+		@apply min-w-[100px] rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3;
+	}
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 

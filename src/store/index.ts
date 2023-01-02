@@ -14,6 +14,7 @@ interface IStore<T = any, S = any> {
 	rtk: string | null
 	isLogin: boolean
 	isMainChange: boolean
+	chooseState?: string | null
 	setIsMainChange: (flag: boolean) => void
 	setIsLogin: (flag: boolean) => void
 	popup?: PopupTypeArgs
@@ -23,11 +24,12 @@ interface IStore<T = any, S = any> {
 	showNav: boolean
 	setTokens: (tokens: Tokens) => void
 	dragState: {
+		enter: boolean
 		state: DragState
 		item: T
 		dragged: S
 	}
-	setDragState: (flag: { state: DragState; dragged: T; item: T }) => void
+	setDragState: (flag: { enter?: boolean; state?: DragState; dragged?: T; item?: T }) => void
 	refreshAccount: () => void
 	refreshPopup: () => void
 }
@@ -35,7 +37,7 @@ interface IStore<T = any, S = any> {
 const store = create(
 	devtools(
 		subscribeWithSelector(
-			immer<IStore>((set) => ({
+			immer<IStore>((set, get) => ({
 				user: null,
 				isLogin: false,
 				isMainChange: false,
@@ -45,6 +47,7 @@ const store = create(
 				atk: null,
 				rtk: null,
 				popup: undefined,
+				chooseState: null,
 				setPopup: ({ btnText = '확인', payload = {}, ...rest }) =>
 					set((state) => {
 						if (!rest.cancelDisabled && !payload.cancel) {
@@ -74,18 +77,23 @@ const store = create(
 					}))
 				},
 				dragState: {
+					enter: false,
 					state: 'idle',
 					dragged: null,
 					item: null
 				},
-				setDragState: ({ state, dragged, item }) =>
+				setDragState: (flag) => {
+					const props = { ...get().dragState }
+					if (flag.dragged === null || flag.dragged === undefined) {
+						props.enter = false
+					}
 					set({
 						dragState: {
-							state,
-							dragged,
-							item
+							...props,
+							...flag
 						}
-					}),
+					})
+				},
 				refreshAccount: () => {
 					localStorage.removeItem('X-ACCESS-TOKEN')
 					localStorage.removeItem('X-REFRESH-TOKEN')

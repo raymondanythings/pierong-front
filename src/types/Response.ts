@@ -4,4 +4,15 @@ interface Response<T> {
 	message: 'SUCCESS' | 'FAIL' | String
 }
 
-export type { Response }
+interface FeveDetail {
+	feveDescription: string
+	feveId: string
+	feveImageUrl: string
+	feveIndex: string
+	feveName: string
+	ownerEmail: string
+	userCakeFeveId: string
+	userCakeId: string
+}
+
+export type { Response, FeveDetail }

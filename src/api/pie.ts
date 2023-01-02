@@ -1,6 +1,5 @@
 import { axios } from 'api'
-import { AxiosError } from 'axios'
-import { Response } from 'types/Response'
+import { FeveDetail, Response } from 'types/Response'
 
 interface CakePiece {
 	pieceIndex: string
@@ -39,13 +38,13 @@ interface SendMessage {
 }
 
 const choosePie = async (param: SendMessage) => {
-	try {
-		const res = await axios.post<Response<any>>('/cake/piece/choose', param)
-		return res.data
-	} catch (err: any) {
-		console.log(err)
-		return err.response.data
-	}
+	// try {
+	const res = await axios.post<Response<FeveDetail>>('/cake/piece/choose', param)
+	return res.data
+	// } catch (err: any) {
+	// const { response } = err as unknown as AxiosError<{ code: string; message: string }>
+	// 	return response?.data
+	// }
 }
 
 export { getUserCake, createPie, choosePie }

@@ -3,6 +3,9 @@ import { FC, KeyboardEvent, useCallback, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import store from 'store'
 import { ErrorMessage } from '@hookform/error-message'
+import { AxiosError } from 'axios'
+import Choose from './Choose'
+import { FeveDetail } from 'types/Response'
 
 interface MessageForm {
 	memoContent: string
@@ -15,13 +18,13 @@ interface SendMessageProps {
 }
 
 const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) => {
-	const [isDone, setIsDone] = useState(false)
-	const { nickname, refreshPopup, setDragState, dragState } = store((state) => ({
+	const { chooseState, nickname, refreshPopup, setDragState, dragState } = store((state) => ({
 		nickname: state.user?.nickname,
 		setDragState: state.setDragState,
 		dragState: state.dragState,
 		refreshPopup: state.refreshPopup,
-		setPopup: state.setPopup
+		setPopup: state.setPopup,
+		chooseState: state.chooseState
 	}))
 	const textRef = useRef<HTMLTextAreaElement | null>(null)
 	const handleResizeHeight = useCallback(
@@ -32,6 +35,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 		},
 		[textRef?.current]
 	)
+	const [choosed, setChoosed] = useState<FeveDetail | null>(null)
 	const {
 		register,
 		handleSubmit,
@@ -57,27 +61,51 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 				refreshPopup()
 				return
 			}
-			const res = await PieApi.choosePie({
-				ownerEmail,
-				userCakeId,
-				memoContent: data.memoContent,
-				pieceIndex: dragState.dragged.id
-			})
-			// 당첨자 응답값 {"data":{"feveId":"2","feveName":"연꽃페브","feveDescription":"연꽃페브","feveImageUrl":"/image/feve/example2.png","userCakeFeveId":"14","userCakeId":"36","feveIndex":"4","ownerEmail":"neung.gwon@gmail.com"},"code":"0000","message":"SUCCESS"}
-			/**
-			 * 타인이 조각 선택 시 feve 당첨여부 조회 == choose한 시점
-					각자 feve를 소유하는 시점 == baking_status가 02가 되는 시점
-			 */
-			if (res?.code === '3003') {
-				setError('memoContent', { message: '파이당 한 조각만 선택 가능합니다.', type: 'validate' })
-			} else if (res?.code === '0000') {
-				setIsDone(true)
-				refetch()
+			try {
+				const res = await PieApi.choosePie({
+					ownerEmail,
+					userCakeId,
+					memoContent: data.memoContent,
+					pieceIndex: dragState.dragged.id
+				})
+				if (res.code === '0000') {
+					if (res.data) {
+						setChoosed(res.data)
+						store.setState({ chooseState: 'choose' })
+					} else {
+						store.setState({ chooseState: 'done' })
+					}
+					refetch()
+				}
+			} catch (err) {
+				const { response } = err as unknown as AxiosError<{ code: string; message: string }>
+				if (response?.data.code === '3003') {
+					setError('memoContent', { message: '파이당 한 조각만 선택 가능합니다.', type: 'validate' })
+				}
 			}
 		},
 		[userCakeId, ownerEmail]
 	)
-	return !isDone ? (
+	return chooseState === 'done' ? (
+		<div>
+			<h1>선택이 완료되었습니다.</h1>
+			<button
+				onClick={() => {
+					setDragState({
+						state: 'idle',
+						dragged: null,
+						item: null
+					})
+					refreshPopup()
+				}}
+				className="min-w-[100px] w-1/3 mx-auto rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
+			>
+				확인
+			</button>
+		</div>
+	) : chooseState === 'choose' && choosed ? (
+		<Choose feveDetail={choosed} />
+	) : (
 		<form className="flex flex-col w-full px-4" onSubmit={handleSubmit(onChoosePie)}>
 			<div className="border-dashed border rounded-lg flex flex-col items-center space-y-4 py-3">
 				<h1 className="text-sm text-[#767676]">from. {nickname}</h1>
@@ -101,23 +129,6 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 				보내기
 			</button>
 		</form>
-	) : (
-		<div>
-			<h1>선택이 완료되었습니다.</h1>
-			<button
-				onClick={() => {
-					setDragState({
-						state: 'idle',
-						dragged: null,
-						item: null
-					})
-					refreshPopup()
-				}}
-				className="min-w-[100px] w-1/3 mx-auto rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
-			>
-				확인
-			</button>
-		</div>
 	)
 }
 
