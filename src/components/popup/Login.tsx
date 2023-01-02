@@ -2,8 +2,10 @@ import useAuth from 'hooks/useAuth'
 import Google from 'assets/icons/google.png'
 import Kakao from 'assets/icons/kakao.png'
 import Naver from 'assets/icons/naver.png'
+import { useLocation } from 'react-router-dom'
 const Login = () => {
-	const { authLogin } = useAuth()
+	const location = useLocation()
+	const { authLogin } = useAuth(location.pathname)
 	return (
 		<div>
 			<h1>파이를 선택하시려면 로그인이 필요합니다.</h1>
