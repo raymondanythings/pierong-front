@@ -14,8 +14,6 @@ const BakingRoom = () => {
 		navigate('/')
 		return null
 	} else {
-		// const userEmail = atob(userId)
-		// const userEmail = btoa(userId)
 		const { data, isLoading: isPieLoading } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
 			cacheTime: Infinity,
 			staleTime: 1000 * 60 * 5,

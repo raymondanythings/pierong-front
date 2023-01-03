@@ -31,7 +31,7 @@ interface PopupType {
 
 interface UserDetail {
 	email: string
-	nickname?: string
+	nickname: string
 	rank: string
 	crownId: string
 	crownName: string

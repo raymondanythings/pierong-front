@@ -14,6 +14,7 @@ interface IStore<T = any, S = any> {
 	rtk: string | null
 	isLogin: boolean
 	isMainChange: boolean
+	userId?: string | null
 	chooseState?: string | null
 	setIsMainChange: (flag: boolean) => void
 	setIsLogin: (flag: boolean) => void
@@ -48,6 +49,7 @@ const store = create(
 				showNav: false,
 				atk: null,
 				rtk: null,
+				userId: null,
 				popup: undefined,
 				chooseState: null,
 				setPopup: ({ btnText = '확인', payload = {}, ...rest }) =>

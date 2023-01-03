@@ -83,6 +83,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	)
 
 	useLayoutEffect(() => {
+		store.setState({ userId })
 		if (isLogin && !user.nickname) {
 			setPopup({
 				isOpen: true,
@@ -92,6 +93,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				payload: {}
 			})
 		}
+		return () => store.setState({ userId: null })
 	}, [userId])
 
 	const onDragEnd = useCallback(
