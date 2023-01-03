@@ -43,7 +43,7 @@ const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', ...rest })
 							onClick={popup?.payload?.cancel}
 						></div>
 						<div className="w-4/5 min-h-[150px] rounded-2xl bg-mainTeal p-2 flex justify-center items-stretch border-black border border-solid relative">
-							<div className="absolute w-12 h-12 bg-mainTeal -top-6 rounded-full border-black border border-solid p-1 flex items-stretch">
+							<div className="top-icon">
 								<div className="bg-mainBeige border-black border border-solid flex justify-center items-center grow rounded-full">
 									<img src={`/image/icon/${icon}.png`} className="w-3/4 max-w-[23px] max-h-[23px]" />
 								</div>

@@ -35,7 +35,7 @@ const SelectFeve: FC<SelectFeveProps> = ({ onSelect }) => {
 					>
 						<div className="w-full h-full -z-[1] absolute top-0 left-0" onClick={() => setSelected(null)} />
 						<motion.div className="flex-col w-4/5 min-h-[150px] rounded-2xl bg-mainTeal p-2 flex justify-center items-stretch border-black border border-solid relative">
-							<div className="absolute w-12 h-12 bg-mainTeal -top-6 rounded-full border-black border border-solid p-1 flex items-stretch left-1/2 -translate-x-1/2 z-10">
+							<div className="top-icon">
 								<div className="bg-mainBeige border-black border border-solid flex justify-center items-center grow rounded-full">
 									<img src="/image/icon/info.png" className="w-3/4 max-w-[23px] max-h-[23px]" />
 								</div>
