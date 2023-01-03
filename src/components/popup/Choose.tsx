@@ -33,8 +33,8 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 							await navigator.share({
 								files: [file],
 								title: `${owner.nickname}의 베이킹룸의 ROIS!`,
-								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`,
-								url: `https://pierong.site/room/${userId}`
+								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`
+								// url: `https://pierong.site/room/${userId}`
 							})
 						}
 					})

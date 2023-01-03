@@ -29,8 +29,8 @@ const NotChoose = ({ owner }: { owner: UserDetail }) => {
 							await navigator.share({
 								files: [file],
 								title: `${owner.nickname}의 베이킹룸 들렸다감!`,
-								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`,
-								url: `https://pierong.site/room/${userId}`
+								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`
+								// url: `https://pierong.site/room/${userId}`
 							})
 						}
 					})
