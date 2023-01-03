@@ -20,4 +20,11 @@ interface FeveDetail {
 	userCakeId: string
 }
 
+interface CakePiece {
+	cakePieceImageUrl: string
+	memoContent: string
+	pieceIndex: string
+	userCakePieceId: string
+}
+
 export type { Response, FeveDetail, Feve }

@@ -1,6 +1,6 @@
 import { PieApi } from 'api'
 import { useQuery } from 'react-query'
-import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { FC, useState } from 'react'
 import { Feve } from 'types/Response'
 
@@ -35,7 +35,7 @@ const SelectFeve: FC<SelectFeveProps> = ({ onSelect }) => {
 					>
 						<div className="w-full h-full -z-[1] absolute top-0 left-0" onClick={() => setSelected(null)} />
 						<motion.div className="flex-col w-4/5 min-h-[150px] rounded-2xl bg-mainTeal p-2 flex justify-center items-stretch border-black border border-solid relative">
-							<div className="absolute w-12 h-12 bg-mainTeal -top-6 rounded-full border-black border border-solid p-1 flex items-stretch left-1/2 -translate-x-1/2">
+							<div className="absolute w-12 h-12 bg-mainTeal -top-6 rounded-full border-black border border-solid p-1 flex items-stretch left-1/2 -translate-x-1/2 z-10">
 								<div className="bg-mainBeige border-black border border-solid flex justify-center items-center grow rounded-full">
 									<img src="/image/icon/info.png" className="w-3/4 max-w-[23px] max-h-[23px]" />
 								</div>
@@ -43,26 +43,21 @@ const SelectFeve: FC<SelectFeveProps> = ({ onSelect }) => {
 							<div className="grow rounded-2xl flex  flex-col items-center bg-mainBeige border-black border border-solid py-5 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)] p-4 space-y-4">
 								<h1 className="font-bold text-lg">{selected.feveName}</h1>
 								<div className="border border-dashed p-3 rounded-lg">
-									<motion.div layoutId={selected.feveId} className="">
+									<motion.div layoutId={selected.feveId} className="relative">
 										<motion.img
-											className="drop-shadow-2xl"
-											whileTap={{
-												rotateY: 180
-											}}
-											style={{
-												perspective: '1000px',
-												transformStyle: 'preserve-3d'
-											}}
+											// whileTap={{
+											// 	rotateY: 180
+											// }}
 											src={`/image/feve/${selected.feveId}.png`}
 										/>
 									</motion.div>
 								</div>
 								<h3 className="font-bold text-sm">{selected.feveDescription}</h3>
-								<div className="space-x-2">
-									<button className="modal-btn" onClick={() => onSelect(selected.feveId)}>
+								<div className="space-x-2 flex w-full">
+									<button className="modal-btn flex-grow min-w-0" onClick={() => onSelect(selected.feveId)}>
 										선택
 									</button>
-									<button className="modal-btn" onClick={() => setSelected(null)}>
+									<button className="modal-btn flex-grow min-w-0" onClick={() => setSelected(null)}>
 										취소
 									</button>
 								</div>

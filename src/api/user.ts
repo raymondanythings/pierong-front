@@ -12,5 +12,9 @@ const postChangeNickName = async (nickname: NickNameChange) => {
 	const res = await axios.post<Response<any>>('/user/nickname/change', nickname)
 	return res.data
 }
+const getOwnerDetail = async () => {
+	const res = await axios.get<Response<any>>('/user/ownerDetail')
+	return res.data
+}
 
-export { getUserDetail, postChangeNickName }
+export { getUserDetail, postChangeNickName, getOwnerDetail }
