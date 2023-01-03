@@ -29,6 +29,7 @@ interface IStore<T = any, S = any> {
 		item: T
 		dragged: S
 	}
+	isMobile: boolean
 	setDragState: (flag: { enter?: boolean; state?: DragState; dragged?: T; item?: T }) => void
 	refreshAccount: () => void
 	refreshPopup: () => void
@@ -41,6 +42,7 @@ const store = create(
 				user: null,
 				isLogin: false,
 				isMainChange: false,
+				isMobile: false,
 				setIsMainChange: (flag) => set({ isMainChange: flag }),
 				setIsLogin: (flag) => set((state) => ({ ...state, isLogin: flag })),
 				showNav: false,

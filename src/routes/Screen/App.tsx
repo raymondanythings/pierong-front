@@ -12,6 +12,7 @@ function App() {
 	const { showNav, setTokens, setUser, setPopup, popup, refreshPopup } = store()
 	const navigate = useNavigate()
 	useLayoutEffect(() => {
+		store.setState({ isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) })
 		function setScreenSize() {
 			let vh = window.innerHeight * 0.01
 			document.documentElement.style.setProperty('--vh', `${vh}px`)
