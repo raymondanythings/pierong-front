@@ -8,54 +8,40 @@ import html2canvas from 'html2canvas'
 import { UserDetail } from 'types'
 
 const NotChoose = ({ owner }: { owner: UserDetail }) => {
-	const [setDragState, refreshPopup, isMobile] = store((state) => [state.setDragState, state.refreshPopup, state.isMobile])
+	const [setDragState, refreshPopup, isMobile, userId] = store((state) => [
+		state.setDragState,
+		state.refreshPopup,
+		state.isMobile,
+		state.userId
+	])
 	const { copyUrlOnClipboard } = useCopyClipboard()
 	const onCaptureImage = useCallback(() => {
 		const main = document.querySelector('main')
 		if (main) {
 			html2canvas(main).then(async (canvas) => {
-				const link = document.createElement('a')
-				link.download = owner.nickname + ' 의 베이킹룸'
-				// link.href = canvas.toDataURL()
-				await navigator
-					.share({
-						title: 'Lee Martin',
-						text: 'Netmaker. Playing the Internet in your favorite band for nearly two decades.',
-						url: 'https://leemartin.dev'
+				const image = canvas.toDataURL()
+				if (navigator.canShare()) {
+					canvas.toBlob(async (blob) => {
+						if (blob) {
+							const file = new File([blob], owner.nickname + ' 의 베이킹룸', {
+								type: 'image/png'
+							})
+							await navigator.share({
+								files: [file],
+								title: `${owner.nickname}의 베이킹룸 들렸다감!`,
+								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`,
+								url: `https://pierong.site/room/${userId}`
+							})
+						}
 					})
-					.then(() => {
-						refreshPopup()
-					})
-					.catch((error) => refreshPopup())
-				// canvas.toBlob((blob) => {
-				// 	if (blob) {
-				// 		const file = new File([blob], owner.nickname + ' 의 베이킹룸', {
-				// 			type: 'image/png'
-				// 		})
-				// 		console.log(blob)
-				// 		console.log(isMobile)
-				// 		console.log(navigator.share)
-				// 		if (isMobile) {
-				// 			navigator.share({
-				// 				title: document.title,
-				// 				text: 'Hello World',
-				// 				url: 'https://developer.mozilla.org'
-				// 			})
-				// 			// window.navigator
-				// 			// 	.share({
-				// 			// 		// files: [file],
-				// 			// 		title: owner.nickname + ' 의 베이킹룸',
-				// 			// 		text: owner.nickname + ' 의 베이킹룸 에서 보낸 이미지입니다.',
-				// 			// 		url: 'https://pierong.site'
-				// 			// 	})
-				// 			// 	.then(() => console.log('OK'))
-				// 		}
-				// 	}
-				// })
-
-				document.body.appendChild(link)
-				// link.click()
-				document.body.removeChild(link)
+				} else {
+					const link = document.createElement('a')
+					link.download = owner.nickname + ' 의 베이킹룸'
+					link.href = image
+					document.body.appendChild(link)
+					link.click()
+					document.body.removeChild(link)
+				}
 			})
 		}
 	}, [])

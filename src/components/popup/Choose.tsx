@@ -12,18 +12,40 @@ interface ChooseProps {
 	owner: UserDetail
 }
 const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
-	const [setDragState, refreshPopup] = store((state) => [state.setDragState, state.refreshPopup])
+	const [setDragState, refreshPopup, isMobile, userId] = store((state) => [
+		state.setDragState,
+		state.refreshPopup,
+		state.isMobile,
+		state.userId
+	])
 	const { copyUrlOnClipboard } = useCopyClipboard()
 	const onCaptureImage = useCallback(() => {
 		const main = document.querySelector('main')
 		if (main) {
-			html2canvas(main).then((canvas) => {
-				const link = document.createElement('a')
-				link.download = owner.nickname + ' 의 베이킹룸'
-				link.href = canvas.toDataURL()
-				document.body.appendChild(link)
-				link.click()
-				document.body.removeChild(link)
+			html2canvas(main).then(async (canvas) => {
+				const image = canvas.toDataURL()
+				if (navigator.canShare()) {
+					canvas.toBlob(async (blob) => {
+						if (blob) {
+							const file = new File([blob], owner.nickname + ' 의 베이킹룸', {
+								type: 'image/png'
+							})
+							await navigator.share({
+								files: [file],
+								title: `${owner.nickname}의 베이킹룸의 ROIS!`,
+								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`,
+								url: `https://pierong.site/room/${userId}`
+							})
+						}
+					})
+				} else {
+					const link = document.createElement('a')
+					link.download = owner.nickname + ' 의 베이킹룸'
+					link.href = image
+					document.body.appendChild(link)
+					link.click()
+					document.body.removeChild(link)
+				}
 			})
 		}
 	}, [])
