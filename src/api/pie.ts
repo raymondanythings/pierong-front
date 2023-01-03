@@ -1,28 +1,28 @@
 import { axios } from 'api'
 import { Feve, FeveDetail, Response } from 'types/Response'
 
-interface CakePiece {
+interface PiePiece {
 	pieceIndex: string
-	userCakePieceId: string
+	userPiePieceId: string
 }
 
-interface UserCake {
+interface UserPie {
 	bakingStatus: '01' | '02' | '03'
-	cakeId: string
+	pieId: string
 	ownerEmail: string
 	piecesNumber: number
-	userCakeId: string
-	userCakePiece: CakePiece[]
+	userPieId: string
+	userPiePiece: PiePiece[]
 }
 
-const getUserCake = async ({ userId }: { userId: string }) => {
-	const res = await axios.get<Response<UserCake>>(`/cake/detail/${userId}`)
+const getUserPie = async ({ userId }: { userId: string }) => {
+	const res = await axios.get<Response<UserPie>>(`/pie/detail/${userId}`)
 	return res.data.data
 }
 
 const createPie = async (feveId: string, pieType: number = 1) => {
-	const res = await axios.post<Response<any>>(`/cake/bake`, {
-		cakeId: pieType,
+	const res = await axios.post<Response<any>>(`/pie/bake`, {
+		pieId: pieType,
 		feveId
 	})
 	if (res.data.message !== 'SUCCESS') {
@@ -32,7 +32,7 @@ const createPie = async (feveId: string, pieType: number = 1) => {
 }
 
 interface SendMessage {
-	userCakeId: string
+	userPieId: string
 	ownerEmail: string
 	pieceIndex: number
 	memoContent: string
@@ -40,7 +40,7 @@ interface SendMessage {
 
 const choosePie = async (param: SendMessage) => {
 	// try {
-	const res = await axios.post<Response<FeveDetail>>('/cake/piece/choose', param)
+	const res = await axios.post<Response<FeveDetail>>('/pie/piece/choose', param)
 	return res.data
 	// } catch (err: any) {
 	// const { response } = err as unknown as AxiosError<{ code: string; message: string }>
@@ -49,8 +49,8 @@ const choosePie = async (param: SendMessage) => {
 }
 
 const getFeveList = async () => {
-	const res = await axios.get<Response<Feve[]>>('cake/feve')
+	const res = await axios.get<Response<Feve[]>>('pie/feve')
 	return res.data
 }
 
-export { getUserCake, createPie, choosePie, getFeveList }
+export { getUserPie, createPie, choosePie, getFeveList }

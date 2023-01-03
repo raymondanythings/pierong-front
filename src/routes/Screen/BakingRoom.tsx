@@ -1,6 +1,5 @@
 import { PieApi, UserApi } from 'api'
 import Loading from 'components/animation/Loading'
-import withNavigation from 'layout/withNavigation'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import store from 'store'
@@ -14,7 +13,7 @@ const BakingRoom = () => {
 		navigate('/')
 		return null
 	} else {
-		const { data, isLoading: isPieLoading } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
+		const { data, isLoading: isPieLoading } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 			cacheTime: Infinity,
 			staleTime: 1000 * 60 * 5,
 			retry: false,

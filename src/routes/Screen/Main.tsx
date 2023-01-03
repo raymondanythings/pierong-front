@@ -32,7 +32,7 @@ const signTitleVariants: Variants = {
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin } = store()
-	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserCake({ userId }), {
+	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
 		retry: false,
@@ -53,7 +53,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const isMe = loggedInUser && urlSafebtoa(loggedInUser.email) === userId
 	const data = useMemo(() => ({ ...pieData, ...userResponse }), [pieData, userResponse])
-	const selectedList = pieData?.userCakePiece?.map((item) => +item.pieceIndex)
+	const selectedList = pieData?.userPiePiece?.map((item) => +item.pieceIndex)
 	const pies: Pie[] | [] = PIES.Pies.filter((item) => {
 		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
 	})
@@ -194,7 +194,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						<img className="absolute -left-[57%] top-[41%] -z-[1]" draggable={false} src={PIES.WhitePaper} />
 						<img className="absolute top-[13%] -left-[43%] max-w-[73.5%] z-10" draggable={false} src={PIES.Piece} />
 					</div>
-					{data.userCakeId ? (
+					{data.userPieId ? (
 						pies.map((pie) => (
 							<PiePiece
 								key={pie.id}
@@ -278,7 +278,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				</Modal>
 			) : popup?.key === 'sendMessage' ? (
 				<Modal icon="message">
-					<SendMessage refetch={refetch} userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} owner={user} />
+					<SendMessage refetch={refetch} userPieId={pieData?.userPieId} ownerEmail={pieData?.ownerEmail} owner={user} />
 				</Modal>
 			) : popup?.key === 'alert' ? (
 				<Modal />

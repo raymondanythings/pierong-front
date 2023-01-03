@@ -14,13 +14,13 @@ interface MessageForm {
 }
 
 interface SendMessageProps {
-	userCakeId?: string
+	userPieId?: string
 	ownerEmail?: string
 	owner: UserDetail
 	refetch: () => void
 }
 
-const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId, owner }) => {
+const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, owner }) => {
 	const { chooseState, nickname, refreshPopup, setDragState, dragState } = store((state) => ({
 		nickname: state.user?.nickname,
 		setDragState: state.setDragState,
@@ -55,7 +55,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId, ow
 
 	const onChoosePie = useCallback(
 		async (data: MessageForm) => {
-			if (!ownerEmail || !userCakeId) {
+			if (!ownerEmail || !userPieId) {
 				setDragState({
 					state: 'idle',
 					dragged: null,
@@ -67,7 +67,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId, ow
 			try {
 				const res = await PieApi.choosePie({
 					ownerEmail,
-					userCakeId,
+					userPieId,
 					memoContent: data.memoContent,
 					pieceIndex: dragState.dragged.id
 				})
@@ -87,7 +87,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId, ow
 				}
 			}
 		},
-		[userCakeId, ownerEmail]
+		[userPieId, ownerEmail]
 	)
 	return chooseState === 'done' ? (
 		<NotChoose owner={owner} />

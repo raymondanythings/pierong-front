@@ -16,15 +16,15 @@ interface FeveDetail {
 	feveIndex: string
 	feveName: string
 	ownerEmail: string
-	userCakeFeveId: string
-	userCakeId: string
+	userPieFeveId: string
+	userPieId: string
 }
 
-interface CakePiece {
-	cakePieceImageUrl: string
+interface PiePiece {
+	piePieceImageUrl: string
 	memoContent: string
 	pieceIndex: string
-	userCakePieceId: string
+	userPiePieceId: string
 }
 
-export type { Response, FeveDetail, Feve }
+export type { Response, FeveDetail, Feve, PiePiece }
