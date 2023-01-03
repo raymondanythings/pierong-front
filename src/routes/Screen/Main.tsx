@@ -108,6 +108,14 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 								item: null
 							})
 							refreshPopup()
+						},
+						confirm() {
+							setDragState({
+								state: 'idle',
+								dragged: null,
+								item: null
+							})
+							refreshPopup()
 						}
 					}
 				})
@@ -268,7 +276,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				</Modal>
 			) : popup?.key === 'sendMessage' ? (
 				<Modal icon="message">
-					<SendMessage refetch={refetch} userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} />
+					<SendMessage refetch={refetch} userCakeId={pieData?.userCakeId} ownerEmail={pieData?.ownerEmail} owner={user} />
 				</Modal>
 			) : popup?.key === 'alert' ? (
 				<Modal />

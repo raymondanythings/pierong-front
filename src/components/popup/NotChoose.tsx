@@ -1,17 +1,13 @@
-import Lottie from 'react-lottie'
 import * as animationData from 'lottie/twinkle5.json'
 import { motion } from 'framer-motion'
 import store from 'store'
-import { FeveDetail } from 'types/Response'
-import { FC, useCallback } from 'react'
+
+import { useCallback } from 'react'
 import useCopyClipboard from 'hooks/useCopyClipboard'
 import html2canvas from 'html2canvas'
 import { UserDetail } from 'types'
-interface ChooseProps {
-	feveDetail: FeveDetail
-	owner: UserDetail
-}
-const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
+
+const NotChoose = ({ owner }: { owner: UserDetail }) => {
 	const [setDragState, refreshPopup] = store((state) => [state.setDragState, state.refreshPopup])
 	const { copyUrlOnClipboard } = useCopyClipboard()
 	const onCaptureImage = useCallback(() => {
@@ -30,21 +26,9 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 	return (
 		<div className="p-2 px-6 w-full flex flex-col">
 			<div className="grow flex flex-col justify-center items-center space-y-4">
-				<h1 className="text-center font-bold">축하합니다! 페브가 든 파이를 고르셨어요!</h1>
+				<h1 className="text-center text-xs font-bold">페브가 든 파이는 못 고르셨지만 편지는 잘 보내졌어요!</h1>
 				<div className="relative overflow-hidden rounded-lg border border-dashed flex justify-center aspect-square items-center">
-					<div className="absolute w-[150%] h-[150%]">
-						<Lottie
-							isClickToPauseDisabled
-							options={{
-								animationData,
-								autoplay: true,
-								rendererSettings: {
-									preserveAspectRatio: 'xMidYMid slice'
-								},
-								loop: true
-							}}
-						/>
-					</div>
+					<div className="absolute w-[150%] h-[150%]"></div>
 					<motion.div
 						className="w-2/3 p-4"
 						initial={{
@@ -63,9 +47,9 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 							bounce: 0.8
 						}}
 					>
-						<img src={`/image/feve/${feveDetail.feveId}.png`} />
+						<img src="/logo.png" />
 					</motion.div>
-					<h1 className="font-bold text-sm absolute bottom-4">{feveDetail.feveName}</h1>
+					<h1 className="font-bold text-sm absolute bottom-4">다음 기회에 !</h1>
 					<div
 						className="absolute w-10 h-10 border border-solid bottom-1 right-1 rounded-full bg-mainTeal flex items-center justify-center"
 						onClick={onCaptureImage}
@@ -94,8 +78,7 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 					</div>
 				</div>
 				<div className="flex flex-col items-center space-y-2">
-					<span className="font-bold text-center">{feveDetail.feveDescription}</span>
-					<p className="text-xs text-center text-[#767676]">파이의 다른 조각들을 모두 나눈후에 페브함에 저장됩니다.</p>
+					<p className="text-xs text-center text-[#767676]">친구들에게 공유해 페브를 노려보세요!</p>
 				</div>
 				<div className="flex space-x-3">
 					<button
@@ -120,4 +103,4 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 	)
 }
 
-export default Choose
+export default NotChoose

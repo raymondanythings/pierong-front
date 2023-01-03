@@ -6,6 +6,8 @@ import { ErrorMessage } from '@hookform/error-message'
 import { AxiosError } from 'axios'
 import Choose from './Choose'
 import { FeveDetail } from 'types/Response'
+import { UserDetail } from 'types'
+import NotChoose from './NotChoose'
 
 interface MessageForm {
 	memoContent: string
@@ -14,10 +16,11 @@ interface MessageForm {
 interface SendMessageProps {
 	userCakeId?: string
 	ownerEmail?: string
+	owner: UserDetail
 	refetch: () => void
 }
 
-const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) => {
+const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId, owner }) => {
 	const { chooseState, nickname, refreshPopup, setDragState, dragState } = store((state) => ({
 		nickname: state.user?.nickname,
 		setDragState: state.setDragState,
@@ -87,24 +90,9 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userCakeId }) 
 		[userCakeId, ownerEmail]
 	)
 	return chooseState === 'done' ? (
-		<div>
-			<h1>선택이 완료되었습니다.</h1>
-			<button
-				onClick={() => {
-					setDragState({
-						state: 'idle',
-						dragged: null,
-						item: null
-					})
-					refreshPopup()
-				}}
-				className="min-w-[100px] w-1/3 mx-auto rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
-			>
-				확인
-			</button>
-		</div>
+		<NotChoose owner={owner} />
 	) : chooseState === 'choose' && choosed ? (
-		<Choose feveDetail={choosed} />
+		<Choose owner={owner} feveDetail={choosed} />
 	) : (
 		<form className="flex flex-col w-full px-4" onSubmit={handleSubmit(onChoosePie)}>
 			<div className="border-dashed border rounded-lg flex flex-col items-center space-y-4 py-3">
