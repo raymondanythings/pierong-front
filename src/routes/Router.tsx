@@ -6,10 +6,10 @@ import Splash from './Screen/Splash'
 import BakingRoom from './Screen/BakingRoom'
 import { loginCheckLoader } from 'libs/common/loader'
 
-const Privacy = () => {
-	window.location.href = 'https://massive-anteater-e81.notion.site/2103bde69c2f4a8d96af2c78db70d41a'
-	return <></>
-}
+// const Privacy = () => {
+// 	window.location.href = 'https://massive-anteater-e81.notion.site/2103bde69c2f4a8d96af2c78db70d41a'
+// 	return <></>
+// }
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -20,7 +20,7 @@ const router = createBrowserRouter(
 			<Route path="room" element={<Outlet />}>
 				<Route path=":userId" element={<BakingRoom />} />
 			</Route>
-			<Route path="privacy" element={<Privacy />} />
+			{/* <Route path="privacy" element={<Privacy />} /> */}
 			<Route path="*" element={<Navigate to="/" />} />
 		</Route>
 	)
