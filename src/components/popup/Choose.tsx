@@ -24,7 +24,7 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 		if (main) {
 			html2canvas(main).then(async (canvas) => {
 				const image = canvas.toDataURL()
-				if (navigator.canShare()) {
+				if (isMobile) {
 					canvas.toBlob(async (blob) => {
 						if (blob) {
 							const file = new File([blob], owner.nickname + ' 의 베이킹룸', {
