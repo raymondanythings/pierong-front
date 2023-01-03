@@ -16,6 +16,7 @@ import Crown from 'components/Crown'
 import { urlSafebtoa } from 'libs/utils'
 import withNavigation from 'layout/withNavigation'
 import PiePiece from 'components/PiePiece'
+import SelectFeve from 'components/popup/SelectFeve'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -58,12 +59,25 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		pieRefetch()
 		userRefetch()
 	}
-	const handleCreatePie = useCallback(async () => {
-		const isCreateSuccess = await PieApi.createPie()
-		if (isCreateSuccess) {
-			refetch()
-		}
-	}, [userId])
+
+	const onSelectFeve = () => {
+		setPopup({
+			key: 'selectFeve',
+			isOpen: true,
+			btnHide: true
+		})
+	}
+
+	const handleCreatePie = useCallback(
+		async (feveId: string) => {
+			const isCreateSuccess = await PieApi.createPie(feveId)
+			if (isCreateSuccess) {
+				refreshPopup()
+				refetch()
+			}
+		},
+		[userId]
+	)
 
 	useLayoutEffect(() => {
 		if (isLogin && !user.nickname) {
@@ -169,12 +183,20 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					</div>
 					{data.userCakeId ? (
 						pies.map((pie) => (
-							<PiePiece pie={pie} startX={startX} startY={startY} endX={endX} endY={endY} onDragEnd={onDragEnd} />
+							<PiePiece
+								key={pie.id}
+								pie={pie}
+								startX={startX}
+								startY={startY}
+								endX={endX}
+								endY={endY}
+								onDragEnd={onDragEnd}
+							/>
 						))
 					) : (
 						<motion.div
 							layoutId="pieSection"
-							onClick={isMe ? handleCreatePie : () => {}}
+							onClick={isMe ? onSelectFeve : () => {}}
 							className="absolute z-30 top-[12%] left-[8%] max-w-[70%]"
 						>
 							<img src="/image/baking/letter.png" />
@@ -258,6 +280,10 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			) : popup?.key === 'initialNickname' ? (
 				<Modal icon="pancel">
 					<NickNameChangePopup refetch={refetch} title="닉네임을 설정해 주세요." />
+				</Modal>
+			) : popup?.key === 'selectFeve' ? (
+				<Modal icon="pancel">
+					<SelectFeve onSelect={handleCreatePie} />
 				</Modal>
 			) : null}
 		</div>

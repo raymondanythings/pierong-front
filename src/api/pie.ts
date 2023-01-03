@@ -1,5 +1,5 @@
 import { axios } from 'api'
-import { FeveDetail, Response } from 'types/Response'
+import { Feve, FeveDetail, Response } from 'types/Response'
 
 interface CakePiece {
 	pieceIndex: string
@@ -20,9 +20,10 @@ const getUserCake = async ({ userId }: { userId: string }) => {
 	return res.data.data
 }
 
-const createPie = async (pieType: number = 1) => {
+const createPie = async (feveId: string, pieType: number = 1) => {
 	const res = await axios.post<Response<any>>(`/cake/bake`, {
-		cakeId: pieType
+		cakeId: pieType,
+		feveId
 	})
 	if (res.data.message !== 'SUCCESS') {
 		return false
@@ -47,4 +48,9 @@ const choosePie = async (param: SendMessage) => {
 	// }
 }
 
-export { getUserCake, createPie, choosePie }
+const getFeveList = async () => {
+	const res = await axios.get<Response<Feve[]>>('cake/feve')
+	return res.data
+}
+
+export { getUserCake, createPie, choosePie, getFeveList }

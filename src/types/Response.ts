@@ -3,7 +3,12 @@ interface Response<T> {
 	data: T
 	message: 'SUCCESS' | 'FAIL' | String
 }
-
+interface Feve {
+	feveId: string
+	feveName: string
+	feveDescription: string
+	feveImageUrl: string
+}
 interface FeveDetail {
 	feveDescription: string
 	feveId: string
@@ -15,4 +20,4 @@ interface FeveDetail {
 	userCakeId: string
 }
 
-export type { Response, FeveDetail }
+export type { Response, FeveDetail, Feve }
