@@ -31,7 +31,7 @@ const signTitleVariants: Variants = {
 }
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
-	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin } = store()
+	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, setUserId } = store()
 	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -83,7 +83,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	)
 
 	useLayoutEffect(() => {
-		store.setState({ userId })
+		setUserId(userId)
 		if (isLogin && !user.nickname) {
 			setPopup({
 				isOpen: true,

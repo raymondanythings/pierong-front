@@ -15,6 +15,7 @@ interface IStore<T = any, S = any> {
 	isLogin: boolean
 	isMainChange: boolean
 	userId?: string | null
+	setUserId: (userId: string) => void
 	chooseState?: string | null
 	setIsMainChange: (flag: boolean) => void
 	setIsLogin: (flag: boolean) => void
@@ -50,6 +51,7 @@ const store = create(
 				atk: null,
 				rtk: null,
 				userId: null,
+				setUserId: (userId) => set({ userId }),
 				popup: undefined,
 				chooseState: null,
 				setPopup: ({ btnText = '확인', payload = {}, ...rest }) =>
