@@ -1,9 +1,7 @@
-import { Dispatch, FC, SetStateAction } from 'react'
 import { motion, Variants } from 'framer-motion'
-import { useLocation, useNavigate } from 'react-router-dom'
 import store from 'store'
-import { urlSafebtoa } from 'libs/utils'
 import useCopyClipboard from 'hooks/useCopyClipboard'
+import Modal from './Modal'
 
 const navItemVariants: Variants = {
 	initial: {
@@ -29,37 +27,52 @@ const navItemVariants: Variants = {
 	}
 }
 
-interface NavItemProps {
-	icon: string
-	title: string
-	path?: string
-	setOpen: Dispatch<SetStateAction<boolean>>
-}
+type NavKey = 'history' | 'feve' | 'share'
+const NavItem = () => {
+	const { popup, refreshPopup, setPopup } = store((state) => ({
+		popup: state.popup,
+		setPopup: state.setPopup,
+		refreshPopup: state.refreshPopup
+	}))
 
-const NavItem: FC<NavItemProps> = ({ icon, title, path, setOpen }) => {
-	const navigate = useNavigate()
-	const { isLogin, user, setPopup, refreshPopup } = store()
-	const onMoveRoute = (route: string) => {
-		navigate(route)
+	const onNavClick = (key: NavKey) => {
+		setPopup({
+			key,
+			isOpen: true
+		})
 	}
-	const { copyUrlOnClipboard } = useCopyClipboard({
-		confirm: () => setOpen(false),
-		cancel: () => setOpen(false)
-	})
+
 	return (
-		<motion.button
-			className="w-10"
-			variants={navItemVariants}
-			onClick={() => {
-				if (path) {
-					onMoveRoute(path)
-				} else if (icon === 'share' && isLogin && user?.email) {
-					copyUrlOnClipboard()
-				}
-			}}
-		>
-			<img className="stroke-white" src={`/image/nav/${icon}.svg`} />
-		</motion.button>
+		<>
+			<motion.button
+				className="w-10"
+				variants={navItemVariants}
+				onClick={() => {
+					onNavClick('history')
+				}}
+			>
+				<img className="stroke-white" src={`/image/nav/mypage.svg`} />
+			</motion.button>
+			<motion.button
+				className="w-10"
+				variants={navItemVariants}
+				onClick={() => {
+					onNavClick('feve')
+				}}
+			>
+				<img className="stroke-white" src={`/image/nav/crown.svg`} />
+			</motion.button>
+			<motion.button
+				className="w-10"
+				variants={navItemVariants}
+				onClick={() => {
+					onNavClick('share')
+				}}
+			>
+				<img className="stroke-white" src={`/image/nav/share.svg`} />
+			</motion.button>
+			{popup?.key === 'history' ? <Modal>이력창</Modal> : popup?.key === 'feve' ? <Modal>페브창</Modal> : null}
+		</>
 	)
 }
 

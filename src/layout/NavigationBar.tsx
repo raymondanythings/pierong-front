@@ -1,7 +1,6 @@
+import NavItem from 'components/NavItem'
 import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
 import { MutableRefObject, useRef, useState } from 'react'
-
-import NavItem from 'components/NavItem'
 interface NavigationBarProps {
 	navigationRef: MutableRefObject<HTMLElement | null>
 }
@@ -120,9 +119,7 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 							animate="start"
 							exit="exit"
 						>
-							{navItems.map((item, index) => (
-								<NavItem setOpen={setOpen} key={item.title + index} {...item} />
-							))}
+							<NavItem />
 						</motion.div>
 					)}
 				</AnimatePresence>

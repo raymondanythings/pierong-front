@@ -19,7 +19,7 @@ type Tokens = {
 
 interface PopupType {
 	isOpen?: boolean
-	key?: string
+	key?: unknown | string
 	message?: string
 	btnText?: string
 	btnHide?: boolean
