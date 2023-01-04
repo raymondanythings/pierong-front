@@ -7,7 +7,7 @@ import Google from 'assets/icons/google.png'
 import Kakao from 'assets/icons/kakao.png'
 import Naver from 'assets/icons/naver.png'
 import store from 'store'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
 import CustomModal from 'components/Modal'
 import { urlSafebtoa } from 'libs/utils'
@@ -52,6 +52,8 @@ const Splash = () => {
 	const { authLogin, logout } = useAuth()
 	const [userInfo, setUser] = store((state) => [state.user, state.setUser])
 	const [popup, setPopup] = store((state) => [state.popup, state.setPopup])
+	const navigate = useNavigate()
+
 	const refetch = (nickname: string) => {
 		userInfo && setUser({ ...userInfo, nickname })
 	}
@@ -77,7 +79,7 @@ const Splash = () => {
 				/>
 
 				<motion.div initial="hidden" animate="visible" variants={container}>
-					<AnimatedText className="text-[48px] font-medium" text="파이롱" />
+					<AnimatedText className="text-[48px]" text="파이롱" />
 				</motion.div>
 			</div>
 			<motion.div initial="hidden" animate="visible" variants={btnContainer} className="flex space-y-5 flex-col pb-8">
@@ -144,7 +146,11 @@ const Splash = () => {
 							</button>
 						</div>
 						<h3 className="text-center text-xs leading-4">
-							파이롱 가입 시 <ins className="text-[#57765E] underline-offset-4">서비스 이용 약관</ins>에<br />
+							파이롱 가입 시{' '}
+							<ins className="text-[#57765E] underline-offset-4 cursor-pointer" onClick={() => navigate('privacy')}>
+								서비스 이용 약관
+							</ins>
+							에<br />
 							동의하였음으로 간주됩니다.
 						</h3>
 					</>

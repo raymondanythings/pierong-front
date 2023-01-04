@@ -21,6 +21,22 @@
 	src: url('./assets/font/Kreon-Regular.woff') format('woff');
 	font-weight: 500;
 }
+
+@font-face {
+	font-family: 'cookie';
+	src: url('./assets/font/CookieRun-Black.woff') format('woff');
+	font-weight: 500;
+}
+@font-face {
+	font-family: 'cookie';
+	src: url('./assets/font/CookieRun-Regular.woff') format('woff');
+	font-weight: 400;
+}
+@font-face {
+	font-family: 'cookie';
+	src: url('./assets/font/CookieRun-Bold.woff') format('woff');
+	font-weight: 600;
+}
 @font-face {
 	font-family: 'Soojin';
 	src: url('./assets/font/ImcreSoojin.woff');
@@ -72,6 +88,9 @@
 	.top-icon {
 		@apply absolute w-12 h-12 bg-mainTeal -top-6 rounded-full border-black border border-solid p-1 flex;
 		@apply items-stretch left-1/2 -translate-x-1/2 z-10;
+	}
+	.privacy * {
+		font-family: '맑은 고딕';
 	}
 }
 

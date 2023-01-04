@@ -20,7 +20,7 @@ module.exports = {
 				mainBeige: '#eae6da'
 			},
 			fontFamily: {
-				main: ['kreon', 'kyobo', 'sans-serif']
+				main: ['cookie', 'kreon', 'kyobo', 'sans-serif']
 			},
 			height: {
 				screen: 'calc(var(--vh, 1vh) * 100)'

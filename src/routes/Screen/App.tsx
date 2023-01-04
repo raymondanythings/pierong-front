@@ -1,7 +1,7 @@
 import CustomModal from 'components/Modal'
 import NavigationBar from 'layout/NavigationBar'
 import { useLayoutEffect, useRef } from 'react'
-import { Outlet, useLoaderData, useNavigate, useNavigation } from 'react-router-dom'
+import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom'
 import store from 'store'
 import { User } from 'types'
 import axios from 'axios'
@@ -11,6 +11,7 @@ function App() {
 	const navigationRef = useRef(document.querySelector('main'))
 	const { showNav, setTokens, setUser, setPopup, popup, refreshPopup } = store()
 	const navigate = useNavigate()
+	const location = useLocation()
 	useLayoutEffect(() => {
 		store.setState({ isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) })
 		function setScreenSize() {
@@ -62,7 +63,12 @@ function App() {
 		}
 	}, [loader?.expired])
 	return (
-		<main className="max-w-screen-default overflow-y-hidden h-screen mx-auto relative" ref={navigationRef}>
+		<main
+			className={`max-w-screen-default h-screen mx-auto relative ${
+				location.pathname === '/privacy' ? 'overflow-y-scroll' : 'overflow-y-hidden'
+			}`}
+			ref={navigationRef}
+		>
 			{showNav ? <NavigationBar navigationRef={navigationRef} /> : null}
 			<Outlet />
 			<div id="modal" className="fixed max-w-screen-default top-0 left-0 z-50"></div>
