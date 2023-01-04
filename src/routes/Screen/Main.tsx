@@ -184,7 +184,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				</motion.div>
 			</div>
 			<div className="h-full bg-mainBeige">
-				<Crown />
+				<Crown rank={userResponse?.data.crownId} />
 
 				<div className="relative max-w-[85%] translate-x-[40%] translate-y-[188%] z-30 disabled-drag">
 					<div className="relative -left-[9%] z-[1]">
