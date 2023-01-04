@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import NickNameChangePopup from 'components/Modal/NickNameChangePopup'
 import CustomModal from 'components/Modal'
 import { urlSafebtoa } from 'libs/utils'
+import { useTitle } from 'hooks/useTitle'
 
 const container: Variants = {
 	hidden: {},
@@ -53,6 +54,7 @@ const Splash = () => {
 	const [userInfo, setUser] = store((state) => [state.user, state.setUser])
 	const [popup, setPopup] = store((state) => [state.popup, state.setPopup])
 	const navigate = useNavigate()
+	const {} = useTitle('파이롱')
 
 	const refetch = (nickname: string) => {
 		userInfo && setUser({ ...userInfo, nickname })

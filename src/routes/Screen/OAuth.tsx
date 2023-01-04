@@ -1,5 +1,6 @@
 import { LoginApi } from 'api'
 import Loading from 'components/animation/Loading'
+import { useTitle } from 'hooks/useTitle'
 import { urlSafebtoa } from 'libs/utils'
 import { useEffect } from 'react'
 import { useQuery } from 'react-query'
@@ -15,6 +16,7 @@ interface OAuthProps {
 
 const OAuth = () => {
 	const { search } = useLocation()
+	const {} = useTitle('파이롱 | 로그인')
 	const navigate = useNavigate()
 	const { setTokens, setIsLogin, setPopup, setUser, refreshPopup } = store()
 	const params = new URLSearchParams(search)

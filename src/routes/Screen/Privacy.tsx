@@ -1,8 +1,10 @@
+import { useTitle } from 'hooks/useTitle'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Privacy = () => {
 	const navigate = useNavigate()
+	const {} = useTitle('파이롱 | 개인정보처리방침')
 	const ours = '<6층사람들>'
 	return (
 		<div>

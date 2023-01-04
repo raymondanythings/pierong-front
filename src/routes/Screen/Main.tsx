@@ -17,6 +17,7 @@ import { urlSafebtoa } from 'libs/utils'
 import withNavigation from 'layout/withNavigation'
 import PiePiece from 'components/PiePiece'
 import SelectFeve from 'components/popup/SelectFeve'
+import { useTitle } from 'hooks/useTitle'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -57,7 +58,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const pies: Pie[] | [] = PIES.Pies.filter((item) => {
 		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
 	})
-
+	const {} = useTitle(`파이롱${user.nickname ? ' | ' + user.nickname + '의 베이킹룸' : ''}`)
 	const refetch = () => {
 		pieRefetch()
 		userRefetch()

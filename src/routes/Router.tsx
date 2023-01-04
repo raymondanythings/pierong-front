@@ -12,7 +12,6 @@ const router = createBrowserRouter(
 		<Route element={<App />} loader={loginCheckLoader}>
 			<Route index element={<Splash />} />
 			<Route path="oauth" element={<OAuth />} />
-			<Route path="splash" element={<Splash />} />
 			<Route path="room" element={<Outlet />}>
 				<Route path=":userId" element={<BakingRoom />} />
 			</Route>
