@@ -87,7 +87,7 @@
 
 	.top-icon {
 		@apply absolute w-12 h-12 bg-mainTeal -top-6 rounded-full border-black border border-solid p-1 flex;
-		@apply items-stretch left-1/2 -translate-x-1/2 z-10;
+		@apply items-stretch left-1/2 -translate-x-1/2;
 	}
 	.privacy * {
 		font-family: '맑은 고딕';

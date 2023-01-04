@@ -29,11 +29,13 @@ interface PopupType {
 	}
 }
 
+type CrownRank = '1' | '2' | '3' | '4' | '5'
+
 interface UserDetail {
 	email: string
 	nickname: string
 	rank: string
-	crownId: string
+	crownId: CrownRank
 	crownName: string
 	crownDescription: string
 	crownImageUrl: string
@@ -47,4 +49,4 @@ interface Pie {
 	left: number
 	z?: number
 }
-export type { Tokens, User, PopupType, UserDetail, Pie }
+export type { Tokens, User, PopupType, UserDetail, Pie, CrownRank }

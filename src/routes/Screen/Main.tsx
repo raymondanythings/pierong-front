@@ -85,7 +85,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 
 	useLayoutEffect(() => {
 		setUserId(userId)
-		if (isLogin && !user.nickname) {
+		if (isLogin && !loggedInUser?.nickname) {
 			setPopup({
 				isOpen: true,
 				cancelDisabled: true,
@@ -195,27 +195,40 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						<img className="absolute -left-[57%] top-[41%] -z-[1]" draggable={false} src={PIES.WhitePaper} />
 						<img className="absolute top-[13%] -left-[43%] max-w-[73.5%] z-10" draggable={false} src={PIES.Piece} />
 					</div>
-					{data.userPieId ? (
-						pies.map((pie) => (
-							<PiePiece
-								key={pie.id}
-								pie={pie}
-								startX={startX}
-								startY={startY}
-								endX={endX}
-								endY={endY}
-								onDragEnd={onDragEnd}
-							/>
-						))
-					) : (
-						<motion.div
-							layoutId="pieSection"
-							onClick={isMe ? onSelectFeve : () => {}}
-							className="absolute z-30 top-[12%] left-[8%] max-w-[70%]"
-						>
-							<img src="/image/baking/letter.png" />
-						</motion.div>
-					)}
+					<AnimatePresence>
+						{data.userPieId ? (
+							pies.map((pie) => (
+								<PiePiece
+									key={pie.id}
+									pie={pie}
+									startX={startX}
+									startY={startY}
+									endX={endX}
+									endY={endY}
+									onDragEnd={onDragEnd}
+								/>
+							))
+						) : (
+							<motion.div
+								layoutId="pieSection"
+								initial={{
+									transformOrigin: 'right bottom'
+								}}
+								exit={{
+									transformOrigin: 'right bottom',
+									rotateZ: 180
+								}}
+								transition={{
+									easings: ['circIn', 'circInOut'],
+									duration: 1.3
+								}}
+								onClick={isMe ? onSelectFeve : () => {}}
+								className="absolute -top-[65%] -left-[7%] max-w-[102%] z-10"
+							>
+								<img src="/image/dom.png" />
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</div>
 
 				<div className="max-w-[59%] top-[65.5%]" draggable={false}></div>

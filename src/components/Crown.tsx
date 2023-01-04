@@ -1,8 +1,9 @@
 import { useAnimationControls, Variants } from 'framer-motion'
 import { motion } from 'framer-motion'
-
+import CROWN from 'assets/crown'
+import { CrownRank } from 'types'
 interface CrownProps {
-	rank?: string
+	rank?: CrownRank
 }
 
 const crownVariants: Variants = {
@@ -28,7 +29,7 @@ const Crown = ({ rank = '1' }: CrownProps) => {
 					crownControl.start('animate')
 				}}
 			>
-				<img draggable={false} className="object-contain drop-shadow-bottom" src={'/image/crown/crown' + rank + '.png'} />
+				<img draggable={false} className="object-contain drop-shadow-bottom" src={CROWN[`CROWN_${rank ?? 1}`]} />
 			</motion.div>
 		</div>
 	)
