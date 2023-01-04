@@ -23,7 +23,7 @@ const NotChoose = ({ owner }: { owner: UserDetail }) => {
 				if (isMobile) {
 					canvas.toBlob(async (blob) => {
 						if (blob) {
-							const file = new File([blob], owner.nickname + ' 의 베이킹룸', {
+							const file = new File([blob], owner.nickname + ' 의 베이킹룸.png', {
 								type: 'image/png'
 							})
 							await navigator.share({
