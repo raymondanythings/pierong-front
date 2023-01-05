@@ -58,7 +58,7 @@ const Feve = () => {
 				</div>
 				<div className="bg-mainBeige w-full flex flex-col round-top-s border border-solid">
 					<span className="py-2 text-center border-b border-solid">{owner?.nickname}'s FEVE</span>
-					{owner ? (
+					{owner?.userFeve.length ? (
 						<div className="grid grid-cols-3 feve-grid">
 							{owner.userFeve.map((item) => (
 								<div className=" flex justify-center grow py-3">
@@ -68,7 +68,13 @@ const Feve = () => {
 								</div>
 							))}
 						</div>
-					) : null}
+					) : (
+						<div className="flex justify-center w-full py-4">
+							<div>
+								<h1>소유한 페브가 없습니다.</h1>
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 			<div
