@@ -5,6 +5,8 @@ import store from 'store'
 interface ModalProps extends HTMLMotionProps<'div'> {
 	children?: ReactNode
 	icon?: 'logo' | 'info' | 'message' | 'pancel' | 'book'
+	top?: 'default' | 'large'
+	isCustom?: boolean
 }
 
 const modalVariants: Variants = {
@@ -25,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
 	return null
 }
 
-const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', ...rest }) => {
+const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', isCustom = false, top = 'default', ...rest }) => {
 	const modalControl = useAnimationControls()
 	const popup = store((state) => state.popup)
 	return (
@@ -42,26 +44,36 @@ const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', ...rest })
 							className="bg-gray-500 -z-10 w-full h-full absolute top-0 left-0 opacity-50"
 							onClick={popup?.payload?.cancel}
 						></div>
-						<div className="w-4/5 min-h-[150px] rounded-2xl bg-mainTeal p-2 flex justify-center items-stretch border-black border border-solid relative">
+						<div
+							className={`w-4/5 min-h-[150px] rounded-2xl bg-mainTeal p-2 flex justify-center items-stretch border-black border border-solid relative ${
+								top === 'default' ? '' : 'pt-10'
+							}`}
+						>
 							<div className="top-icon">
 								<div className="bg-mainBeige border-black border border-solid flex justify-center items-center grow rounded-full">
 									<img src={`/image/icon/${icon}.png`} className="w-3/4 max-w-[23px] max-h-[23px]" />
 								</div>
 							</div>
-							<div
-								className="grow rounded-2xl flex  flex-col items-center bg-mainBeige border-black border border-solid py-5 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)]"
-								style={{ justifyContent: !children ? 'flex-end' : '' }}
-							>
-								{children ? children : <p>{popup?.message}</p>}
-								{popup && !popup.btnHide ? (
-									<button
-										onClick={popup?.payload?.confirm}
-										className="min-w-[100px] rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
-									>
-										{popup?.btnText ?? '확인'}
-									</button>
-								) : null}
-							</div>
+							{isCustom ? (
+								children
+							) : (
+								<div
+									className={`grow flex  flex-col items-center bg-mainBeige border-black border border-solid py-5 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)] ${
+										top === 'default' ? 'rounded-2xl' : 'rounded-b-2xl'
+									}`}
+									style={{ justifyContent: !children ? 'flex-end' : '' }}
+								>
+									{children ? children : <p>{popup?.message}</p>}
+									{popup && !popup.btnHide ? (
+										<button
+											onClick={popup?.payload?.confirm}
+											className="min-w-[100px] rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
+										>
+											{popup?.btnText ?? '확인'}
+										</button>
+									) : null}
+								</div>
+							)}
 						</div>
 					</motion.div>
 				}

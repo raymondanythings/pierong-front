@@ -71,7 +71,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 					memoContent: data.memoContent,
 					pieceIndex: dragState.dragged.id
 				})
-				if (res.code === '0000') {
+				if (res.message === 'SUCCESS') {
 					if (res.data) {
 						setChoosed(res.data)
 						store.setState({ chooseState: 'choose' })

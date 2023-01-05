@@ -1,7 +1,7 @@
 import { axios } from 'api'
 import { NickNameChange } from 'components/Modal/NickNameChangePopup'
 import { UserDetail } from 'types'
-import { Response } from 'types/Response'
+import { FeveDetail, PiePiece, Response, UserPie } from 'types/Response'
 
 const getUserDetail = async (email: string) => {
 	const res = await axios.get<Response<UserDetail>>(`/user/detail/${email}`)
@@ -12,8 +12,14 @@ const postChangeNickName = async (nickname: NickNameChange) => {
 	const res = await axios.post<Response<any>>('/user/nickname/change', nickname)
 	return res.data
 }
+
+interface UserHistory extends UserPie {
+	userPieFeve: FeveDetail
+	userPiePiece: PiePiece[]
+}
+
 const getOwnerDetail = async () => {
-	const res = await axios.get<Response<any>>('/user/ownerDetail')
+	const res = await axios.get<Response<UserHistory[] | []>>('/user/ownerDetail')
 	return res.data
 }
 

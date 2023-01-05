@@ -15,16 +15,28 @@ interface FeveDetail {
 	feveImageUrl: string
 	feveIndex: string
 	feveName: string
-	ownerEmail: string
 	userPieFeveId: string
 	userPieId: string
 }
 
 interface PiePiece {
-	piePieceImageUrl: string
-	memoContent: string
 	pieceIndex: string
 	userPiePieceId: string
+	piePieceImageUrl: string
+	memoContent: string
+	selectedBy: string
+	nackname: string
 }
 
-export type { Response, FeveDetail, Feve, PiePiece }
+interface UserPie {
+	bakingStatus: '01' | '02' | '03'
+	pieId: string
+	ownerEmail: string
+	piecesNumber: number
+	userPieId: string
+	userPiePiece: PiePiece[]
+	createdDate?: string
+	completedDate?: string
+}
+
+export type { Response, FeveDetail, Feve, PiePiece, UserPie }

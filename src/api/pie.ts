@@ -1,19 +1,5 @@
 import { axios } from 'api'
-import { Feve, FeveDetail, Response } from 'types/Response'
-
-interface PiePiece {
-	pieceIndex: string
-	userPiePieceId: string
-}
-
-interface UserPie {
-	bakingStatus: '01' | '02' | '03'
-	pieId: string
-	ownerEmail: string
-	piecesNumber: number
-	userPieId: string
-	userPiePiece: PiePiece[]
-}
+import { Feve, FeveDetail, Response, UserPie } from 'types/Response'
 
 const getUserPie = async ({ userId }: { userId: string }) => {
 	const res = await axios.get<Response<UserPie>>(`/pie/detail/${userId}`)

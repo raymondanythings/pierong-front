@@ -17,7 +17,8 @@ module.exports = {
 			},
 			colors: {
 				mainTeal: '#57765E',
-				mainBeige: '#eae6da'
+				mainBeige: '#eae6da',
+				grayBg: '#D9D9D9'
 			},
 			fontFamily: {
 				main: ['cookie', 'kreon', 'kyobo', 'sans-serif']

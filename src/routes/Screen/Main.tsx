@@ -48,8 +48,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		enabled: !!userId
 	})
 
-	// const { data: owner } = useQuery(['room', 'user', 'owner', userId], UserApi.getOwnerDetail)
-
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const isMe = loggedInUser && urlSafebtoa(loggedInUser.email) === userId
