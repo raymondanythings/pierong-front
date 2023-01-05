@@ -174,7 +174,21 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					}}
 				>
 					<motion.div className="relative">
-						<img src={PIES.HowTo} />
+						<motion.img
+							initial={{
+								filter: 'drop-shadow(0px 0px 0px rgba(249, 255, 74, 0.698))'
+							}}
+							animate={{
+								filter: 'drop-shadow(1px 1px 12px rgba(249, 255, 74, 0.698))'
+							}}
+							transition={{
+								duration: 1.2,
+								repeat: Infinity,
+								ease: 'easeInOut',
+								repeatType: 'reverse'
+							}}
+							src={PIES.HowTo}
+						/>
 						<motion.div className="absolute max-w-[15%] left-[61%]">
 							<img src={PIES.Arrow} />
 						</motion.div>
