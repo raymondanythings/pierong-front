@@ -3,14 +3,11 @@ import store from 'store'
 
 const withNavigation = (Component: ComponentType<any>) => {
 	return function (props?: any) {
-		const { setNav, isLogin } = store()
+		const { setNav } = store()
 		useLayoutEffect(() => {
-			if (isLogin) {
-				setNav()
-			}
-			return () => {
-				isLogin && setNav()
-			}
+			setNav()
+
+			return () => setNav()
 		}, [])
 		return <Component {...props} />
 	}

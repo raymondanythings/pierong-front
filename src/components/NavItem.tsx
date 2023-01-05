@@ -3,6 +3,7 @@ import store from 'store'
 import useCopyClipboard from 'hooks/useCopyClipboard'
 import Modal from './Modal'
 import History from './popup/History'
+import MyPage from './popup/MyPage'
 
 const navItemVariants: Variants = {
 	initial: {
@@ -28,7 +29,7 @@ const navItemVariants: Variants = {
 	}
 }
 
-type NavKey = 'history' | 'feve' | 'share'
+type NavKey = 'history' | 'feve' | 'share' | 'mypage'
 const NavItem = () => {
 	const { popup, refreshPopup, setPopup } = store((state) => ({
 		popup: state.popup,
@@ -39,7 +40,8 @@ const NavItem = () => {
 	const onNavClick = (key: NavKey) => {
 		setPopup({
 			key,
-			isOpen: true
+			isOpen: true,
+			btnHide: true
 		})
 	}
 
@@ -49,7 +51,7 @@ const NavItem = () => {
 				className="w-10"
 				variants={navItemVariants}
 				onClick={() => {
-					onNavClick('history')
+					onNavClick('mypage')
 				}}
 			>
 				<img className="stroke-white" src={`/image/nav/mypage.svg`} />
@@ -67,6 +69,15 @@ const NavItem = () => {
 				className="w-10"
 				variants={navItemVariants}
 				onClick={() => {
+					onNavClick('history')
+				}}
+			>
+				<img className="stroke-white" src={`/image/nav/pie.svg`} />
+			</motion.button>
+			<motion.button
+				className="w-10"
+				variants={navItemVariants}
+				onClick={() => {
 					onNavClick('share')
 				}}
 			>
@@ -78,6 +89,10 @@ const NavItem = () => {
 				</Modal>
 			) : popup?.key === 'feve' ? (
 				<Modal>페브창</Modal>
+			) : popup?.key === 'mypage' ? (
+				<Modal icon="person">
+					<MyPage />
+				</Modal>
 			) : null}
 		</>
 	)

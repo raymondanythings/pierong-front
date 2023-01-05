@@ -13,13 +13,13 @@ const postChangeNickName = async (nickname: NickNameChange) => {
 	return res.data
 }
 
-interface UserHistory extends UserPie {
+export interface UserHistory extends UserPie {
 	userPieFeve: FeveDetail
 	userPiePiece: PiePiece[]
 }
 
-const getOwnerDetail = async () => {
-	const res = await axios.get<Response<UserHistory[] | []>>('/user/ownerDetail')
+const getOwnerDetail = async (userId: string) => {
+	const res = await axios.get<Response<UserHistory[] | []>>(`/user/ownerDetail/${userId}`)
 	return res.data
 }
 

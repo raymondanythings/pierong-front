@@ -92,6 +92,10 @@
 	.privacy * {
 		font-family: '맑은 고딕';
 	}
+
+	.dashed-box {
+		@apply border border-dashed rounded-lg;
+	}
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 

@@ -25,7 +25,8 @@ interface PiePiece {
 	piePieceImageUrl: string
 	memoContent: string
 	selectedBy: string
-	nackname: string
+	nickname: string
+	selectedDate: string
 }
 
 interface UserPie {
