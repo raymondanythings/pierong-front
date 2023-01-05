@@ -47,7 +47,7 @@ const NickNameChangePopup = ({ refetch, title = '닉네임 변경' }: { refetch?
 								message: '2글자 이상 입력해주세요.'
 							},
 							pattern: {
-								value: /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/g,
+								value: /^[가-힣|a-z|A-Z|0-9|]+$/g,
 								message: '숫자 또는 문자만 입력 가능합니다.'
 							}
 						})}

@@ -8,12 +8,7 @@ import html2canvas from 'html2canvas'
 import { UserDetail } from 'types'
 
 const NotChoose = ({ owner }: { owner: UserDetail }) => {
-	const [setDragState, refreshPopup, isMobile, userId] = store((state) => [
-		state.setDragState,
-		state.refreshPopup,
-		state.isMobile,
-		state.userId
-	])
+	const [setDragState, refreshPopup, isMobile] = store((state) => [state.setDragState, state.refreshPopup, state.isMobile])
 	const { copyUrlOnClipboard } = useCopyClipboard()
 	const onCaptureImage = useCallback(() => {
 		const main = document.querySelector('main')

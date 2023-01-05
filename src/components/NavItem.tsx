@@ -4,6 +4,7 @@ import useCopyClipboard from 'hooks/useCopyClipboard'
 import Modal from './Modal'
 import History from './popup/History'
 import MyPage from './popup/MyPage'
+import { useNavigate } from 'react-router-dom'
 
 const navItemVariants: Variants = {
 	initial: {
@@ -31,13 +32,15 @@ const navItemVariants: Variants = {
 
 type NavKey = 'history' | 'feve' | 'share' | 'mypage'
 const NavItem = () => {
-	const { popup, refreshPopup, setPopup } = store((state) => ({
-		popup: state.popup,
-		setPopup: state.setPopup,
-		refreshPopup: state.refreshPopup
+	const navigate = useNavigate()
+	const { setPopup } = store((state) => ({
+		setPopup: state.setPopup
 	}))
 
 	const onNavClick = (key: NavKey) => {
+		if (key === 'feve') {
+			navigate('/room/feve', { relative: 'route' })
+		}
 		setPopup({
 			key,
 			isOpen: true,
@@ -83,17 +86,6 @@ const NavItem = () => {
 			>
 				<img className="stroke-white" src={`/image/nav/share.svg`} />
 			</motion.button>
-			{popup?.key === 'history' ? (
-				<Modal icon="message" top="large" isCustom>
-					<History />
-				</Modal>
-			) : popup?.key === 'feve' ? (
-				<Modal>페브창</Modal>
-			) : popup?.key === 'mypage' ? (
-				<Modal icon="person">
-					<MyPage />
-				</Modal>
-			) : null}
 		</>
 	)
 }

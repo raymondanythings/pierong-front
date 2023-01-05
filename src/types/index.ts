@@ -31,15 +31,23 @@ interface PopupType {
 
 type CrownRank = '1' | '2' | '3' | '4' | '5'
 
+interface UserFeve {
+	collectedDate: string
+	feveDescription: string
+	feveId: string
+	feveImageUrl: string
+	feveName: string
+}
+
 interface UserDetail {
 	email: string
 	nickname: string
-	rank: string
+	rank: CrownRank
 	crownId: CrownRank
 	crownName: string
 	crownDescription: string
 	crownImageUrl: string
-	userFeve: any[]
+	userFeve: UserFeve[]
 }
 interface Pie {
 	id: number

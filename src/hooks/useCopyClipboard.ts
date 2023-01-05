@@ -1,5 +1,4 @@
 import { UserApi } from 'api'
-import React from 'react'
 import { useQuery } from 'react-query'
 import { useLocation } from 'react-router-dom'
 import store from 'store'
@@ -10,16 +9,16 @@ interface useCopyClipboardArgs {
 }
 
 const useCopyClipboard = (args?: useCopyClipboardArgs) => {
-	const { setPopup, refreshPopup, isMobile, userId, user: loggedInUser } = store()
+	const { setPopup, refreshPopup, isMobile, user: loggedInUser, owner } = store()
 	const { data: { data: roomUser } = {}, refetch: userRefetch } = useQuery(
-		['room', 'user', userId],
-		() => UserApi.getUserDetail(userId || ''),
+		['room', 'user', owner?.userId],
+		() => UserApi.getUserDetail(owner?.userId || ''),
 		{
 			cacheTime: Infinity,
 			staleTime: 1000 * 60 * 5,
 			retry: false,
 			refetchOnWindowFocus: false,
-			enabled: !!userId
+			enabled: !!owner?.userId
 		}
 	)
 	const { cancel, confirm } = args || {}

@@ -21,22 +21,11 @@
 	src: url('./assets/font/Kreon-Regular.woff') format('woff');
 	font-weight: 500;
 }
-
-@font-face {
-	font-family: 'cookie';
-	src: url('./assets/font/CookieRun-Black.woff') format('woff');
-	font-weight: 500;
-}
 @font-face {
 	font-family: 'cookie';
 	src: url('./assets/font/CookieRun-Regular.woff') format('woff');
-	font-weight: 400;
 }
-@font-face {
-	font-family: 'cookie';
-	src: url('./assets/font/CookieRun-Bold.woff') format('woff');
-	font-weight: 600;
-}
+
 @font-face {
 	font-family: 'Soojin';
 	src: url('./assets/font/ImcreSoojin.woff');
@@ -47,6 +36,7 @@
 		@apply font-main;
 		height: -webkit-fill-available;
 		height: fill-available;
+		font-weight: 600;
 	}
 }
 
@@ -82,7 +72,7 @@
 	}
 
 	.modal-btn {
-		@apply min-w-[100px] rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3;
+		@apply min-w-[100px] rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3 font-medium;
 	}
 
 	.top-icon {
@@ -95,6 +85,10 @@
 
 	.dashed-box {
 		@apply border border-dashed rounded-lg;
+	}
+
+	.shadow-btn {
+		@apply flex w-full justify-center text-sm border-solid border-mainTeal rounded-xl border shadow-btnShadow;
 	}
 }
 

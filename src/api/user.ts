@@ -23,4 +23,9 @@ const getOwnerDetail = async (userId: string) => {
 	return res.data
 }
 
-export { getUserDetail, postChangeNickName, getOwnerDetail }
+const getWithdraw = async () => {
+	const res = await axios.get<Response<null>>('/user/withdraw')
+	return res.data
+}
+
+export { getUserDetail, postChangeNickName, getOwnerDetail, getWithdraw }

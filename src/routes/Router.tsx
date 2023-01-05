@@ -6,6 +6,7 @@ import Splash from './Screen/Splash'
 import BakingRoom from './Screen/BakingRoom'
 import { loginCheckLoader } from 'libs/common/loader'
 import Privacy from './Screen/Privacy'
+import Feve from './Screen/Feve'
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -13,10 +14,11 @@ const router = createBrowserRouter(
 			<Route index element={<Splash />} />
 			<Route path="oauth" element={<OAuth />} />
 			<Route path="room" element={<Outlet />}>
+				<Route path="feve" element={<Feve />} />
 				<Route path=":userId" element={<BakingRoom />} />
 			</Route>
 			<Route path="privacy" element={<Privacy />} />
-			<Route path="*" element={<Navigate to="/" />} />
+			{/* <Route path="*" element={<Navigate to="/" />} /> */}
 		</Route>
 	)
 )

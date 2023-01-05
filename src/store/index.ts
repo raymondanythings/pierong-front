@@ -2,7 +2,7 @@ import create from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { axios } from 'api'
-import { PopupType, Tokens, User } from 'types'
+import { PopupType, Tokens, User, UserDetail } from 'types'
 
 type DragState = 'idle' | 'dragging' | 'pending' | 'complete'
 interface PopupTypeArgs extends PopupType {
@@ -14,8 +14,8 @@ interface IStore<T = any, S = any> {
 	rtk: string | null
 	isLogin: boolean
 	isMainChange: boolean
-	userId?: string | null
-	setUserId: (userId: string) => void
+	owner?: (UserDetail & { userId: string }) | null
+	setOwner: (owner: UserDetail & { userId: string }) => void
 	chooseState?: string | null
 	setIsMainChange: (flag: boolean) => void
 	setIsLogin: (flag: boolean) => void
@@ -50,8 +50,8 @@ const store = create(
 				showNav: false,
 				atk: null,
 				rtk: null,
-				userId: null,
-				setUserId: (userId) => set({ userId }),
+				owner: null,
+				setOwner: (owner) => set({ owner }),
 				popup: undefined,
 				chooseState: null,
 				setPopup: ({ btnText = '확인', payload = {}, ...rest }) =>

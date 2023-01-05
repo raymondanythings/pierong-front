@@ -16,7 +16,7 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 		state.setDragState,
 		state.refreshPopup,
 		state.isMobile,
-		state.userId
+		state.owner?.userId
 	])
 	const { copyUrlOnClipboard } = useCopyClipboard()
 	const onCaptureImage = useCallback(() => {

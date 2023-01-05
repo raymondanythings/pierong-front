@@ -8,7 +8,7 @@ import Main from './Main'
 const BakingRoom = () => {
 	const { userId = undefined } = useParams() as { userId?: string }
 	const navigate = useNavigate()
-	const setPopup = store((state) => state.setPopup)
+	const [setPopup, setOwner] = store((state) => [state.setPopup, state.setOwner])
 	if (!userId) {
 		navigate('/')
 		return null
@@ -33,7 +33,10 @@ const BakingRoom = () => {
 			staleTime: 1000 * 60 * 5,
 			retry: false,
 			refetchOnWindowFocus: false,
-			enabled: !!userId
+			enabled: !!userId,
+			onSuccess({ data }) {
+				setOwner({ ...data, userId })
+			}
 		})
 
 		const user = userResponse?.data

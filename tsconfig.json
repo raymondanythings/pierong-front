@@ -9,6 +9,7 @@
       "assets/*" : ["assets/*"],
       "mock/*" : ["mock/*"],
       "lottie/*" : ["lottie/*"],
+      "popup/*" : ["components/popup/*"],
     },
     "target": "es5",
     "lib": [

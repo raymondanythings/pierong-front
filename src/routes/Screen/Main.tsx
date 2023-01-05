@@ -1,6 +1,6 @@
 import store from 'store'
 import PIES from 'assets/seperated_pie'
-import { AnimatePresence, motion, PanInfo, Variants } from 'framer-motion'
+import { AnimatePresence, motion, PanInfo, useAnimation, Variants } from 'framer-motion'
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
 import CompleteButton from 'components/animation/CompleteButton'
@@ -18,6 +18,7 @@ import withNavigation from 'layout/withNavigation'
 import PiePiece from 'components/PiePiece'
 import SelectFeve from 'components/popup/SelectFeve'
 import { useTitle } from 'hooks/useTitle'
+import { useNavigate } from 'react-router-dom'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -32,7 +33,7 @@ const signTitleVariants: Variants = {
 }
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
-	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, setUserId } = store()
+	const navigate = useNavigate()
 	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -48,7 +49,11 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		enabled: !!userId
 	})
 
+	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin } = store()
+	const howToAnimate = useAnimation()
+
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
+
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const isMe = loggedInUser && urlSafebtoa(loggedInUser.email) === userId
 	const data = useMemo(() => ({ ...pieData, ...userResponse }), [pieData, userResponse])
@@ -56,6 +61,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const pies: Pie[] | [] = PIES.Pies.filter((item) => {
 		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
 	})
+
 	const {} = useTitle(`파이롱${user.nickname ? ' | ' + user.nickname + '의 베이킹룸' : ''}`)
 	const refetch = () => {
 		pieRefetch()
@@ -82,7 +88,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	)
 
 	useLayoutEffect(() => {
-		setUserId(userId)
 		if (isLogin && !loggedInUser?.nickname) {
 			setPopup({
 				isOpen: true,
@@ -92,8 +97,15 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				payload: {}
 			})
 		}
-		return () => store.setState({ userId: null })
 	}, [userId])
+
+	useLayoutEffect(() => {
+		if (!pieData) {
+			howToAnimate.start('animate')
+		} else {
+			howToAnimate.stop()
+		}
+	}, [pieData])
 
 	const onDragEnd = useCallback(
 		(event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo, pie: Pie) => {
@@ -162,6 +174,17 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 
 	return (
 		<div className="h-full relative overflow-x-hidden">
+			{isMe ? null : (
+				<button
+					onClick={() => navigate(`/room/${urlSafebtoa(loggedInUser?.email || '')}`)}
+					className="fixed top-4 left-4 z-10 bg-mainTeal w-28 border border-solid border-black rounded-full flex items-center justify-center"
+				>
+					<span className="m-1 text-white font-thin py-1 text-lg grow text-center rounded-full border border-solid border-white">
+						내 방가기
+					</span>
+				</button>
+			)}
+
 			<div className="aspect-[9/20] absolute ">
 				<img src="/image/main_board.png" />
 				<motion.div
@@ -176,10 +199,13 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					<motion.div className="relative">
 						<motion.img
 							initial={{
-								filter: 'drop-shadow(0px 0px 0px rgba(249, 255, 74, 0.698))'
+								filter: 'drop-shadow(0px 0px 0px rgba(255, 255, 255, 0.698))'
 							}}
-							animate={{
-								filter: 'drop-shadow(1px 1px 12px rgba(249, 255, 74, 0.698))'
+							animate={howToAnimate}
+							variants={{
+								animate: {
+									filter: 'drop-shadow(1px 1px 15px rgba(255, 255, 255, 0.698))'
+								}
 							}}
 							transition={{
 								duration: 1.2,
@@ -266,7 +292,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					>
 						<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5">
 							<div className="relative">
-								{user.nickname || '123'}
+								{user.nickname}
 								<small
 									className="ml-1"
 									style={{
