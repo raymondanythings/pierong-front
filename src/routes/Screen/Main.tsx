@@ -174,7 +174,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 
 	return (
 		<div className="h-full relative overflow-x-hidden">
-			{isMe ? null : (
+			{!isLogin || isMe ? null : (
 				<button
 					onClick={() => navigate(`/room/${urlSafebtoa(loggedInUser?.email || '')}`)}
 					className="fixed top-4 left-4 z-10 bg-mainTeal w-28 border border-solid border-black rounded-full flex items-center justify-center"

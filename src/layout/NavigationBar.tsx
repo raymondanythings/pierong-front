@@ -1,6 +1,7 @@
 import Modal from 'components/Modal'
 import NavItem from 'components/NavItem'
 import History from 'components/popup/History'
+import Login from 'components/popup/Login'
 import MyPage from 'components/popup/MyPage'
 import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
 import { MutableRefObject, useRef, useState } from 'react'
@@ -37,10 +38,9 @@ const toggleVariants: Variants = {
 const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 	const toggleControl = useAnimationControls()
 	const navBarRef = useRef<HTMLElement | null>(null)
-	const { popup } = store((state) => ({
-		popup: state.popup,
-		setPopup: state.setPopup,
-		refreshPopup: state.refreshPopup
+	const { isLogin, popup } = store((state) => ({
+		isLogin: state.isLogin,
+		popup: state.popup
 	}))
 	const [open, setOpen] = useState(false)
 	return (
@@ -123,9 +123,7 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 					<History />
 				</Modal>
 			) : popup?.key === 'mypage' ? (
-				<Modal icon="person">
-					<MyPage />
-				</Modal>
+				<Modal icon="person">{isLogin ? <MyPage /> : <Login />}</Modal>
 			) : null}
 		</>
 	)
