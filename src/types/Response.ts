@@ -1,3 +1,5 @@
+import { UserPieFeve } from 'types'
+
 interface Response<T> {
 	code: string
 	data: T
@@ -36,6 +38,7 @@ interface UserPie {
 	piecesNumber: number
 	userPieId: string
 	userPiePiece: PiePiece[]
+	userPieFeve?: UserPieFeve
 	createdDate?: string
 	completedDate?: string
 }

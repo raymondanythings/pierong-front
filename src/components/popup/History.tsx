@@ -107,7 +107,7 @@ const History = () => {
 
 	const formatDate = useCallback((date: string) => {
 		const koDtf = new Intl.DateTimeFormat('ko')
-		return koDtf
+		const result = koDtf
 			.format(new Date(date))
 			.split(' ')
 			.map((item) => {
@@ -117,7 +117,9 @@ const History = () => {
 				return item
 			})
 			.join('')
+		return result
 	}, [])
+
 	const openedLockIndex = useMemo(() => owner.length, [owner.length])
 	// EAE6DA
 	useLayoutEffect(() => {
@@ -172,9 +174,9 @@ const History = () => {
 									</div>
 									<div className="relative flex flex-col justify-center items-center flex-1">
 										<span className="text-sm font-bold">{selectedHistory.item.userPieFeve.feveName}</span>
-										{selectedHistory.item.completedDate ? (
+										{selectedHistory.item.userPieFeve.collectedDate ? (
 											<span className="text-xs text-mainTeal absolute bottom-0 left-1/2 -translate-x-1/2">
-												{formatDate(selectedHistory.item.completedDate)}
+												{formatDate(selectedHistory.item.userPieFeve.collectedDate)}
 											</span>
 										) : null}
 									</div>

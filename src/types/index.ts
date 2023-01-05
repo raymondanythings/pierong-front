@@ -57,4 +57,16 @@ interface Pie {
 	left: number
 	z?: number
 }
-export type { Tokens, User, PopupType, UserDetail, Pie, CrownRank }
+
+interface UserPieFeve {
+	collectedDate: string
+	feveDescription: string
+	feveId: string
+	faveImageUrl: string
+	feveName: string
+	nickname: string
+	selectedBy: string
+	selectedDate: string
+}
+
+export type { Tokens, User, PopupType, UserDetail, Pie, CrownRank, UserPieFeve }

@@ -1,6 +1,6 @@
 import { axios } from 'api'
 import { NickNameChange } from 'components/Modal/NickNameChangePopup'
-import { UserDetail } from 'types'
+import { UserDetail, UserPieFeve } from 'types'
 import { FeveDetail, PiePiece, Response, UserPie } from 'types/Response'
 
 const getUserDetail = async (email: string) => {
@@ -14,7 +14,7 @@ const postChangeNickName = async (nickname: NickNameChange) => {
 }
 
 export interface UserHistory extends UserPie {
-	userPieFeve: FeveDetail
+	userPieFeve: UserPieFeve
 	userPiePiece: PiePiece[]
 }
 
