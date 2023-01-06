@@ -1,6 +1,6 @@
 import { PieApi, UserApi } from 'api'
 import CROWN from 'assets/crown'
-import { formatDate, numberToKr } from 'libs/utils'
+import { formatDate, formatOrdianl, numberToKr } from 'libs/utils'
 import React from 'react'
 import { QueryCache, useQuery } from 'react-query'
 import store from 'store'
@@ -45,10 +45,12 @@ const CompletePie = () => {
 		<div>
 			<div className="p-4 flex flex-col space-y-4">
 				<div className="flex flex-col space-y-2">
-					<h1 className="text-center text-base">
-						축하합니다! <span className="text-mainTeal">{userData?.nickname}님</span>의<br />
-						<span className="text-mainTeal">{numberToKr[+userData?.crownId! ?? 0]} 파이</span>가 모두 소진 되었어요!
-					</h1>
+					{userData?.crownId ? (
+						<h1 className="text-center text-base">
+							축하합니다! <span className="text-mainTeal">{userData?.nickname}님</span>의<br />
+							<span className="text-mainTeal">{formatOrdianl(+userData.crownId)} 파이</span>가 모두 소진 되었어요!
+						</h1>
+					) : null}
 					<p className="text-center text-graytext font-thin text-[8px]">(내가얻은 업적들은 메뉴바 MY창에서 확인가능해요!)</p>
 				</div>
 				<div className="shadow-btn text-mainTeal py-1">왕관 업그레이드</div>
@@ -82,7 +84,7 @@ const CompletePie = () => {
 					<div key={piece.pieceIndex} className="flex flex-col items-center dashed-box w-full p-4 space-y-6">
 						<h3 className="text-graytext text-xs">from. {piece.nickname}</h3>
 						<p className="break-all text-center">{piece.memoContent}</p>
-						<span className="text-mainTeal text-xs">{piece.selectedBy}</span>
+						<span className="text-mainTeal text-xs">{formatDate(piece.selectedDate)}</span>
 					</div>
 				))}
 				<div className="sticky bottom-0 flex justify-center">

@@ -1,7 +1,7 @@
 import { UserApi } from 'api'
 import { UserHistory } from 'api/user'
 import Loading from 'components/animation/Loading'
-import { formatDate, numberToKr } from 'libs/utils'
+import { formatDate, formatOrdianl, numberToKr } from 'libs/utils'
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import store from 'store'
@@ -140,7 +140,7 @@ const History = () => {
 			<div className="bg-mainBeige grow py-4 px-5 max-h-half overflow-y-scroll rounded-b-lg">
 				{selectedHistory ? (
 					<h1 className="text-mainTeal text-lg text-center mb-4">
-						{ownerDetail?.nickname}의 {numberToKr[selectedHistory.selectedIndex]} 파이
+						{ownerDetail?.nickname}의 {formatOrdianl(selectedHistory.selectedIndex + 1)} 파이
 					</h1>
 				) : null}
 				{owner.length && selectedHistory ? (

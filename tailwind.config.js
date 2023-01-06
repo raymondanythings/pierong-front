@@ -4,7 +4,8 @@ module.exports = {
 	theme: {
 		extend: {
 			dropShadow: {
-				bottom: '5px 8px 6px rgba(0, 0, 0, 0.8)'
+				bottom: '5px 8px 6px rgba(0, 0, 0, 0.8)',
+				feve: '0.5px 4px 4px rgba(0,0,0,0.5)'
 			},
 			boxShadow: {
 				btnShadow: '2px 2px 0px 0px #57765E'
