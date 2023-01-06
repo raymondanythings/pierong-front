@@ -255,6 +255,9 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				<button
 					onClick={() => navigate(`/room/${urlSafebtoa(loggedInUser?.email || '')}`)}
 					className="fixed top-4 left-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
+					style={{
+						left: 'calc(var(--main-mr) + 16px)'
+					}}
 				>
 					<span className="m-1 text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white">
 						내 방가기
