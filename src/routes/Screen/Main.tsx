@@ -94,13 +94,43 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	)
 
 	useLayoutEffect(() => {
+		const firstTime = localStorage.getItem('initial')
 		if (isLogin && !loggedInUser?.nickname) {
 			setPopup({
 				isOpen: true,
 				cancelDisabled: true,
 				key: 'initialNickname',
 				btnHide: true,
-				payload: {}
+				payload: {
+					confirm() {
+						if (!firstTime) {
+							localStorage.setItem('initial', 'done')
+							setPopup({
+								isOpen: true,
+								key: 'howTo'
+							})
+						} else {
+							refreshPopup()
+						}
+					},
+					cancel() {
+						if (!firstTime) {
+							localStorage.setItem('initial', 'done')
+							setPopup({
+								isOpen: true,
+								key: 'howTo'
+							})
+						} else {
+							refreshPopup()
+						}
+					}
+				}
+			})
+		} else if (!firstTime) {
+			localStorage.setItem('initial', 'done')
+			setPopup({
+				isOpen: true,
+				key: 'howTo'
 			})
 		}
 	}, [userId])
@@ -192,9 +222,9 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			{!isLogin || isMe ? null : (
 				<button
 					onClick={() => navigate(`/room/${urlSafebtoa(loggedInUser?.email || '')}`)}
-					className="fixed top-4 left-4 z-10 bg-mainTeal w-28 border border-solid border-black rounded-full flex items-center justify-center"
+					className="fixed top-4 left-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
 				>
-					<span className="m-1 text-white font-thin py-1 text-lg grow text-center rounded-full border border-solid border-white">
+					<span className="m-1 text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white">
 						내 방가기
 					</span>
 				</button>
