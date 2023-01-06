@@ -1,31 +1,20 @@
 import { UserApi } from 'api'
 import CROWN from 'assets/crown'
-import { urlSafebtoa } from 'libs/utils'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import store from 'store'
 
 const Feve = () => {
 	const navigate = useNavigate()
-	const { owner, user } = store((state) => ({ owner: state.owner, user: state.user }))
-	const {
-		isLoading,
-		data: { data: feves = null } = {},
-		refetch: userRefetch
-	} = useQuery(['room', 'user', owner?.userId], () => UserApi.getUserDetail(owner?.userId || ''), {
-		cacheTime: Infinity,
-		staleTime: 1000 * 60 * 5,
-		retry: false,
-		refetchOnWindowFocus: false,
-		enabled: !!owner?.userId
-	})
+	const { owner } = store((state) => ({ owner: state.owner, user: state.user }))
 
 	useEffect(() => {
-		if (!isLoading && !feves) {
+		if (!owner) {
 			navigate('/')
 		}
-	}, [])
+	}, [owner?.userId])
+
 	return (
 		<div className="relative">
 			<button

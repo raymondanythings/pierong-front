@@ -9,7 +9,7 @@ interface useCopyClipboardArgs {
 }
 
 const useCopyClipboard = (args?: useCopyClipboardArgs) => {
-	const { setPopup, refreshPopup, isMobile, user: loggedInUser, owner } = store()
+	const { setPopup, refreshPopup, isMobile, user: loggedInUser, owner, setOwner } = store()
 	const { data: { data: roomUser } = {}, refetch: userRefetch } = useQuery(
 		['room', 'user', owner?.userId],
 		() => UserApi.getUserDetail(owner?.userId || ''),
@@ -18,7 +18,10 @@ const useCopyClipboard = (args?: useCopyClipboardArgs) => {
 			staleTime: 1000 * 60 * 5,
 			retry: false,
 			refetchOnWindowFocus: false,
-			enabled: !!owner?.userId
+			enabled: !!owner?.userId,
+			onSuccess({ data }) {
+				setOwner({ ...data, userId: owner?.userId || '' })
+			}
 		}
 	)
 	const { cancel, confirm } = args || {}

@@ -6,7 +6,11 @@ import { QueryCache, useQuery } from 'react-query'
 import store from 'store'
 
 const CompletePie = () => {
-	const { userId = '', setPopup } = store((state) => ({ userId: state.owner?.userId, setPopup: state.setPopup }))
+	const {
+		userId = '',
+		setPopup,
+		setOwner
+	} = store((state) => ({ userId: state.owner?.userId, setPopup: state.setPopup, setOwner: state.setOwner }))
 	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -23,7 +27,10 @@ const CompletePie = () => {
 			staleTime: 1000 * 60 * 5,
 			retry: false,
 			refetchOnWindowFocus: false,
-			enabled: !!userId
+			enabled: !!userId,
+			onSuccess({ data }) {
+				setOwner({ ...data, userId })
+			}
 		}
 	)
 	const onSelectFeve = () => {

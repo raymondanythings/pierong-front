@@ -4,6 +4,7 @@ import { UserDetail, UserPieFeve } from 'types'
 import { FeveDetail, PiePiece, Response, UserPie } from 'types/Response'
 
 const getUserDetail = async (email: string) => {
+	console.log(email, '<=== input')
 	const res = await axios.get<Response<UserDetail>>(`/user/detail/${email}`)
 	return res.data
 }

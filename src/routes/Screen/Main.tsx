@@ -35,6 +35,7 @@ const signTitleVariants: Variants = {
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const navigate = useNavigate()
+	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, owner, setOwner } = store()
 	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -48,10 +49,12 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		staleTime: 1000 * 60 * 5,
 		retry: false,
 		refetchOnWindowFocus: false,
-		enabled: !!userId
+		enabled: !!userId,
+		onSuccess({ data }) {
+			setOwner({ ...data, userId })
+		}
 	})
 
-	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin } = store()
 	const howToAnimate = useAnimation()
 
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
@@ -336,36 +339,46 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						exit="exit"
 						animate="animate"
 						initial="initial"
-						className={`fixed bottom-0 w-[180px] h-[60px] flex justify-center items-center p-2 z-30 border border-solid max-w-screen-default bg-mainTeal`}
+						className={`fixed bottom-0 flex justify-center items-center z-30  max-w-screen-default bg-mainTeal`}
 						style={{
 							right: 'var(--main-mr)'
 						}}
 					>
-						<div className="border-[#EAE6DA] bg-mainTeal border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5">
-							<div className="relative">
-								{user.nickname}
-								<small
-									className="ml-1"
-									style={{
-										fontSize: '0.75em'
-									}}
-								>
-									의 베이킹룸
-								</small>
-								{isMe ? (
-									<img
-										onClick={() => {
-											setPopup({
-												message: '닉네임변경',
-												key: 'changeNickName',
-												isOpen: true,
-												btnHide: true
-											})
+						<div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
+							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col" onClick={() => {
+								window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
+							}}>
+								<img className="w-6" src="/image/icon/survey.png" />
+								<span className="text-[8px] leading-3">설문조사</span>
+							</div>
+						</div>
+						<div className="w-[180px] h-[60px] border border-solid p-1 flex justify-center items-center">
+							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5">
+								<div className="relative">
+									{user.nickname}
+									<small
+										className="ml-1"
+										style={{
+											fontSize: '0.75em'
 										}}
-										className="w-3 h-3 ml-1 absolute top-1/2  -translate-y-1/2 left-full"
-										src="/image/icon/pancel.png"
-									/>
-								) : null}
+									>
+										의 베이킹룸
+									</small>
+									{isMe ? (
+										<img
+											onClick={() => {
+												setPopup({
+													message: '닉네임변경',
+													key: 'changeNickName',
+													isOpen: true,
+													btnHide: true
+												})
+											}}
+											className="w-3 h-3 ml-1 absolute top-1/2  -translate-y-1/2 left-full"
+											src="/image/icon/pancel.png"
+										/>
+									) : null}
+								</div>
 							</div>
 						</div>
 					</motion.div>
