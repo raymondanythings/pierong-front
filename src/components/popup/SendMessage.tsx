@@ -1,5 +1,5 @@
 import { PieApi } from 'api'
-import { FC, KeyboardEvent, useCallback, useRef, useState } from 'react'
+import { FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import store from 'store'
 import { ErrorMessage } from '@hookform/error-message'
@@ -89,6 +89,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 		},
 		[userPieId, ownerEmail]
 	)
+
 	return chooseState === 'done' ? (
 		<NotChoose owner={owner} />
 	) : chooseState === 'choose' && choosed ? (

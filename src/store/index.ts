@@ -117,7 +117,8 @@ const store = create(
 								confirm: () => {},
 								cancel: () => {}
 							}
-						}
+						},
+						chooseState: null
 					})
 			}))
 		),
