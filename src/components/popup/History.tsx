@@ -174,7 +174,7 @@ const History = () => {
 									<div key={piece.pieceIndex} className="flex flex-col items-center dashed-box w-full p-4 space-y-6">
 										<h3 className="text-graytext text-xs">from. {piece.nickname}</h3>
 										<p className="break-all text-center">{piece.memoContent}</p>
-										<span className="text-mainTeal text-xs">{piece.selectedBy}</span>
+										<span className="text-mainTeal text-xs">{formatDate(piece.selectedDate)}</span>
 									</div>
 								))}
 							</>
