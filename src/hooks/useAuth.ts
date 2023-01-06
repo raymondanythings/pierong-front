@@ -60,7 +60,7 @@ const useAuth = (url?: string) => {
 			urlSearchParam.append('scope', OAUTH_URLS[type].params.scope!)
 		}
 		if (url) {
-			sessionStorage.setItem('redirect_url', url ?? '/')
+			localStorage.setItem('redirect_url', url ?? '/')
 		}
 		window.location.assign(`${OAUTH_URLS[type].baseUrl}${urlSearchParam.toString()}`)
 	}
