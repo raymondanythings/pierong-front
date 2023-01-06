@@ -33,6 +33,7 @@ const CompletePie = () => {
 			}
 		}
 	)
+
 	const onSelectFeve = () => {
 		setPopup({
 			key: 'selectFeve',
@@ -45,10 +46,10 @@ const CompletePie = () => {
 		<div>
 			<div className="p-4 flex flex-col space-y-4">
 				<div className="flex flex-col space-y-2">
-					{userData?.crownId ? (
+					{pieData?.userPieCount ? (
 						<h1 className="text-center text-base">
 							축하합니다! <span className="text-mainTeal">{userData?.nickname}님</span>의<br />
-							<span className="text-mainTeal">{formatOrdianl(+userData.crownId)} 파이</span>가 모두 소진 되었어요!
+							<span className="text-mainTeal">{formatOrdianl(+pieData.userPieCount)} 파이</span>가 모두 소진 되었어요!
 						</h1>
 					) : null}
 					<p className="text-center text-graytext font-thin text-[8px]">(내가얻은 업적들은 메뉴바 MY창에서 확인가능해요!)</p>

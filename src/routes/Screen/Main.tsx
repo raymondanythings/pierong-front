@@ -33,6 +33,34 @@ const signTitleVariants: Variants = {
 	}
 }
 
+const domVariants: Variants = {
+	initial: {
+		transformOrigin: 'right bottom',
+		rotateZ: 180
+	},
+	animate: (isInitial: boolean) => {
+		return {
+			transformOrigin: isInitial ? 'center' : 'right bottom',
+			translateZ: isInitial ? [-100, 0, 100, 0] : 0,
+			rotateZ: isInitial ? [0, -10, 0, 10, 0, -5, 0, 5, 0, -3, 0, 3, 0, -1, 0, 1, 0] : 0,
+			transition: isInitial
+				? { delay: 3, duration: 0.7, type: 'spring', damping: 2, repeat: Infinity, repeatDelay: 3 }
+				: {
+						easings: ['circIn', 'circInOut'],
+						duration: 1.3
+				  }
+		}
+	},
+	exit: {
+		transformOrigin: 'right bottom',
+		rotateZ: 180,
+		transition: {
+			easings: ['circIn', 'circInOut'],
+			duration: 1.3
+		}
+	}
+}
+
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const navigate = useNavigate()
 	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, owner, setOwner } = store()
@@ -54,7 +82,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			setOwner({ ...data, userId })
 		}
 	})
-
+	const [shakeCustom, setShakeCustom] = useState(false)
 	const howToAnimate = useAnimation()
 
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
@@ -298,23 +326,19 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						{!pieData || pieData.bakingStatus === '03' || pieData.bakingStatus === '02' ? (
 							<motion.div
 								layoutId="pieSection"
-								initial={{
-									transformOrigin: 'right bottom',
-									rotateZ: 180
+								variants={domVariants}
+								onAnimationComplete={(def) => {
+									if (def === 'animate' && !pieData) {
+										setShakeCustom(true)
+									} else {
+										setShakeCustom(false)
+									}
 								}}
-								animate={{
-									transformOrigin: 'right bottom',
-									rotateZ: 0
-								}}
-								exit={{
-									transformOrigin: 'right bottom',
-									rotateZ: 180
-								}}
-								transition={{
-									easings: ['circIn', 'circInOut'],
-									duration: 1.3
-								}}
+								initial="initial"
+								animate="animate"
+								exit="exit"
 								onClick={isMe ? onSelectFeve : () => {}}
+								custom={shakeCustom}
 								className="absolute -top-[65%] -left-[7%] max-w-[102%] z-10"
 							>
 								<img src="/image/dom.png" />
@@ -345,26 +369,55 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						}}
 					>
 						<div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
-							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col" onClick={() => {
-								window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
-							}}>
+							<div
+								className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col"
+								onClick={() => {
+									window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
+								}}
+							>
 								<img className="w-6" src="/image/icon/survey.png" />
 								<span className="text-[8px] leading-3">설문조사</span>
 							</div>
 						</div>
-						<div className="w-[180px] h-[60px] border border-solid p-1 flex justify-center items-center">
-							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5">
-								<div className="relative">
-									{user.nickname}
-									<small
-										className="ml-1"
-										style={{
-											fontSize: '0.75em'
-										}}
+						<div className="h-[60px] border border-solid p-1 flex justify-center items-center relative">
+							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 space-x-2 px-2">
+								<div className="">
+									<svg
+										width="25"
+										height="25"
+										viewBox="0 0 25 25"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+										xmlnsXlink="http://www.w3.org/1999/xlink"
 									>
-										의 베이킹룸
-									</small>
-									{isMe ? (
+										<rect width="25" height="25" fill="url(#crown)" />
+										<defs>
+											<pattern id="crown" patternContentUnits="objectBoundingBox" width="1" height="1">
+												<use xlinkHref="#crown_sm" transform="scale(0.0208333)" />
+											</pattern>
+											<image
+												id="crown_sm"
+												width="48"
+												height="48"
+												xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADZElEQVR4nO1ZzWsTQRQfrR9139uECmoFFbUKiiDowepBikcpfvwBgp4E8dIP0VPsyQpqFU+iggf1FNp9s7HWW9OevIh4qApJZ9IWW/UifraC2siktU2T3cxumpIN5gfvEnZ/7/ebee/tMGGsiiqqWBKkLNwtOL4SHAYSPWs2sUrCaG+4ThIkJce0CkH4cjzGDFYJSEdZjeDY90/8XBA+ZpUASdiVJ35uJ6CdBRnCglNu4jMGOP5JWcZRFkSkuLFPEP4oZGB2Fz4l7dAOFiQIGzZIjmM68Vkm3opoXZgFAS/uspWCYNCr+CwTPN3BlpdbPxOEt/2Kz5pMlxYtQHLskARfBGG/tLDJ9/uEo8UaEATPfeezsElpne23y2oFx3MmRdyPEUl4VnD87V88TqUIT/oSrrQt1DqpDPS7jDzPRpQQNSJ9ibfMQ8UKn9cIb5jkcEUzu+PqXKNNRPDAR+1HdHxJG/a4CZ8PuM8Emcc8JBzS7gKHI14NJKxQg45PEL7T8aTIPMMSUVwnCKd1D6szTqGEI3Z4m2cDfWx1Ia50lNV44Rl+Yu7MvCAJEnq34a2aFTvs1cBod3h7Ia6EFWrwwPMxnWbLZpJzfOihjC4WNgB3StUDkjCi4xAE1nxyC8/pk8JXYcNeR/HcbPYzSmdmuNnoKJ6bjR7PVO0LDmLeksNn9aKI1W4ZirJVqRjuEgTXJOEvz6ufbYIwospFcWXKhjDiRXympG3zYE7TwDe/IsoVguOkMp1TBrqZG5wQBIMOjQOd5RYmvQZBp1PzHK+cEjKb8wwM98D60m2xOqhBS6rXqB/pMTYKDq3qtxJxT49FQ2ud5y+HYQ8kT9U9jwrH24fMRw9a8kcttBXLJxcYgNeO4mf6AB/pCLIvqZJUu9nRQK9Rn8utdqJYPrnQwD1XA4LD+VIYUGKXyoC0jdOuBkZixn59A2GfSqRCED5zfgba8nfXuFAsn8yKgjca8ThbIQi+l6DRppQJteqZJiZol4Q/F8srCT+4is8qo4FFJ1qygG6tAUlwtfxC0aV8oVVvwMYTgTVghQ5oDVRRTqTirFZwvCUI3wev/nFCEt5UGl0NKPHlFip1QdjlbiCAKy/9fAsqwYAgHC/q76GghOB4vWATKxOZhgme8AnJ8YbuUqyKKv43/AVM/rp4B1oxuAAAAABJRU5ErkJggg=="
+											/>
+										</defs>
+									</svg>
+								</div>
+								<div className="relative flex items-center">
+									<strong className="text-base">
+										{user.nickname}
+										<small
+											className="ml-1"
+											style={{
+												fontSize: '0.75em'
+											}}
+										>
+											의 베이킹룸
+										</small>
+									</strong>
+
+									{/* {isMe ? (
 										<img
 											onClick={() => {
 												setPopup({
@@ -374,10 +427,10 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 													btnHide: true
 												})
 											}}
-											className="w-3 h-3 ml-1 absolute top-1/2  -translate-y-1/2 left-full"
+											className="w-3 h-3 ml-1"
 											src="/image/icon/pancel.png"
 										/>
-									) : null}
+									) : null} */}
 								</div>
 							</div>
 						</div>

@@ -41,9 +41,9 @@ const MyPage = () => {
 	}, [])
 	return (
 		<div className="w-full px-4 flex flex-col space-y-4">
-			<div className="mx-auto w-[180px] h-[60px] flex justify-center items-center bg-mainTeal p-2 z-30 border border-solid max-w-screen-default">
-				<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5">
-					<div className="relative">
+			<div className="mx-auto h-[60px] flex justify-center items-center bg-mainTeal p-2 z-30 border border-solid max-w-screen-default">
+				<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5 px-2">
+					<div className="relative flex items-center">
 						{user?.nickname}
 						<small
 							className="ml-1"
@@ -62,7 +62,7 @@ const MyPage = () => {
 									btnHide: true
 								})
 							}}
-							className="w-3 h-3 ml-1 absolute top-1/2  -translate-y-1/2 left-full"
+							className="w-3 h-3 ml-1"
 							src="/image/icon/pancel.png"
 						/>
 					</div>

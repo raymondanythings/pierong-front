@@ -39,8 +39,8 @@ const NickNameChangePopup = ({ refetch, title = '닉네임 변경' }: { refetch?
 						{...register('nickname', {
 							required: '2글자 이상 입력해주세요.',
 							maxLength: {
-								value: 10,
-								message: '최대 10글자 까지 가능합니다.'
+								value: 7,
+								message: '최대 7글자 까지 가능합니다.'
 							},
 							minLength: {
 								value: 2,

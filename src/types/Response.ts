@@ -38,6 +38,7 @@ interface UserPie {
 	piecesNumber: number
 	userPieId: string
 	userPiePiece: PiePiece[]
+	userPieCount?: string
 	userPieFeve?: UserPieFeve
 	createdDate?: string
 	completedDate?: string
