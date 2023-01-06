@@ -70,6 +70,8 @@ const useAuth = (url?: string) => {
 			const isLoggedOut = await LoginApi.logOut({ email: user?.email })
 
 			if (isLoggedOut) {
+				localStorage.removeItem('X-ACCESS-TOKEN')
+				localStorage.removeItem('X-REFRESH-TOKEN')
 				refreshAccount()
 			}
 		}
