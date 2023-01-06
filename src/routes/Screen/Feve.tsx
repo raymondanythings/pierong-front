@@ -45,8 +45,8 @@ const Feve = () => {
 					<span className="py-2 text-center border-b border-solid">{owner?.nickname}'s CROWN</span>
 					{owner ? (
 						<div className="flex flex-col justify-center items-center space-y-4 py-4">
-							<div className="w-2/5 rotate-[25deg] relative -left-[2%]">
-								<img src={CROWN[`CROWN_${owner.rank ?? 1}`]} />
+							<div className="w-2/5 relative -left-[2%]">
+								<img src={CROWN[`CROWN_FORWARD_${owner.rank ?? 1}`]} />
 							</div>
 							<div className="flex justify-center items-center bg-mainTeal p-1 border border-solid">
 								<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5 py-1 px-6">

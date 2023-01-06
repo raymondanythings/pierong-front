@@ -19,6 +19,7 @@ import PiePiece from 'components/PiePiece'
 import SelectFeve from 'components/popup/SelectFeve'
 import { useTitle } from 'hooks/useTitle'
 import { useNavigate } from 'react-router-dom'
+import CompletePie from 'components/popup/CompletePie'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -41,6 +42,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		refetchOnWindowFocus: false,
 		enabled: !!userId
 	})
+
 	const { data: userResponse, refetch: userRefetch } = useQuery(['room', 'user', userId], () => UserApi.getUserDetail(userId), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -82,6 +84,11 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			if (isCreateSuccess) {
 				refreshPopup()
 				refetch()
+				setPopup({
+					key: 'sharePopup',
+					isOpen: true,
+					btnHide: true
+				})
 			}
 		},
 		[userId]
@@ -104,6 +111,13 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			howToAnimate.start('animate')
 		} else {
 			howToAnimate.stop()
+		}
+		if (pieData?.bakingStatus === '02' && isMe) {
+			setPopup({
+				key: 'pie-done',
+				isOpen: true,
+				btnHide: true
+			})
 		}
 	}, [pieData])
 
@@ -234,23 +248,29 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						<img className="absolute top-[13%] -left-[43%] max-w-[73.5%] z-10" draggable={false} src={PIES.Piece} />
 					</div>
 					<AnimatePresence>
-						{data.userPieId ? (
-							pies.map((pie) => (
-								<PiePiece
-									key={pie.id}
-									pie={pie}
-									startX={startX}
-									startY={startY}
-									endX={endX}
-									endY={endY}
-									onDragEnd={onDragEnd}
-								/>
-							))
-						) : (
+						{data.userPieId
+							? pies.map((pie) => (
+									<PiePiece
+										key={pie.id}
+										pie={pie}
+										startX={startX}
+										startY={startY}
+										endX={endX}
+										endY={endY}
+										onDragEnd={onDragEnd}
+									/>
+							  ))
+							: null}
+						{!pieData || pieData.bakingStatus === '03' || pieData.bakingStatus === '02' ? (
 							<motion.div
 								layoutId="pieSection"
 								initial={{
-									transformOrigin: 'right bottom'
+									transformOrigin: 'right bottom',
+									rotateZ: 180
+								}}
+								animate={{
+									transformOrigin: 'right bottom',
+									rotateZ: 0
 								}}
 								exit={{
 									transformOrigin: 'right bottom',
@@ -265,7 +285,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 							>
 								<img src="/image/dom.png" />
 							</motion.div>
-						)}
+						) : null}
 					</AnimatePresence>
 				</div>
 
@@ -349,6 +369,18 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			) : popup?.key === 'selectFeve' ? (
 				<Modal icon="pancel">
 					<SelectFeve onSelect={handleCreatePie} />
+				</Modal>
+			) : popup?.key === 'sharePopup' ? (
+				<Modal>
+					<div className="px-2 flex flex-col items-center justify-center relative h-full space-y-3">
+						<p className="text-center leading-5">파이가 구워졌어요 친구들에게 공유해 파이조각마다 메세지를 받아보세요!</p>
+
+						<button className="modal-btn mx-auto">공유하기</button>
+					</div>
+				</Modal>
+			) : popup?.key === 'pie-done' ? (
+				<Modal>
+					<CompletePie />
 				</Modal>
 			) : null}
 		</div>
