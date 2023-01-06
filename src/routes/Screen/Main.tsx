@@ -156,7 +156,8 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					setDragState({
 						state: 'idle',
 						dragged: null,
-						item: null
+						item: null,
+						enter: false
 					})
 				} else {
 					setPopup({
@@ -168,7 +169,8 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 								setDragState({
 									state: 'idle',
 									dragged: null,
-									item: null
+									item: null,
+									enter: false
 								})
 								refreshPopup()
 							}
@@ -304,12 +306,12 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						exit="exit"
 						animate="animate"
 						initial="initial"
-						className="fixed bottom-0 w-[180px] h-[60px] flex justify-center items-center bg-mainTeal p-2 z-30 border border-solid max-w-screen-default"
+						className={`fixed bottom-0 w-[180px] h-[60px] flex justify-center items-center p-2 z-30 border border-solid max-w-screen-default bg-mainTeal`}
 						style={{
 							right: 'var(--main-mr)'
 						}}
 					>
-						<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5">
+						<div className="border-[#EAE6DA] bg-mainTeal border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5">
 							<div className="relative">
 								{user.nickname}
 								<small

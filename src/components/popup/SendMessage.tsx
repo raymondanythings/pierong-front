@@ -83,7 +83,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 			} catch (err) {
 				const { response } = err as unknown as AxiosError<{ code: string; message: string }>
 				if (response?.data.code === '3003') {
-					setError('memoContent', { message: '파이당 한 조각만 선택 가능합니다.', type: 'validate' })
+					setError('memoContent', { message: '한 조각만 선택 가능합니다.', type: 'validate' })
 				}
 			}
 		},
