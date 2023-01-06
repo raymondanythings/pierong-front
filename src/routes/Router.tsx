@@ -18,7 +18,7 @@ const router = createBrowserRouter(
 				<Route path=":userId" element={<BakingRoom />} />
 			</Route>
 			<Route path="privacy" element={<Privacy />} />
-			{/* <Route path="*" element={<Navigate to="/" />} /> */}
+			<Route path="*" element={<Navigate to="/" />} />
 		</Route>
 	)
 )

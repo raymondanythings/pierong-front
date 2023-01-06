@@ -82,7 +82,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		async (feveId: string) => {
 			const isCreateSuccess = await PieApi.createPie(feveId)
 			if (isCreateSuccess) {
-				refreshPopup()
 				refetch()
 				setPopup({
 					key: 'sharePopup',
