@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 import { UserApi } from 'api'
 import useAuth from 'hooks/useAuth'
+import useCopyClipboard from 'hooks/useCopyClipboard'
 
 const social = {
 	google: {
@@ -27,6 +28,7 @@ const MyPage = () => {
 	const { logout } = useAuth()
 	const [isThisTrue, setIsThisTrue] = useState(false)
 	const { user, setPopup } = store((state) => ({ user: state.user, setPopup: state.setPopup }))
+	const { copyUrlOnClipboard } = useCopyClipboard()
 
 	const onLogout = useCallback(() => {
 		logout()
@@ -92,7 +94,9 @@ const MyPage = () => {
 				</span>
 			</div>
 			<div className="flex justify-center space-x-2">
-				<button className="modal-btn py-1.5 text-sm font-normal min-w-min px-6">공유하기</button>
+				<button onClick={copyUrlOnClipboard} className="modal-btn py-1.5 text-sm font-normal min-w-min px-6">
+					공유하기
+				</button>
 				<button onClick={onLogout} className="modal-btn py-1.5 text-sm font-normal min-w-min px-6">
 					로그아웃
 				</button>

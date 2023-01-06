@@ -1,6 +1,7 @@
 import { UserApi } from 'api'
 import { UserHistory } from 'api/user'
 import Loading from 'components/animation/Loading'
+import useCopyClipboard from 'hooks/useCopyClipboard'
 import { formatDate, formatOrdianl, numberToKr } from 'libs/utils'
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
@@ -105,8 +106,9 @@ const History = () => {
 		enabled: !!ownerDetail?.userId
 	})
 
+	const { copyUrlOnClipboard } = useCopyClipboard()
 	const openedLockIndex = useMemo(() => owner.length, [owner.length])
-	// EAE6DA
+
 	useLayoutEffect(() => {
 		refetch()
 
@@ -189,7 +191,9 @@ const History = () => {
 							<br />
 							친구들에게 어서 공유해보세요!
 						</p>
-						<button className="modal-btn">공유하기</button>
+						<button onClick={copyUrlOnClipboard} className="modal-btn">
+							공유하기
+						</button>
 					</div>
 				)}
 			</div>

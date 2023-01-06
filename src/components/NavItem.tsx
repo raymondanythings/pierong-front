@@ -33,6 +33,7 @@ const navItemVariants: Variants = {
 type NavKey = 'history' | 'feve' | 'share' | 'mypage'
 const NavItem = () => {
 	const navigate = useNavigate()
+	const { copyUrlOnClipboard } = useCopyClipboard()
 	const { setPopup } = store((state) => ({
 		setPopup: state.setPopup
 	}))
@@ -40,12 +41,15 @@ const NavItem = () => {
 	const onNavClick = (key: NavKey) => {
 		if (key === 'feve') {
 			navigate('/room/feve', { relative: 'route' })
+		} else if (key === 'share') {
+			copyUrlOnClipboard()
+		} else {
+			setPopup({
+				key,
+				isOpen: true,
+				btnHide: true
+			})
 		}
-		setPopup({
-			key,
-			isOpen: true,
-			btnHide: true
-		})
 	}
 
 	return (

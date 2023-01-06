@@ -1,8 +1,9 @@
 import { PieApi, UserApi } from 'api'
 import CROWN from 'assets/crown'
-import { formatDate, formatOrdianl, numberToKr } from 'libs/utils'
-import React from 'react'
-import { QueryCache, useQuery } from 'react-query'
+import { formatDate, formatOrdianl } from 'libs/utils'
+import * as animationData from 'lottie/twinkle5.json'
+import Lottie from 'react-lottie'
+import { useQuery } from 'react-query'
 import store from 'store'
 
 const CompletePie = () => {
@@ -55,7 +56,22 @@ const CompletePie = () => {
 					<p className="text-center text-graytext font-thin text-[8px]">(내가얻은 업적들은 메뉴바 MY창에서 확인가능해요!)</p>
 				</div>
 				<div className="shadow-btn text-mainTeal py-1">왕관 업그레이드</div>
-				<div className="flex justify-between gap-x-2 border border-dashed rounded-lg p-4 aspect-[3/1]">
+				<div className="flex relative overflow-hidden w-full justify-between gap-x-2 border border-dashed rounded-lg p-4">
+					<div className="absolute top-0 left-0 w-[150%] h-[150%]">
+						<Lottie
+							isClickToPauseDisabled
+							options={{
+								animationData,
+								autoplay: true,
+
+								rendererSettings: {
+									preserveAspectRatio: 'xMidYMid slice',
+									clearCanvas: true
+								},
+								loop: true
+							}}
+						/>
+					</div>
 					<div className="flex-1 flex items-center">
 						<img className="flex-1 mx-auto" src={CROWN[`CROWN_FORWARD_${userData?.rank ?? 1}`]} />
 					</div>
@@ -68,7 +84,21 @@ const CompletePie = () => {
 					</div>
 				</div>
 				<div className="shadow-btn text-mainTeal py-1">얻은 페브</div>
-				<div className="flex justify-between gap-x-2 border border-dashed rounded-lg p-4">
+				<div className="flex relative overflow-hidden justify-between gap-x-2 border border-dashed rounded-lg p-4">
+					<div className="absolute top-0 left-0 w-[150%] h-[150%]">
+						<Lottie
+							isClickToPauseDisabled
+							options={{
+								animationData,
+								autoplay: true,
+								rendererSettings: {
+									preserveAspectRatio: 'xMidYMid slice',
+									clearCanvas: true
+								},
+								loop: true
+							}}
+						/>
+					</div>
 					<div className="flex-1">
 						<img className="mx-auto max-w-[70%]" src={`/image/feve/${pieData?.userPieFeve?.feveId}.png`} />
 					</div>
