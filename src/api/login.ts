@@ -19,20 +19,23 @@ const checkAccessToken = async (token: string) => {
 }
 
 const checkRefreshToken = async (refreshToken: string) => {
-	const { data: { data: { atk = null } = {} } = {} } = await axios.post<{ code: string; data: { atk: string } }>(
-		'/login/reissue',
-		{},
-		{
-			headers: {
-				'X-ACCESS-TOKEN': refreshToken
+	try {
+		const { data: { data: { atk = null } = {} } = {} } = await axios.post<{ code: string; data: { atk: string } }>(
+			'/login/reissue',
+			{},
+			{
+				headers: {
+					'X-ACCESS-TOKEN': refreshToken
+				}
 			}
+		)
+		if (atk) {
+			localStorage.setItem('X-ACCESS-TOKEN', atk)
 		}
-	)
-	if (atk) {
-		localStorage.setItem('X-ACCESS-TOKEN', atk)
+		return atk || null
+	} catch (err) {
+		return null
 	}
-
-	return atk || null
 }
 
 const getToken = async ({ type, code, url }: { type?: string | null; code?: string | null; url: string }) => {
