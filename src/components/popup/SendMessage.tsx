@@ -50,6 +50,10 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 		maxLength: {
 			value: 100,
 			message: '최대 100글자 까지 가능합니다.'
+		},
+		minLength: {
+			value: 10,
+			message: '친구에게 10글자 이상 써주세요!'
 		}
 	})
 

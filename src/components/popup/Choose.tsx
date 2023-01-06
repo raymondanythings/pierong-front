@@ -61,7 +61,8 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 								animationData,
 								autoplay: true,
 								rendererSettings: {
-									preserveAspectRatio: 'xMidYMid slice'
+									preserveAspectRatio: 'xMidYMid slice',
+									clearCanvas: true
 								},
 								loop: true
 							}}
