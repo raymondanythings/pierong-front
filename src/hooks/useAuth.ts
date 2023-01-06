@@ -1,6 +1,5 @@
 import { LoginApi } from 'api'
 import { useCallback } from 'react'
-import { useLocation } from 'react-router-dom'
 import store from 'store'
 import { oauthService } from 'types'
 

@@ -8,12 +8,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import store from 'store'
 import { Tokens } from 'types'
 
-interface OAuthProps {
-	type: 'google' | 'naver' | 'kakao'
-	code: string
-	user: any
-}
-
 const OAuth = () => {
 	const { search } = useLocation()
 	const {} = useTitle('파이롱 | 로그인')

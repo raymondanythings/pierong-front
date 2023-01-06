@@ -9,7 +9,6 @@ axios.interceptors.response.use(
 		return response
 	},
 	async (rejected) => {
-		console.log(rejected)
 		if (rejected.response?.status === 401 && rejected.response?.data.code === '1002') {
 			const refreshToken = localStorage.getItem('X-REFRESH-TOKEN')
 			if (refreshToken) {

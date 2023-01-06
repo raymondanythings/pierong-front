@@ -18,7 +18,7 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 		state.user
 	])
 	const { copyUrlOnClipboard } = useCopyClipboard({
-		title: `${loggedInUser?.nickname}님이 페브에 당첨됬어요🎉`
+		title: `${loggedInUser?.nickname}님이 페브에 당첨됐어요🎉`
 	})
 	// const onCaptureImage = useCallback(() => {
 	// 	const main = document.querySelector('main')
