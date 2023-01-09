@@ -374,7 +374,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 							right: 'var(--main-mr)'
 						}}
 					>
-						<div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
+						{/* <div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
 							<div
 								className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col"
 								onClick={() => {
@@ -384,7 +384,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 								<img className="w-6" src="/image/icon/survey.png" />
 								<span className="text-[8px] leading-3">설문조사</span>
 							</div>
-						</div>
+						</div> */}
 						<div className="h-[60px] border border-solid p-1 flex justify-center items-center relative">
 							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 space-x-2 px-2">
 								{isMe ? (

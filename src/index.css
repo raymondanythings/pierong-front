@@ -86,6 +86,9 @@
 	.dashed-box {
 		@apply border border-dashed rounded-lg;
 	}
+	.solid-box {
+		@apply border border-solid;
+	}
 
 	.shadow-btn {
 		@apply flex w-full justify-center text-sm border-solid border-mainTeal rounded-xl border shadow-btnShadow;

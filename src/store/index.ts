@@ -24,6 +24,8 @@ interface IStore<T = any, S = any> {
 	setUser: (user: User) => void
 	setNav: () => void
 	showNav: boolean
+	toggleNav: boolean
+	setToggleNav: (flag: boolean) => void
 	setTokens: (tokens: Tokens) => void
 	dragState: {
 		enter: boolean
@@ -58,7 +60,10 @@ const store = create(
 				owner: null,
 				setOwner: (owner) => set({ owner }),
 				popup: undefined,
-
+				toggleNav: false,
+				setToggleNav(flag) {
+					set({ toggleNav: flag })
+				},
 				clickedPieState: {
 					state: 'idle',
 					item: null
