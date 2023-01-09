@@ -87,7 +87,7 @@ const Menus = () => {
 					right: 'calc(var(--main-mr))'
 				}}
 			>
-				<div className="flex flex-col bg-mainBeige solid-box border-r-0 w-full h-full rounded-l-2xl p-3 ">
+				<div className="flex flex-col bg-mainBeige solid-box border-r-0 w-full h-full rounded-l-2xl p-3 overflow-y-scroll">
 					<div>
 						<div className="py-2 flex justify-end mb-2">
 							<svg
