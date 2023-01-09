@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import store from 'store'
 import Lottie from 'react-lottie'
 interface PiePieceProps {
+	isMe: boolean
 	dragged?: boolean
 	pie: Pie
 	startX: number
@@ -13,7 +14,7 @@ interface PiePieceProps {
 	onDragEnd?: (...rest: any) => void
 }
 
-const PiePiece: FC<PiePieceProps> = ({ dragged = true, startX, endX, startY, endY, pie, onDragEnd }) => {
+const PiePiece: FC<PiePieceProps> = ({ isMe, dragged = true, startX, endX, startY, endY, pie, onDragEnd }) => {
 	const { dragState, setDragState, setClickedState, setPopup, refreshPopup } = store((state) => ({
 		dragState: state.dragState,
 		setDragState: state.setDragState,
@@ -108,7 +109,7 @@ const PiePiece: FC<PiePieceProps> = ({ dragged = true, startX, endX, startY, end
 		<motion.div
 			key={pie.src}
 			layoutId={`pie-clicked-${pie.id}`}
-			onClick={() => handleClickPie(pie)}
+			onClick={() => !isMe && handleClickPie(pie)}
 			className="absolute"
 			style={{
 				maxWidth: pie.width + '%',

@@ -49,6 +49,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 	} = useForm<MessageForm>()
 
 	const { ref, ...rest } = register('memoContent', {
+		required: '친구에게 10글자 이상 써주세요!',
 		maxLength: {
 			value: 100,
 			message: '최대 100글자 까지 가능합니다.'
@@ -75,8 +76,9 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 					ownerEmail,
 					userPieId,
 					memoContent: data.memoContent,
-					pieceIndex: dragState.dragged.id
+					pieceIndex: dragState.item ? dragState.dragged.id : clickedState.item?.id
 				})
+
 				if (res.message === 'SUCCESS') {
 					if (res.data) {
 						setChoosed(res.data)

@@ -317,6 +317,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						{data.userPieId
 							? pies.map((pie) => (
 									<PiePiece
+										isMe={!!isMe}
 										dragged={false}
 										key={pie.id}
 										pie={pie}
