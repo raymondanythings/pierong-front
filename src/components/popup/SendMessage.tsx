@@ -45,18 +45,24 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 		register,
 		handleSubmit,
 		setError,
+		watch,
 		formState: { errors }
-	} = useForm<MessageForm>()
+	} = useForm<MessageForm>({
+		mode: 'onChange',
+		defaultValues: {
+			memoContent: ''
+		}
+	})
 
 	const { ref, ...rest } = register('memoContent', {
 		required: '친구에게 10글자 이상 써주세요!',
 		maxLength: {
-			value: 100,
-			message: '최대 100글자 까지 가능합니다.'
+			value: 200,
+			message: '최대 200글자 까지 가능합니다.'
 		},
 		minLength: {
-			value: 10,
-			message: '친구에게 10글자 이상 써주세요!'
+			value: 5,
+			message: '친구에게 5글자 이상 써주세요!'
 		}
 	})
 
@@ -135,7 +141,9 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 					}}
 					onKeyDown={handleResizeHeight}
 				/>
-				<h1 className="text-xs font-bold text-mainTeal">최대 100자까지 입력가능</h1>
+				<h1 className={`text-xs font-bold text-mainTeal ${errors?.memoContent?.type === 'maxLength' ? 'text-red-300' : ''}`}>
+					({watch('memoContent').length ?? 0}/200)
+				</h1>
 			</div>
 			<ErrorMessage className="text-center text-red-300 mt-2" errors={errors} name="memoContent" as="h3" />
 			<button
