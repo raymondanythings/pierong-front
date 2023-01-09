@@ -15,7 +15,8 @@ interface PiePieceProps {
 }
 
 const PiePiece: FC<PiePieceProps> = ({ isMe, dragged = true, startX, endX, startY, endY, pie, onDragEnd }) => {
-	const { dragState, setDragState, setClickedState, setPopup, refreshPopup } = store((state) => ({
+	const { isLogin, dragState, setDragState, setClickedState, setPopup, refreshPopup } = store((state) => ({
+		isLogin: state.isLogin,
 		dragState: state.dragState,
 		setDragState: state.setDragState,
 		clickedState: state.clickedPieState,
@@ -26,6 +27,31 @@ const PiePiece: FC<PiePieceProps> = ({ isMe, dragged = true, startX, endX, start
 
 	const handleClickPie = useCallback(
 		(pie: Pie) => {
+			if (!isLogin) {
+				setPopup({
+					isOpen: true,
+					key: 'login',
+					payload: {
+						cancel(data) {
+							setDragState({
+								state: 'idle',
+								dragged: null,
+								item: null
+							})
+							refreshPopup()
+						},
+						confirm() {
+							setDragState({
+								state: 'idle',
+								dragged: null,
+								item: null
+							})
+							refreshPopup()
+						}
+					}
+				})
+				return
+			}
 			setClickedState({
 				state: 'clicked',
 				item: pie
