@@ -1,4 +1,4 @@
-name: Deploy to cloudtype
+name: 개발계-workflow-${{ steps.date.outputs.date }}
 on:
     push:
         branches:

@@ -1,4 +1,4 @@
-name: Deploy to cloudtype
+name: 운영계 workflow
 on:
     push:
         branches:
