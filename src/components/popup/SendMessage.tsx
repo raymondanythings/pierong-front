@@ -8,6 +8,7 @@ import Choose from './Choose'
 import { FeveDetail } from 'types/Response'
 import { UserDetail } from 'types'
 import NotChoose from './NotChoose'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface MessageForm {
 	memoContent: string
@@ -21,7 +22,8 @@ interface SendMessageProps {
 }
 
 const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, owner }) => {
-	const { chooseState, nickname, refreshPopup, setDragState, dragState } = store((state) => ({
+	const { chooseState, nickname, refreshPopup, setDragState, dragState, clickedState } = store((state) => ({
+		clickedState: state.clickedPieState,
 		nickname: state.user?.nickname,
 		setDragState: state.setDragState,
 		dragState: state.dragState,
@@ -101,6 +103,25 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 	) : (
 		<form className="flex flex-col w-full px-4" onSubmit={handleSubmit(onChoosePie)}>
 			<div className="border-dashed border rounded-lg flex flex-col items-center space-y-4 py-3">
+				{clickedState.item ? (
+					<motion.div layoutId={`pie-clicked-${clickedState.item.id}`} className="flex flex-col space-y-2 items-center">
+						<p
+							style={{
+								fontSize: '8px'
+							}}
+						>
+							이걸로 할래요!
+						</p>
+						<div
+							className="w-1/3"
+							style={{
+								maxWidth: clickedState.item.width + '%'
+							}}
+						>
+							<img draggable={false} className="object-contain" src={clickedState.item.src} />
+						</div>
+					</motion.div>
+				) : null}
 				<h1 className="text-sm text-[#767676]">from. {nickname}</h1>
 				<textarea
 					{...rest}

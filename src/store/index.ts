@@ -2,7 +2,7 @@ import create from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { axios } from 'api'
-import { PopupType, Tokens, User, UserDetail } from 'types'
+import { Pie, PopupType, Tokens, User, UserDetail } from 'types'
 
 type DragState = 'idle' | 'dragging' | 'pending' | 'complete'
 interface PopupTypeArgs extends PopupType {
@@ -32,6 +32,11 @@ interface IStore<T = any, S = any> {
 		dragged: S
 	}
 	isMobile: boolean
+	clickedPieState: {
+		state: 'clicked' | 'idle'
+		item?: Pie | null
+	}
+	setClickedPieState: (props: { state: 'clicked' | 'idle'; item?: Pie | null }) => void
 	setDragState: (flag: { enter?: boolean; state?: DragState; dragged?: T; item?: T }) => void
 	refreshAccount: () => void
 	refreshPopup: () => void
@@ -53,6 +58,17 @@ const store = create(
 				owner: null,
 				setOwner: (owner) => set({ owner }),
 				popup: undefined,
+
+				clickedPieState: {
+					state: 'idle',
+					item: null
+				},
+				setClickedPieState: (flag) =>
+					set({
+						clickedPieState: {
+							...flag
+						}
+					}),
 				chooseState: null,
 				setPopup: ({ btnText = '확인', payload = {}, ...rest }) =>
 					set((state) => {

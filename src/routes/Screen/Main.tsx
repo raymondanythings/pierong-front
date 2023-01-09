@@ -63,7 +63,7 @@ const domVariants: Variants = {
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const navigate = useNavigate()
-	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, owner, setOwner } = store()
+	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, setOwner, clickedPieState } = store()
 	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -313,6 +313,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						{data.userPieId
 							? pies.map((pie) => (
 									<PiePiece
+										dragged={false}
 										key={pie.id}
 										pie={pie}
 										startX={startX}
@@ -347,11 +348,11 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					</AnimatePresence>
 				</div>
 
-				<div className="max-w-[59%] top-[65.5%]" draggable={false}></div>
+				{/* <div className="max-w-[59%] top-[65.5%]" draggable={false}></div> */}
 
-				<div className="">
+				{/* <div className="">
 					<CompleteButton className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid" />
-				</div>
+				</div> */}
 
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>

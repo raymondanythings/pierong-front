@@ -1,9 +1,10 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import type { Pie } from 'types'
 import { motion } from 'framer-motion'
 import store from 'store'
 import Lottie from 'react-lottie'
 interface PiePieceProps {
+	dragged?: boolean
 	pie: Pie
 	startX: number
 	startY: number
@@ -12,12 +13,40 @@ interface PiePieceProps {
 	onDragEnd?: (...rest: any) => void
 }
 
-const PiePiece: FC<PiePieceProps> = ({ startX, endX, startY, endY, pie, onDragEnd }) => {
-	const { dragState, setDragState } = store((state) => ({
+const PiePiece: FC<PiePieceProps> = ({ dragged = true, startX, endX, startY, endY, pie, onDragEnd }) => {
+	const { dragState, setDragState, setClickedState, setPopup, refreshPopup } = store((state) => ({
 		dragState: state.dragState,
-		setDragState: state.setDragState
+		setDragState: state.setDragState,
+		clickedState: state.clickedPieState,
+		setClickedState: state.setClickedPieState,
+		setPopup: state.setPopup,
+		refreshPopup: state.refreshPopup
 	}))
-	return (
+
+	const handleClickPie = useCallback(
+		(pie: Pie) => {
+			setClickedState({
+				state: 'clicked',
+				item: pie
+			})
+			setPopup({
+				isOpen: true,
+				key: 'sendMessage',
+				btnHide: true,
+				payload: {
+					cancel: () => {
+						setClickedState({
+							state: 'idle',
+							item: null
+						})
+						refreshPopup()
+					}
+				}
+			})
+		},
+		[dragged]
+	)
+	return dragged ? (
 		<motion.div
 			key={pie.src}
 			layoutId={`pie-${pie.id}`}
@@ -51,6 +80,35 @@ const PiePiece: FC<PiePieceProps> = ({ startX, endX, startY, endY, pie, onDragEn
 				}
 			}}
 			drag
+			className="absolute"
+			style={{
+				maxWidth: pie.width + '%',
+				top: pie.top + '%',
+				left: pie.left + '%',
+				zIndex: dragState?.item?.id === pie.id ? 100 : pie.z ? pie.z : 4
+			}}
+		>
+			<div className="absolute left-1/2 -translate-x-1/2 z-[1]">
+				<Lottie
+					isClickToPauseDisabled
+					direction={3}
+					options={{
+						animationData: require('lottie/smog.json'),
+						autoplay: true,
+						loop: true,
+						rendererSettings: {
+							preserveAspectRatio: 'xMidYMid slice'
+						}
+					}}
+				/>
+			</div>
+			<img draggable={false} className="object-contain" src={pie.src} />
+		</motion.div>
+	) : (
+		<motion.div
+			key={pie.src}
+			layoutId={`pie-clicked-${pie.id}`}
+			onClick={() => handleClickPie(pie)}
 			className="absolute"
 			style={{
 				maxWidth: pie.width + '%',

@@ -16,7 +16,7 @@ axios.interceptors.response.use(
 				const atk = await LoginApi.checkRefreshToken(refreshToken)
 				if (atk) {
 					rejected.config.headers['X-ACCESS-TOKEN'] = atk
-					// axios.defaults.headers['X-ACCESS-TOKEN'] = atk
+					axios.defaults.headers['X-ACCESS-TOKEN'] = atk
 					localStorage.setItem('X-ACCESS-TOKEN', atk)
 					const res = await axios.request(rejected.config)
 
