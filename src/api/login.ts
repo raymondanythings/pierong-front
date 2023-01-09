@@ -11,10 +11,10 @@ const checkAccessToken = async (token: string) => {
 	})
 	const {
 		data: {
-			data: { atk, ...userInfo }
+			data: { ...userInfo },
+			atk
 		}
 	} = res
-	// userInfo.email = btoa(userInfo.email)
 	return { userInfo, atk }
 }
 

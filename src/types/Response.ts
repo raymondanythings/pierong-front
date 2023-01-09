@@ -4,6 +4,7 @@ interface Response<T> {
 	code: string
 	data: T
 	message: 'SUCCESS' | 'FAIL' | String
+	atk?: string
 }
 interface Feve {
 	feveId: string

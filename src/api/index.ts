@@ -9,6 +9,9 @@ axios.interceptors.response.use(
 		return response
 	},
 	async (rejected) => {
+		if (rejected.response?.status === 400 && rejected.response?.data.code === '3003') {
+			return { data: false }
+		}
 		if (rejected.response?.status === 401 && rejected.response?.data.code === '1002') {
 			const refreshToken = localStorage.getItem('X-REFRESH-TOKEN')
 			if (refreshToken) {
@@ -19,8 +22,8 @@ axios.interceptors.response.use(
 					localStorage.setItem('X-ACCESS-TOKEN', atk)
 					const res = await axios.request(rejected.config)
 
-					res.data.data.atk = atk
-					return res
+					res.data.atk = atk
+					return Promise.resolve(res)
 				} else {
 					localStorage.removeItem('X-ACCESS-TOKEN')
 					localStorage.removeItem('X-REFRESH-TOKEN')
