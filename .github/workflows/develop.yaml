@@ -1,0 +1,39 @@
+name: Deploy to cloudtype
+on:
+    push:
+        branches:
+            - dev
+jobs:
+    pierong:
+        runs-on: ubuntu-latest
+        env:
+            REACT_APP_API_PATH: ${{ secrets.REACT_APP_API_PATH }}
+            REACT_APP_GOOGLE_AUTH_URL: ${{ secrets.REACT_APP_GOOGLE_AUTH_URL }}
+            REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
+            REACT_APP_GOOGLE_REDIRECT_URI: ${{ secrets.REACT_APP_GOOGLE_REDIRECT_URI }}
+            REACT_APP_GOOGLE_SCOPE: ${{ secrets.REACT_APP_GOOGLE_SCOPE }}
+            REACT_APP_KAKAO_AUTH_URL: ${{ secrets.REACT_APP_KAKAO_AUTH_URL }}
+            REACT_APP_KAKAO_CLIENT_ID: ${{ secrets.REACT_APP_KAKAO_CLIENT_ID }}
+            REACT_APP_KAKAO_REDIRECT_URI: ${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }}
+            REACT_APP_NAVER_AUTH_URL: ${{ secrets.REACT_APP_NAVER_AUTH_URL }}
+            REACT_APP_NAVER_CLIENT_ID: ${{ secrets.REACT_APP_NAVER_CLIENT_ID }}
+            REACT_APP_NAVER_CLIENT_SECRET: ${{ secrets.REACT_APP_NAVER_CLIENT_SECRET }}
+            REACT_APP_NAVER_REDIRECT_URI: ${{ secrets.REACT_APP_NAVER_REDIRECT_URI }}
+            REACT_APP_NAVER_STATE: ${{ secrets.REACT_APP_NAVER_STATE }}
+            REACT_APP_RESPONSE_TYPE: ${{ secrets.REACT_APP_RESPONSE_TYPE }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Connect repository
+              uses: cloudtype-github-actions/connect@v1
+              with:
+                  token: ${{ secrets.CLOUDTYPE_TOKEN }}
+                  ghtoken: ${{ secrets.GHP_TOKEN }}
+                  scope: raymondanythings
+            - name: Deploy to Cloudtype
+              uses: cloudtype-github-actions/deploy@v1
+              with:
+                  token: ${{ secrets.CLOUDTYPE_TOKEN }}
+                  project: raymondanythings/pierong
+                  stage: dev
+                  file: ./.cloudtype/dev.yaml
