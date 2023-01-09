@@ -9,7 +9,6 @@ axios.interceptors.response.use(
 		return response
 	},
 	async (rejected) => {
-		console.log(rejected)
 		if (rejected.response?.status === 401 && rejected.response?.data.code === '1002') {
 			const refreshToken = localStorage.getItem('X-REFRESH-TOKEN')
 			if (refreshToken) {
@@ -22,12 +21,12 @@ axios.interceptors.response.use(
 
 					res.data.data.atk = atk
 					return res
+				} else {
+					localStorage.removeItem('X-ACCESS-TOKEN')
+					localStorage.removeItem('X-REFRESH-TOKEN')
+					return Promise.reject({ expired: true })
 				}
 			}
-		} else if (rejected.response?.data.code === '1005') {
-			localStorage.removeItem('X-ACCESS-TOKEN')
-			localStorage.removeItem('X-REFRESH-TOKEN')
-			return Promise.reject({ expired: true })
 		}
 
 		return Promise.reject(rejected)

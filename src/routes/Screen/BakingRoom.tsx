@@ -25,15 +25,15 @@ const BakingRoom = () => {
 				retry: false,
 				refetchOnWindowFocus: false,
 
-				enabled: !!userId
-				// onError(err: any) {
-				// 	setPopup({
-				// 		isOpen: true,
-				// 		message: '유저가 존재하지 않습니다.',
-				// 		key: 'session'
-				// 	})
-				// 	navigate('/')
-				// }
+				enabled: !!userId,
+				onError(err: any) {
+					setPopup({
+						isOpen: true,
+						message: '유저가 존재하지 않습니다.',
+						key: 'session'
+					})
+					navigate('/')
+				}
 			}
 		)
 		const {

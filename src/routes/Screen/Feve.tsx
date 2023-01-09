@@ -18,6 +18,9 @@ const Feve = () => {
 	return (
 		<div className="relative">
 			<button
+				style={{
+					left: 'var(--main-mr)'
+				}}
 				onClick={() => navigate(-1)}
 				className="fixed top-2 left-2 z-10 bg-mainTeal w-28 border border-solid border-black rounded-full flex items-center justify-center"
 			>

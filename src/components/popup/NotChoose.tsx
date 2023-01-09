@@ -1,45 +1,44 @@
-import * as animationData from 'lottie/twinkle5.json'
 import { motion } from 'framer-motion'
 import store from 'store'
-
-import { useCallback } from 'react'
 import useCopyClipboard from 'hooks/useCopyClipboard'
-import html2canvas from 'html2canvas'
 import { UserDetail } from 'types'
 
 const NotChoose = ({ owner }: { owner: UserDetail }) => {
-	const [setDragState, refreshPopup, isMobile] = store((state) => [state.setDragState, state.refreshPopup, state.isMobile])
-	const { copyUrlOnClipboard } = useCopyClipboard()
-	const onCaptureImage = useCallback(() => {
-		const main = document.querySelector('main')
-		if (main) {
-			html2canvas(main).then(async (canvas) => {
-				const image = canvas.toDataURL()
-				if (isMobile) {
-					canvas.toBlob(async (blob) => {
-						if (blob) {
-							const file = new File([blob], owner.nickname + ' 의 베이킹룸.png', {
-								type: 'image/png'
-							})
-							await navigator.share({
-								files: [file],
-								title: `${owner.nickname}의 베이킹룸 들렸다감!`,
-								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`
-								// url: `https://pierong.site/room/${userId}`
-							})
-						}
-					})
-				} else {
-					const link = document.createElement('a')
-					link.download = owner.nickname + ' 의 베이킹룸'
-					link.href = image
-					document.body.appendChild(link)
-					link.click()
-					document.body.removeChild(link)
-				}
-			})
-		}
-	}, [])
+	const [setDragState, refreshPopup] = store((state) => [state.setDragState, state.refreshPopup, state.isMobile])
+	const { copyUrlOnClipboard } = useCopyClipboard({
+		title: '아직 페브가 남았어요! 페브를 발견하여 행운의 주인공이 되어보세요!'
+	})
+
+	// const onCaptureImage = useCallback(() => {
+	// 	const main = document.querySelector('main')
+	// 	if (main) {
+	// 		html2canvas(main).then(async (canvas) => {
+	// 			const image = canvas.toDataURL()
+	// 			if (isMobile) {
+	// 				canvas.toBlob(async (blob) => {
+	// 					if (blob) {
+	// 						const file = new File([blob], owner.nickname + ' 의 베이킹룸.png', {
+	// 							type: 'image/png'
+	// 						})
+	// 						await navigator.share({
+	// 							files: [file],
+	// 							title: `${owner.nickname}의 베이킹룸 들렸다감!`,
+	// 							text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`
+	// 							// url: `https://pierong.site/room/${userId}`
+	// 						})
+	// 					}
+	// 				})
+	// 			} else {
+	// 				const link = document.createElement('a')
+	// 				link.download = owner.nickname + ' 의 베이킹룸'
+	// 				link.href = image
+	// 				document.body.appendChild(link)
+	// 				link.click()
+	// 				document.body.removeChild(link)
+	// 			}
+	// 		})
+	// 	}
+	// }, [])
 	return (
 		<div className="p-2 px-6 w-full flex flex-col">
 			<div className="grow flex flex-col justify-center items-center space-y-4">
@@ -67,7 +66,7 @@ const NotChoose = ({ owner }: { owner: UserDetail }) => {
 						<img src="/logo.png" />
 					</motion.div>
 					<h1 className="font-bold text-sm absolute bottom-4">다음 기회에 !</h1>
-					<div
+					{/* <div
 						className="absolute w-10 h-10 border border-solid bottom-1 right-1 rounded-full bg-mainTeal flex items-center justify-center"
 						onClick={onCaptureImage}
 					>
@@ -92,7 +91,7 @@ const NotChoose = ({ owner }: { owner: UserDetail }) => {
 								/>
 							</defs>
 						</svg>
-					</div>
+					</div> */}
 				</div>
 				<div className="flex flex-col items-center space-y-2">
 					<p className="text-xs text-center text-[#767676]">친구들에게 공유해 페브를 노려보세요!</p>

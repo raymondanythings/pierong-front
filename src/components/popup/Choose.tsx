@@ -3,52 +3,53 @@ import * as animationData from 'lottie/twinkle5.json'
 import { motion } from 'framer-motion'
 import store from 'store'
 import { FeveDetail } from 'types/Response'
-import { FC, useCallback } from 'react'
+import { FC } from 'react'
 import useCopyClipboard from 'hooks/useCopyClipboard'
-import html2canvas from 'html2canvas'
 import { UserDetail } from 'types'
 interface ChooseProps {
 	feveDetail: FeveDetail
 	owner: UserDetail
 }
 const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
-	const [setDragState, refreshPopup, isMobile, userId] = store((state) => [
+	const [setDragState, refreshPopup, isMobile, loggedInUser] = store((state) => [
 		state.setDragState,
 		state.refreshPopup,
 		state.isMobile,
-		state.owner?.userId
+		state.user
 	])
-	const { copyUrlOnClipboard } = useCopyClipboard()
-	const onCaptureImage = useCallback(() => {
-		const main = document.querySelector('main')
-		if (main) {
-			html2canvas(main).then(async (canvas) => {
-				const image = canvas.toDataURL()
-				if (isMobile) {
-					canvas.toBlob(async (blob) => {
-						if (blob) {
-							const file = new File([blob], owner.nickname + ' 의 베이킹룸.png', {
-								type: 'image/png'
-							})
-							await navigator.share({
-								files: [file],
-								title: `${owner.nickname}의 베이킹룸의 ROIS!`,
-								text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`
-								// url: `https://pierong.site/room/${userId}`
-							})
-						}
-					})
-				} else {
-					const link = document.createElement('a')
-					link.download = owner.nickname + ' 의 베이킹룸'
-					link.href = image
-					document.body.appendChild(link)
-					link.click()
-					document.body.removeChild(link)
-				}
-			})
-		}
-	}, [])
+	const { copyUrlOnClipboard } = useCopyClipboard({
+		title: `${loggedInUser?.nickname}님이 페브에 당첨됐어요🎉`
+	})
+	// const onCaptureImage = useCallback(() => {
+	// 	const main = document.querySelector('main')
+	// 	if (main) {
+	// 		html2canvas(main).then(async (canvas) => {
+	// 			const image = canvas.toDataURL()
+	// 			if (isMobile) {
+	// 				canvas.toBlob(async (blob) => {
+	// 					if (blob) {
+	// 						const file = new File([blob], owner.nickname + ' 의 베이킹룸.png', {
+	// 							type: 'image/png'
+	// 						})
+	// 						await navigator.share({
+	// 							files: [file],
+	// 							title: `${owner.nickname}의 베이킹룸의 ROIS!`,
+	// 							text: `${owner.nickname}의 베이킹룸에서 파이를 나누고 있어요!`
+	// 							// url: `https://pierong.site/room/${userId}`
+	// 						})
+	// 					}
+	// 				})
+	// 			} else {
+	// 				const link = document.createElement('a')
+	// 				link.download = owner.nickname + ' 의 베이킹룸'
+	// 				link.href = image
+	// 				document.body.appendChild(link)
+	// 				link.click()
+	// 				document.body.removeChild(link)
+	// 			}
+	// 		})
+	// 	}
+	// }, [])
 	return (
 		<div className="p-2 px-6 w-full flex flex-col">
 			<div className="grow flex flex-col justify-center items-center space-y-4">
@@ -90,7 +91,7 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 						<img src={`/image/feve/${feveDetail.feveId}.png`} />
 					</motion.div>
 					<h1 className="font-bold text-sm absolute bottom-4">{feveDetail.feveName}</h1>
-					<div
+					{/* <div
 						className="absolute w-10 h-10 border border-solid bottom-1 right-1 rounded-full bg-mainTeal flex items-center justify-center"
 						onClick={onCaptureImage}
 					>
@@ -115,7 +116,7 @@ const Choose: FC<ChooseProps> = ({ feveDetail, owner }) => {
 								/>
 							</defs>
 						</svg>
-					</div>
+					</div> */}
 				</div>
 				<div className="flex flex-col items-center space-y-2">
 					<span className="font-bold text-center">{feveDetail.feveDescription}</span>

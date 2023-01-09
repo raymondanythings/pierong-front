@@ -4,12 +4,15 @@ import { useLocation } from 'react-router-dom'
 import store from 'store'
 
 interface useCopyClipboardArgs {
+	title?: string
+	text?: string
+	url?: string
 	confirm?: () => void
 	cancel?: () => void
 }
 
 const useCopyClipboard = (args?: useCopyClipboardArgs) => {
-	const { setPopup, refreshPopup, isMobile, user: loggedInUser, owner, setOwner } = store()
+	const { setPopup, refreshPopup, isMobile, owner, setOwner } = store()
 	const { data: { data: roomUser } = {}, refetch: userRefetch } = useQuery(
 		['room', 'user', owner?.userId],
 		() => UserApi.getUserDetail(owner?.userId || ''),
@@ -24,14 +27,16 @@ const useCopyClipboard = (args?: useCopyClipboardArgs) => {
 			}
 		}
 	)
-	const { cancel, confirm } = args || {}
+	const { cancel, confirm, text, title, url } = args || {}
 
 	const location = useLocation()
 	const copyUrlOnClipboard = () => {
-		if (isMobile && roomUser && loggedInUser) {
-			const roomNick = roomUser.nickname
-			const loggedInUserNick = loggedInUser.nickname
-			navigator.share({})
+		if (isMobile) {
+			navigator.share({
+				title: title ? title : `${owner?.nickname}에게 행운을`,
+				text: text ? text : `${owner?.nickname}님의 파이를 선택하여 행운을 남겨주세요!`,
+				url: url ? url : window.location.origin + location.pathname
+			})
 		} else {
 			window.navigator.clipboard.writeText(window.location.origin + location.pathname).then((res) => {
 				setPopup({

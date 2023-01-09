@@ -8,8 +8,8 @@ const Login = () => {
 	const navigate = useNavigate()
 	const { authLogin } = useAuth(location.pathname)
 	return (
-		<div className="flex flex-col space-y-3">
-			<h1>파이를 선택하시려면 로그인이 필요합니다.</h1>
+		<div className="flex flex-col space-y-3 px-2">
+			<h1 className="text-sm">파이를 선택하시려면 로그인이 필요합니다.</h1>
 			<div className="flex flex-col space-y-2">
 				<h1 className="text-center text-xl">sns로 간편 가입하기</h1>
 				<div className="flex justify-center space-x-6">

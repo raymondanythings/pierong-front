@@ -3,11 +3,10 @@ import PIES from 'assets/seperated_pie'
 import { Dispatch, SetStateAction } from 'react'
 
 interface PiesProps {
-	toggle: boolean
 	setToggle: Dispatch<SetStateAction<boolean>>
 }
 
-const Pies = ({ toggle, setToggle }: PiesProps) => {
+const Pies = ({ setToggle }: PiesProps) => {
 	return (
 		<>
 			{PIES.Pies.map((pie) => (
@@ -18,12 +17,6 @@ const Pies = ({ toggle, setToggle }: PiesProps) => {
 					}}
 					onDragEnd={() => {
 						setToggle(false)
-					}}
-					onDrag={(event, info) => {
-						const {
-							point: { x, y }
-						} = info
-						console.log(x, y)
 					}}
 					drag
 					dragSnapToOrigin

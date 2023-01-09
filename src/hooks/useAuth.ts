@@ -1,6 +1,5 @@
 import { LoginApi } from 'api'
 import { useCallback } from 'react'
-import { useLocation } from 'react-router-dom'
 import store from 'store'
 import { oauthService } from 'types'
 
@@ -60,7 +59,7 @@ const useAuth = (url?: string) => {
 			urlSearchParam.append('scope', OAUTH_URLS[type].params.scope!)
 		}
 		if (url) {
-			sessionStorage.setItem('redirect_url', url ?? '/')
+			localStorage.setItem('redirect_url', url ?? '/')
 		}
 		window.location.assign(`${OAUTH_URLS[type].baseUrl}${urlSearchParam.toString()}`)
 	}

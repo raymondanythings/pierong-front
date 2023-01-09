@@ -8,12 +8,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import store from 'store'
 import { Tokens } from 'types'
 
-interface OAuthProps {
-	type: 'google' | 'naver' | 'kakao'
-	code: string
-	user: any
-}
-
 const OAuth = () => {
 	const { search } = useLocation()
 	const {} = useTitle('파이롱 | 로그인')
@@ -26,7 +20,7 @@ const OAuth = () => {
 		data: { data: { atk, rtk, userInfo } = { rtk: null, atk: null, userInfo: null } } = {},
 		isError,
 		error
-	} = useQuery(['user', 'login'], () => LoginApi.getToken({ type, code, url: sessionStorage.getItem('redirect_url') || '/' }), {
+	} = useQuery(['user', 'login'], () => LoginApi.getToken({ type, code, url: localStorage.getItem('redirect_url') || '/' }), {
 		retry: false,
 		staleTime: Infinity
 	})
@@ -37,8 +31,8 @@ const OAuth = () => {
 			setUser(userInfo)
 			setTokens(token)
 			setIsLogin(true)
-			const url = sessionStorage.getItem('redirect_url')
-			sessionStorage.removeItem('redirect_url')
+			const url = localStorage.getItem('redirect_url')
+			localStorage.removeItem('redirect_url')
 			navigate(url || `/room/${urlSafebtoa(userInfo.email)}`)
 		} else if (isError) {
 			setPopup({

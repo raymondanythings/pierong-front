@@ -1,10 +1,9 @@
 import { axios } from 'api'
 import { NickNameChange } from 'components/Modal/NickNameChangePopup'
 import { UserDetail, UserPieFeve } from 'types'
-import { FeveDetail, PiePiece, Response, UserPie } from 'types/Response'
+import { PiePiece, Response, UserPie } from 'types/Response'
 
 const getUserDetail = async (email: string) => {
-	console.log(email, '<=== input')
 	const res = await axios.get<Response<UserDetail>>(`/user/detail/${email}`)
 	return res.data
 }

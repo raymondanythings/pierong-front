@@ -20,6 +20,7 @@ import SelectFeve from 'components/popup/SelectFeve'
 import { useTitle } from 'hooks/useTitle'
 import { useNavigate } from 'react-router-dom'
 import CompletePie from 'components/popup/CompletePie'
+import useCopyClipboard from 'hooks/useCopyClipboard'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -84,7 +85,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	})
 	const [shakeCustom, setShakeCustom] = useState(false)
 	const howToAnimate = useAnimation()
-
+	const { copyUrlOnClipboard } = useCopyClipboard()
 	const buttonAxios = useRef<HTMLDivElement | null>(null)
 
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
@@ -254,6 +255,9 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				<button
 					onClick={() => navigate(`/room/${urlSafebtoa(loggedInUser?.email || '')}`)}
 					className="fixed top-4 left-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
+					style={{
+						left: 'calc(var(--main-mr) + 16px)'
+					}}
 				>
 					<span className="m-1 text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white">
 						내 방가기
@@ -382,29 +386,31 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						</div>
 						<div className="h-[60px] border border-solid p-1 flex justify-center items-center relative">
 							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 space-x-2 px-2">
-								<div className="">
-									<svg
-										width="25"
-										height="25"
-										viewBox="0 0 25 25"
-										fill="none"
-										xmlns="http://www.w3.org/2000/svg"
-										xmlnsXlink="http://www.w3.org/1999/xlink"
-									>
-										<rect width="25" height="25" fill="url(#crown)" />
-										<defs>
-											<pattern id="crown" patternContentUnits="objectBoundingBox" width="1" height="1">
-												<use xlinkHref="#crown_sm" transform="scale(0.0208333)" />
-											</pattern>
-											<image
-												id="crown_sm"
-												width="48"
-												height="48"
-												xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADZElEQVR4nO1ZzWsTQRQfrR9139uECmoFFbUKiiDowepBikcpfvwBgp4E8dIP0VPsyQpqFU+iggf1FNp9s7HWW9OevIh4qApJZ9IWW/UifraC2siktU2T3cxumpIN5gfvEnZ/7/ebee/tMGGsiiqqWBKkLNwtOL4SHAYSPWs2sUrCaG+4ThIkJce0CkH4cjzGDFYJSEdZjeDY90/8XBA+ZpUASdiVJ35uJ6CdBRnCglNu4jMGOP5JWcZRFkSkuLFPEP4oZGB2Fz4l7dAOFiQIGzZIjmM68Vkm3opoXZgFAS/uspWCYNCr+CwTPN3BlpdbPxOEt/2Kz5pMlxYtQHLskARfBGG/tLDJ9/uEo8UaEATPfeezsElpne23y2oFx3MmRdyPEUl4VnD87V88TqUIT/oSrrQt1DqpDPS7jDzPRpQQNSJ9ibfMQ8UKn9cIb5jkcEUzu+PqXKNNRPDAR+1HdHxJG/a4CZ8PuM8Emcc8JBzS7gKHI14NJKxQg45PEL7T8aTIPMMSUVwnCKd1D6szTqGEI3Z4m2cDfWx1Ia50lNV44Rl+Yu7MvCAJEnq34a2aFTvs1cBod3h7Ia6EFWrwwPMxnWbLZpJzfOihjC4WNgB3StUDkjCi4xAE1nxyC8/pk8JXYcNeR/HcbPYzSmdmuNnoKJ6bjR7PVO0LDmLeksNn9aKI1W4ZirJVqRjuEgTXJOEvz6ufbYIwospFcWXKhjDiRXympG3zYE7TwDe/IsoVguOkMp1TBrqZG5wQBIMOjQOd5RYmvQZBp1PzHK+cEjKb8wwM98D60m2xOqhBS6rXqB/pMTYKDq3qtxJxT49FQ2ud5y+HYQ8kT9U9jwrH24fMRw9a8kcttBXLJxcYgNeO4mf6AB/pCLIvqZJUu9nRQK9Rn8utdqJYPrnQwD1XA4LD+VIYUGKXyoC0jdOuBkZixn59A2GfSqRCED5zfgba8nfXuFAsn8yKgjca8ThbIQi+l6DRppQJteqZJiZol4Q/F8srCT+4is8qo4FFJ1qygG6tAUlwtfxC0aV8oVVvwMYTgTVghQ5oDVRRTqTirFZwvCUI3wev/nFCEt5UGl0NKPHlFip1QdjlbiCAKy/9fAsqwYAgHC/q76GghOB4vWATKxOZhgme8AnJ8YbuUqyKKv43/AVM/rp4B1oxuAAAAABJRU5ErkJggg=="
-											/>
-										</defs>
-									</svg>
-								</div>
+								{isMe ? (
+									<div>
+										<svg
+											width="25"
+											height="25"
+											viewBox="0 0 25 25"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+											xmlnsXlink="http://www.w3.org/1999/xlink"
+										>
+											<rect width="25" height="25" fill="url(#crown)" />
+											<defs>
+												<pattern id="crown" patternContentUnits="objectBoundingBox" width="1" height="1">
+													<use xlinkHref="#crown_sm" transform="scale(0.0208333)" />
+												</pattern>
+												<image
+													id="crown_sm"
+													width="48"
+													height="48"
+													xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADZElEQVR4nO1ZzWsTQRQfrR9139uECmoFFbUKiiDowepBikcpfvwBgp4E8dIP0VPsyQpqFU+iggf1FNp9s7HWW9OevIh4qApJZ9IWW/UifraC2siktU2T3cxumpIN5gfvEnZ/7/ebee/tMGGsiiqqWBKkLNwtOL4SHAYSPWs2sUrCaG+4ThIkJce0CkH4cjzGDFYJSEdZjeDY90/8XBA+ZpUASdiVJ35uJ6CdBRnCglNu4jMGOP5JWcZRFkSkuLFPEP4oZGB2Fz4l7dAOFiQIGzZIjmM68Vkm3opoXZgFAS/uspWCYNCr+CwTPN3BlpdbPxOEt/2Kz5pMlxYtQHLskARfBGG/tLDJ9/uEo8UaEATPfeezsElpne23y2oFx3MmRdyPEUl4VnD87V88TqUIT/oSrrQt1DqpDPS7jDzPRpQQNSJ9ibfMQ8UKn9cIb5jkcEUzu+PqXKNNRPDAR+1HdHxJG/a4CZ8PuM8Emcc8JBzS7gKHI14NJKxQg45PEL7T8aTIPMMSUVwnCKd1D6szTqGEI3Z4m2cDfWx1Ia50lNV44Rl+Yu7MvCAJEnq34a2aFTvs1cBod3h7Ia6EFWrwwPMxnWbLZpJzfOihjC4WNgB3StUDkjCi4xAE1nxyC8/pk8JXYcNeR/HcbPYzSmdmuNnoKJ6bjR7PVO0LDmLeksNn9aKI1W4ZirJVqRjuEgTXJOEvz6ufbYIwospFcWXKhjDiRXympG3zYE7TwDe/IsoVguOkMp1TBrqZG5wQBIMOjQOd5RYmvQZBp1PzHK+cEjKb8wwM98D60m2xOqhBS6rXqB/pMTYKDq3qtxJxT49FQ2ud5y+HYQ8kT9U9jwrH24fMRw9a8kcttBXLJxcYgNeO4mf6AB/pCLIvqZJUu9nRQK9Rn8utdqJYPrnQwD1XA4LD+VIYUGKXyoC0jdOuBkZixn59A2GfSqRCED5zfgba8nfXuFAsn8yKgjca8ThbIQi+l6DRppQJteqZJiZol4Q/F8srCT+4is8qo4FFJ1qygG6tAUlwtfxC0aV8oVVvwMYTgTVghQ5oDVRRTqTirFZwvCUI3wev/nFCEt5UGl0NKPHlFip1QdjlbiCAKy/9fAsqwYAgHC/q76GghOB4vWATKxOZhgme8AnJ8YbuUqyKKv43/AVM/rp4B1oxuAAAAABJRU5ErkJggg=="
+												/>
+											</defs>
+										</svg>
+									</div>
+								) : null}
 								<div className="relative flex items-center">
 									<strong className="text-base">
 										{user.nickname}
@@ -473,7 +479,9 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					<div className="px-2 flex flex-col items-center justify-center relative h-full space-y-3">
 						<p className="text-center leading-5">파이가 구워졌어요 친구들에게 공유해 파이조각마다 메세지를 받아보세요!</p>
 
-						<button className="modal-btn mx-auto">공유하기</button>
+						<button onClick={copyUrlOnClipboard} className="modal-btn mx-auto">
+							공유하기
+						</button>
 					</div>
 				</Modal>
 			) : popup?.key === 'pie-done' ? (
