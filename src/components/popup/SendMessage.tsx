@@ -55,7 +55,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 	})
 
 	const { ref, ...rest } = register('memoContent', {
-		required: '친구에게 10글자 이상 써주세요!',
+		required: '친구에게 5글자 이상 써주세요!',
 		maxLength: {
 			value: 200,
 			message: '최대 200글자 까지 가능합니다.'
