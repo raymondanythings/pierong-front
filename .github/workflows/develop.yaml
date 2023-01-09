@@ -1,4 +1,4 @@
-name: 개발계-workflow-${{ steps.date.outputs.date }}
+name: 개발계-workflow
 on:
     push:
         branches:
