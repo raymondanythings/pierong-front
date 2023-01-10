@@ -77,8 +77,7 @@ const Menus = () => {
 		autoplay: true,
 		draggable: true,
 		swipe: true,
-		autoplaySpeed: 5000,
-		variableWidth: true
+		autoplaySpeed: 5000
 	}
 	return (
 		<div className="absolute w-full h-full top-0 left-0 z-50">
@@ -96,7 +95,7 @@ const Menus = () => {
 				onClick={onClosePopup}
 			/>
 			<motion.div
-				className="absolute solid-box border-r-0 rounded-l-2xl bg-mainTeal pl-3 py-3 h-full min-w-[60%]"
+				className="absolute solid-box border-r-0 rounded-l-2xl bg-mainTeal pl-3 py-3 h-full min-w-[60%] overflow-x-hidden"
 				initial="initial"
 				animate="animate"
 				exit="initial"
@@ -206,9 +205,10 @@ const Menus = () => {
 						</div>
 					</div>
 					<div className="mt-5 mb-4  border-t-[1px] border-solid border-mainTeal" />
-					<div className="pb-8">
+					<div className="mb-8 h-28 aspect-[2/1]">
 						<Slider className="rounded-xl" adaptiveHeight {...settings}>
 							<div
+								className="rounded-xl"
 								onClick={() => {
 									window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
 								}}
