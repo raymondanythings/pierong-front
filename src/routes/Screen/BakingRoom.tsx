@@ -14,6 +14,14 @@ const BakingRoom = () => {
 		navigate('/')
 		return null
 	} else {
+		const { data: count } = useQuery(['visit', 'count', userId], () => UserApi.getVisitCount(userId), {
+			cacheTime: Infinity,
+			staleTime: Infinity,
+			refetchOnMount: false,
+			refetchOnReconnect: false,
+			refetchOnWindowFocus: false
+		})
+		console.log(count)
 		const { isLoading: isPieLoading, refetch: pieRefetch } = useQuery(
 			['room', 'pie', userId],
 			(key) => {

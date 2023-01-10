@@ -28,4 +28,9 @@ const getWithdraw = async () => {
 	return res.data
 }
 
-export { getUserDetail, postChangeNickName, getOwnerDetail, getWithdraw }
+const getVisitCount = async (email: string) => {
+	const res = await axios.get<Response<any>>(`/api/user/visit/${email}`)
+	return res.data
+}
+
+export { getUserDetail, postChangeNickName, getOwnerDetail, getWithdraw, getVisitCount }

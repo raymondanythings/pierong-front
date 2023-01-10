@@ -1,9 +1,9 @@
 import { UserApi } from 'api'
 import { UserHistory } from 'api/user'
-import Loading from 'components/animation/Loading'
+
 import useCopyClipboard from 'hooks/useCopyClipboard'
 import { formatDate, formatOrdianl, numberToKr, urlSafebtoa } from 'libs/utils'
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
+import { useLayoutEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import store from 'store'
 
