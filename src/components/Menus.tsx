@@ -95,7 +95,7 @@ const Menus = () => {
 				onClick={onClosePopup}
 			/>
 			<motion.div
-				className="absolute solid-box border-r-0 rounded-l-2xl bg-mainTeal pl-3 py-3 h-full min-w-[60%] max-w-[70%]"
+				className="absolute solid-box border-r-0 rounded-l-2xl bg-mainTeal pl-3 py-3 h-full min-w-[60%]"
 				initial="initial"
 				animate="animate"
 				exit="initial"
