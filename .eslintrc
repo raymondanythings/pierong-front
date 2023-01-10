@@ -5,6 +5,11 @@
 		"quotes": ["warn", "single"],
 		"semi": ["warn", "never"]
   },
+  "parserOptions": {
+    "ecmaVersion":2015,
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
   "settings": {
     "import/resolver": {
       "node": {
