@@ -110,7 +110,11 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 			) : null} */}
 			<motion.nav
 				layout
-				className="border border-solid absolute top-4 right-4 h-10 aspect-square bg-[#57765E] overflow-hidden rounded-full z-40 p-0.5"
+				className="border border-solid absolute top-4 right-4 aspect-square bg-[#57765E] overflow-hidden rounded-full z-40 p-0.5"
+				style={{
+					width: '40px',
+					height: '40px'
+				}}
 			>
 				<div
 					onClick={() => {

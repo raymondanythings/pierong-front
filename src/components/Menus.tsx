@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useCallback } from 'react'
+import { useCallback } from 'react'
 import { motion, Variants } from 'framer-motion'
 import store from 'store'
 import Google from 'assets/icons/google.png'
@@ -7,6 +7,11 @@ import Naver from 'assets/icons/naver.png'
 import { useNavigate } from 'react-router-dom'
 import useCopyClipboard from 'hooks/useCopyClipboard'
 import useAuth from 'hooks/useAuth'
+import Slider from 'react-slick'
+import type { Settings } from 'react-slick'
+import 'slick-carousel//slick/slick.css'
+import 'slick-carousel//slick/slick-theme.css'
+
 const menuVariants: Variants = {
 	initial: {
 		right: '-100%'
@@ -62,6 +67,18 @@ const Menus = () => {
 		logout()
 		navigate('/')
 	}, [])
+	const settings: Settings = {
+		dots: true,
+		infinite: true,
+		arrows: false,
+		speed: 500,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		autoplay: true,
+		draggable: true,
+		swipe: true,
+		autoplaySpeed: 5000
+	}
 	return (
 		<div className="absolute w-full h-full top-0 left-0 z-50">
 			<motion.div
@@ -78,7 +95,7 @@ const Menus = () => {
 				onClick={onClosePopup}
 			/>
 			<motion.div
-				className="absolute solid-box border-r-0 rounded-l-2xl bg-mainTeal pl-3 py-3 h-full min-w-[60%]"
+				className="absolute solid-box border-r-0 rounded-l-2xl bg-mainTeal pl-3 py-3 h-full min-w-[60%] max-w-[70%]"
 				initial="initial"
 				animate="animate"
 				exit="initial"
@@ -188,7 +205,18 @@ const Menus = () => {
 						</div>
 					</div>
 					<div className="mt-5 mb-4  border-t-[1px] border-solid border-mainTeal" />
-					<div className="w-full h-[100px] border border-solid border-mainTeal rounded-xl"></div>
+					<div className="pb-8">
+						<Slider className="rounded-xl" adaptiveHeight {...settings}>
+							<div
+								onClick={() => {
+									window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
+								}}
+							>
+								<img src="/image/banner/survey_banner.png" alt="설문조사 참여 이벤트" />
+							</div>
+						</Slider>
+					</div>
+
 					<div
 						className="flex items-center text-mainTeal py-2"
 						onClick={() => {

@@ -379,7 +379,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						exit="exit"
 						animate="animate"
 						initial="initial"
-						className={`fixed bottom-0 flex justify-center items-center z-50  max-w-screen-default bg-mainTeal`}
+						className={`fixed bottom-0 flex justify-center items-center z-40  max-w-screen-default bg-mainTeal`}
 						style={{
 							right: 'var(--main-mr)'
 						}}

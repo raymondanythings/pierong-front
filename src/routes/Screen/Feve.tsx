@@ -64,9 +64,9 @@ const Feve = () => {
 					<span className="py-2 text-center border-b border-solid">{owner?.nickname}'s FEVE</span>
 					{owner?.userFeve.length ? (
 						<div className="grid grid-cols-3 feve-grid">
-							{owner.userFeve.map((item, index) => (
+							{[...owner.userFeve, ...owner.userFeve, ...owner.userFeve, ...owner.userFeve].map((item, index) => (
 								<div key={item.feveName + index} className=" flex justify-center grow py-3">
-									<div key={item.feveId} className="w-10">
+									<div key={item.feveId} className="w-16">
 										<img src={`/image/feve/${item.feveId}.png`} className="drop-shadow-feve" />
 									</div>
 								</div>
