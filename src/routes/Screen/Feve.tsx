@@ -1,5 +1,6 @@
 import { UserApi } from 'api'
 import CROWN from 'assets/crown'
+import { urlSafebtoa } from 'libs/utils'
 import { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -7,13 +8,24 @@ import store from 'store'
 
 const Feve = () => {
 	const navigate = useNavigate()
-	const { owner } = store((state) => ({ owner: state.owner, user: state.user }))
+	const { user } = store((state) => ({ owner: state.owner, user: state.user }))
+	const {
+		data: { data: owner = null } = {},
+		isLoading: isUserLoading,
+		refetch: userRefetch
+	} = useQuery(['room', 'user', urlSafebtoa(user?.email ?? '')], () => UserApi.getUserDetail(urlSafebtoa(user?.email ?? '')), {
+		cacheTime: Infinity,
+		staleTime: 1000 * 60 * 5,
+		retry: false,
+		refetchOnWindowFocus: false,
+		enabled: !!user?.email
+	})
 
 	useEffect(() => {
-		if (!owner) {
+		if (!isUserLoading && !owner) {
 			navigate('/')
 		}
-	}, [owner?.userId])
+	}, [isUserLoading])
 
 	return (
 		<div className="relative">
@@ -70,13 +82,13 @@ const Feve = () => {
 				</div>
 			</div>
 			<div
-				className="fixed bottom-0 w-[180px] h-[60px] flex justify-center items-center bg-mainTeal p-2 z-30 border border-solid max-w-screen-default"
+				className={`fixed bottom-0 h-[60px] flex justify-center items-center z-30  max-w-screen-default bg-mainTeal`}
 				style={{
 					right: 'var(--main-mr)'
 				}}
 			>
-				<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5">
-					<div className="relative">
+				<div className="h-[60px] border border-solid p-1 flex justify-center items-center relative">
+					<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 space-x-2 px-2">
 						{owner?.nickname}
 						<small
 							className="ml-1"

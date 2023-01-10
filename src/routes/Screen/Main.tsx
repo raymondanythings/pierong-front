@@ -3,7 +3,7 @@ import PIES from 'assets/seperated_pie'
 import { AnimatePresence, motion, PanInfo, useAnimation, Variants } from 'framer-motion'
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import useDraggablePosition from 'hooks/useDraggablePosition'
-import CompleteButton from 'components/animation/CompleteButton'
+
 import Modal from 'components/Modal'
 import { useQuery } from 'react-query'
 import { PieApi, UserApi } from 'api'
@@ -352,13 +352,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						) : null}
 					</AnimatePresence>
 				</div>
-
-				{/* <div className="max-w-[59%] top-[65.5%]" draggable={false}></div> */}
-
-				{/* <div className="">
-					<CompleteButton className="fixed z-50 w-0 h-0 left-0 right-0 bottom-4 mx-auto origin-center rounded-full flex items-center justify-center border border-solid" />
-				</div> */}
-
 				<div ref={buttonAxios} className="fixed left-0 right-0 mx-auto bottom-4 w-[7rem] h-[3rem] invisible"></div>
 			</div>
 
@@ -374,44 +367,40 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 							right: 'var(--main-mr)'
 						}}
 					>
-						{/* <div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
-							<div
-								className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col"
-								onClick={() => {
-									window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
-								}}
-							>
-								<img className="w-6" src="/image/icon/survey.png" />
-								<span className="text-[8px] leading-3">설문조사</span>
+						{isMe ? (
+							<div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
+								<div
+									className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col"
+									onClick={() => {
+										window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
+									}}
+								>
+									<svg
+										width="25"
+										height="25"
+										viewBox="0 0 25 25"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+										xmlnsXlink="http://www.w3.org/1999/xlink"
+									>
+										<rect width="25" height="25" fill="url(#crown)" />
+										<defs>
+											<pattern id="crown" patternContentUnits="objectBoundingBox" width="1" height="1">
+												<use xlinkHref="#crown_sm" transform="scale(0.0208333)" />
+											</pattern>
+											<image
+												id="crown_sm"
+												width="48"
+												height="48"
+												xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADZElEQVR4nO1ZzWsTQRQfrR9139uECmoFFbUKiiDowepBikcpfvwBgp4E8dIP0VPsyQpqFU+iggf1FNp9s7HWW9OevIh4qApJZ9IWW/UifraC2siktU2T3cxumpIN5gfvEnZ/7/ebee/tMGGsiiqqWBKkLNwtOL4SHAYSPWs2sUrCaG+4ThIkJce0CkH4cjzGDFYJSEdZjeDY90/8XBA+ZpUASdiVJ35uJ6CdBRnCglNu4jMGOP5JWcZRFkSkuLFPEP4oZGB2Fz4l7dAOFiQIGzZIjmM68Vkm3opoXZgFAS/uspWCYNCr+CwTPN3BlpdbPxOEt/2Kz5pMlxYtQHLskARfBGG/tLDJ9/uEo8UaEATPfeezsElpne23y2oFx3MmRdyPEUl4VnD87V88TqUIT/oSrrQt1DqpDPS7jDzPRpQQNSJ9ibfMQ8UKn9cIb5jkcEUzu+PqXKNNRPDAR+1HdHxJG/a4CZ8PuM8Emcc8JBzS7gKHI14NJKxQg45PEL7T8aTIPMMSUVwnCKd1D6szTqGEI3Z4m2cDfWx1Ia50lNV44Rl+Yu7MvCAJEnq34a2aFTvs1cBod3h7Ia6EFWrwwPMxnWbLZpJzfOihjC4WNgB3StUDkjCi4xAE1nxyC8/pk8JXYcNeR/HcbPYzSmdmuNnoKJ6bjR7PVO0LDmLeksNn9aKI1W4ZirJVqRjuEgTXJOEvz6ufbYIwospFcWXKhjDiRXympG3zYE7TwDe/IsoVguOkMp1TBrqZG5wQBIMOjQOd5RYmvQZBp1PzHK+cEjKb8wwM98D60m2xOqhBS6rXqB/pMTYKDq3qtxJxT49FQ2ud5y+HYQ8kT9U9jwrH24fMRw9a8kcttBXLJxcYgNeO4mf6AB/pCLIvqZJUu9nRQK9Rn8utdqJYPrnQwD1XA4LD+VIYUGKXyoC0jdOuBkZixn59A2GfSqRCED5zfgba8nfXuFAsn8yKgjca8ThbIQi+l6DRppQJteqZJiZol4Q/F8srCT+4is8qo4FFJ1qygG6tAUlwtfxC0aV8oVVvwMYTgTVghQ5oDVRRTqTirFZwvCUI3wev/nFCEt5UGl0NKPHlFip1QdjlbiCAKy/9fAsqwYAgHC/q76GghOB4vWATKxOZhgme8AnJ8YbuUqyKKv43/AVM/rp4B1oxuAAAAABJRU5ErkJggg=="
+											/>
+										</defs>
+									</svg>
+								</div>
 							</div>
-						</div> */}
+						) : null}
 						<div className="h-[60px] border border-solid p-1 flex justify-center items-center relative">
 							<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 space-x-2 px-2">
-								{isMe ? (
-									<div>
-										<svg
-											width="25"
-											height="25"
-											viewBox="0 0 25 25"
-											fill="none"
-											xmlns="http://www.w3.org/2000/svg"
-											xmlnsXlink="http://www.w3.org/1999/xlink"
-										>
-											<rect width="25" height="25" fill="url(#crown)" />
-											<defs>
-												<pattern id="crown" patternContentUnits="objectBoundingBox" width="1" height="1">
-													<use xlinkHref="#crown_sm" transform="scale(0.0208333)" />
-												</pattern>
-												<image
-													id="crown_sm"
-													width="48"
-													height="48"
-													xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADZElEQVR4nO1ZzWsTQRQfrR9139uECmoFFbUKiiDowepBikcpfvwBgp4E8dIP0VPsyQpqFU+iggf1FNp9s7HWW9OevIh4qApJZ9IWW/UifraC2siktU2T3cxumpIN5gfvEnZ/7/ebee/tMGGsiiqqWBKkLNwtOL4SHAYSPWs2sUrCaG+4ThIkJce0CkH4cjzGDFYJSEdZjeDY90/8XBA+ZpUASdiVJ35uJ6CdBRnCglNu4jMGOP5JWcZRFkSkuLFPEP4oZGB2Fz4l7dAOFiQIGzZIjmM68Vkm3opoXZgFAS/uspWCYNCr+CwTPN3BlpdbPxOEt/2Kz5pMlxYtQHLskARfBGG/tLDJ9/uEo8UaEATPfeezsElpne23y2oFx3MmRdyPEUl4VnD87V88TqUIT/oSrrQt1DqpDPS7jDzPRpQQNSJ9ibfMQ8UKn9cIb5jkcEUzu+PqXKNNRPDAR+1HdHxJG/a4CZ8PuM8Emcc8JBzS7gKHI14NJKxQg45PEL7T8aTIPMMSUVwnCKd1D6szTqGEI3Z4m2cDfWx1Ia50lNV44Rl+Yu7MvCAJEnq34a2aFTvs1cBod3h7Ia6EFWrwwPMxnWbLZpJzfOihjC4WNgB3StUDkjCi4xAE1nxyC8/pk8JXYcNeR/HcbPYzSmdmuNnoKJ6bjR7PVO0LDmLeksNn9aKI1W4ZirJVqRjuEgTXJOEvz6ufbYIwospFcWXKhjDiRXympG3zYE7TwDe/IsoVguOkMp1TBrqZG5wQBIMOjQOd5RYmvQZBp1PzHK+cEjKb8wwM98D60m2xOqhBS6rXqB/pMTYKDq3qtxJxT49FQ2ud5y+HYQ8kT9U9jwrH24fMRw9a8kcttBXLJxcYgNeO4mf6AB/pCLIvqZJUu9nRQK9Rn8utdqJYPrnQwD1XA4LD+VIYUGKXyoC0jdOuBkZixn59A2GfSqRCED5zfgba8nfXuFAsn8yKgjca8ThbIQi+l6DRppQJteqZJiZol4Q/F8srCT+4is8qo4FFJ1qygG6tAUlwtfxC0aV8oVVvwMYTgTVghQ5oDVRRTqTirFZwvCUI3wev/nFCEt5UGl0NKPHlFip1QdjlbiCAKy/9fAsqwYAgHC/q76GghOB4vWATKxOZhgme8AnJ8YbuUqyKKv43/AVM/rp4B1oxuAAAAABJRU5ErkJggg=="
-												/>
-											</defs>
-										</svg>
-									</div>
-								) : null}
 								<div className="relative flex items-center">
 									<strong className="text-base">
 										{user.nickname}
@@ -424,21 +413,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 											의 베이킹룸
 										</small>
 									</strong>
-
-									{/* {isMe ? (
-										<img
-											onClick={() => {
-												setPopup({
-													message: '닉네임변경',
-													key: 'changeNickName',
-													isOpen: true,
-													btnHide: true
-												})
-											}}
-											className="w-3 h-3 ml-1"
-											src="/image/icon/pancel.png"
-										/>
-									) : null} */}
 								</div>
 							</div>
 						</div>

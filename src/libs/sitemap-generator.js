@@ -1,7 +1,8 @@
 const fs = require('fs')
 const prettier = require('prettier')
 
-const SitemapGeneratedDate = new Intl.DateTimeFormat('ko', { timeStyle: 'full' }).format(new Date())
+// const SitemapGeneratedDate = new Intl.DateTimeFormat('ko', { timeStyle: 'full' }).format(new Date())
+const SitemapGeneratedDate = new Date().toISOString()
 const CINEPS_BOARD_DOMAIN = 'https://www.pierong.site'
 
 const formatting = (target) => prettier.format(target, { parser: 'html' })

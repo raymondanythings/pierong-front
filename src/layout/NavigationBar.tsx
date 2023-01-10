@@ -1,42 +1,31 @@
 import Menus from 'components/Menus'
 import Modal from 'components/Modal'
-import NavItem from 'components/NavItem'
+
 import History from 'components/popup/History'
 import Login from 'components/popup/Login'
 import MyPage from 'components/popup/MyPage'
-import { AnimatePresence, motion, useAnimationControls, Variants } from 'framer-motion'
-import { MutableRefObject, useRef, useState } from 'react'
+import { AnimatePresence, motion, Variants } from 'framer-motion'
+import { MutableRefObject, useLayoutEffect } from 'react'
 import store from 'store'
 
 interface NavigationBarProps {
 	navigationRef: MutableRefObject<HTMLElement | null>
 }
-
-const navVariants: Variants = {
-	start: {
-		maxWidth: 480,
-		transition: {
-			when: 'afterChild',
-			staggerChildren: 0.03
-		}
-	},
-	exit: {
-		maxWidth: 0,
-		transition: {
-			// when: 'afterChild',
-			staggerChildren: 0.03
-		}
-	}
-}
-
 const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
-	const { isLogin, popup, toggleNav, setToggleNav } = store((state) => ({
+	const { isLogin, popup, toggleNav, setToggleNav, setPopup } = store((state) => ({
 		isLogin: state.isLogin,
 		popup: state.popup,
 		toggleNav: state.toggleNav,
-		setToggleNav: state.setToggleNav
+		setToggleNav: state.setToggleNav,
+		setPopup: state.setPopup
 	}))
-	const [open, setOpen] = useState(false)
+
+	useLayoutEffect(() => {
+		if (!isLogin) {
+			setToggleNav(false)
+		}
+	}, [isLogin])
+
 	return (
 		<>
 			{/* <motion.nav
@@ -125,7 +114,12 @@ const NavigationBar = ({ navigationRef }: NavigationBarProps) => {
 			>
 				<div
 					onClick={() => {
-						setToggleNav(!toggleNav)
+						isLogin
+							? setToggleNav(!toggleNav)
+							: setPopup({
+									isOpen: true,
+									key: 'login'
+							  })
 					}}
 					className="flex justify-center items-center border border-solid border-white rounded-full grow h-full"
 				>
