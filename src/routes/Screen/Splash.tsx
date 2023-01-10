@@ -78,6 +78,7 @@ const Splash = () => {
 					className="w-[194px]"
 					variants={imgVariants}
 					src={Logo}
+					alt="메인 로고"
 				/>
 
 				<motion.div initial="hidden" animate="visible" variants={container}>
@@ -102,6 +103,7 @@ const Splash = () => {
 									}}
 									className="w-5 h-5 absolute left-full"
 									src="/image/pancel.png"
+									alt="닉네임 변경"
 								/>
 							</div>
 						</div>
@@ -132,19 +134,19 @@ const Splash = () => {
 								onClick={() => authLogin('naver')}
 								className="bg-[#03C75A]  flex  justify-center items-center rounded-full shadow-md w-10 h-10"
 							>
-								<img className="w-5/12" src={Naver} />
+								<img className="w-5/12" src={Naver} alt="네이버 로그인" />
 							</button>
 							<button
 								onClick={() => authLogin('kakao')}
 								className="bg-[#FEE500] flex  justify-center items-center rounded-full shadow-md w-10 h-10"
 							>
-								<img className="w-7/12" src={Kakao} />
+								<img className="w-7/12" src={Kakao} alt="카카오 로그인" />
 							</button>
 							<button
 								onClick={() => authLogin('google')}
 								className="bg-white flex  justify-center items-center rounded-full shadow-md w-10 h-10"
 							>
-								<img className="w-7/12" src={Google} />
+								<img className="w-7/12" src={Google} alt="구글 로그인" />
 							</button>
 						</div>
 						<h3 className="text-center text-xs leading-4">
