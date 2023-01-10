@@ -9,7 +9,7 @@ interface PiesProps {
 const Pies = ({ setToggle }: PiesProps) => {
 	return (
 		<>
-			{PIES.Pies.map((pie) => (
+			{PIES.Pies[8].map((pie) => (
 				<motion.div
 					key={pie.src}
 					onDragStart={() => {

@@ -29,7 +29,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
 
 const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', isCustom = false, top = 'default', ...rest }) => {
 	const modalControl = useAnimationControls()
-	const popup = store((state) => state.popup)
+	const { popup, refreshPopup } = store((state) => ({ popup: state.popup, refreshPopup: state.refreshPopup }))
 	return (
 		<Modal>
 			<AnimatePresence>
@@ -49,7 +49,7 @@ const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', isCustom =
 								top === 'default' ? '' : 'pt-10'
 							}`}
 						>
-							<div className="top-icon">
+							<div className="top-icon z-[1]">
 								<div className="bg-mainBeige border-black border border-solid flex justify-center items-center grow rounded-full">
 									<img src={`/image/icon/${icon}.png`} className="w-3/4 max-w-[23px] max-h-[23px]" />
 								</div>
@@ -58,11 +58,35 @@ const CustomModal: React.FC<ModalProps> = ({ children, icon = 'logo', isCustom =
 								children
 							) : (
 								<div
-									className={`grow flex  flex-col items-center bg-mainBeige border-black border border-solid py-5 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)] ${
+									className={`grow flex relative  flex-col items-center bg-mainBeige border-black border border-solid py-5 pt-10 overflow-y-scroll max-h-[calc(var(--vh,1vh)_*_80)] ${
 										top === 'default' ? 'rounded-2xl' : 'rounded-b-2xl'
 									}`}
 									style={{ justifyContent: !children ? 'flex-end' : '' }}
 								>
+									<div className="absolute top-[10px] right-[10px]" onClick={refreshPopup}>
+										<svg
+											// onClick={onClosePopup}
+											width="25"
+											height="25"
+											viewBox="0 0 25 25"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+											xmlnsXlink="http://www.w3.org/1999/xlink"
+										>
+											<rect width="25" height="25" fill="url(#xbutton)" />
+											<defs>
+												<pattern id="xbutton" patternContentUnits="objectBoundingBox" width="1" height="1">
+													<use xlinkHref="#image0_711_1510" transform="scale(0.0104167)" />
+												</pattern>
+												<image
+													id="image0_711_1510"
+													width="96"
+													height="96"
+													xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAACZUlEQVR4nO2dzWoUQRhFKy4cRR+sX+B2bVKVJ+iFSNW29yIk4FLQd3AhPpQgGINLpWYc8C9mJj3W99P3wCwD9547aZKZojsEQgghhBBCCCGEEEIIUc7Zj5cMeIbHsabXsaSbWPLHseYXwzRtgnOGadrEml/Gmj6NJX2NJb05f37+pHuQrfyav/38Gkt673mEYZo2rePvvdsIXYPM8/xgrPnLH0EcjzDcJn83wE1z0jVQrOnzX8M4HGH4l/ztAPm6e6hY8uWtgRyNMNwlfzfApcpg1kcYtHfEjIex5Hd3vDs+XMwXj4IxYKWbmaCeO5kL7LGL2eCeOlguAMPZzReBwcxuCsFQVnfFYCCj24JQnM19USjMtJrCUJSlKxqKQ0EGUSQFYO3yJUWA8uWEgPLlxIDy5QSB8uVEgfLl3q2g/PuBE4ij/IVgwQiUfyJwjxEo/8TgiBEoX/hMzqj53I51cMhvwto/21E7QqF8uREK5cuNUCj/vwAOIAd4CTIkv/JSJC+/coTFDPxHTA7wowgb8sOCnyEnkr+HIywE/EJGDvArSR/y9/BydCDgsRQ5eDBLEB5NFISHcwXh8XRBNPxlAgUZRNBUHIqydEFjYSjMtLqiUJxtNQVhIKP7YjCU1W0hGMzsrggMZ/dRIBjuYDa4hy7mAnvqZCaox27qb2rqveNY0iuVwSRGqOkq9KTdKXz73ADn8o+8efdZ39vXt4cXrED+ISM0F91vXz/W/HYt8tU9wKGBGU/bCLvHeOTrdgt3z/J/GaGmq9Z5/wiT5iIIIvcgmzU/xIcQQgghhBBCCCGEEBKO4jvQGH7JWfI8XwAAAABJRU5ErkJggg=="
+												/>
+											</defs>
+										</svg>
+									</div>
 									{children ? children : <p>{popup?.message}</p>}
 									{popup && !popup.btnHide ? (
 										<button

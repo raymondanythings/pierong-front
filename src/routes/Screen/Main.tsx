@@ -91,10 +91,14 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const { startX, startY, endY, endX } = useDraggablePosition(buttonAxios)
 	const isMe = loggedInUser && urlSafebtoa(loggedInUser.email) === userId
 	const data = useMemo(() => ({ ...pieData, ...userResponse }), [pieData, userResponse])
+
 	const selectedList = pieData?.userPiePiece?.map((item) => +item.pieceIndex)
-	const pies: Pie[] | [] = PIES.Pies.filter((item) => {
+	const pieNumber = pieData?.piecesNumber ?? '6'
+	const pies: Pie[] | [] = PIES.Pies[pieNumber].filter((item) => {
 		return item.id !== dragState?.dragged?.id && !selectedList?.includes(item.id)
 	})
+
+	const feves = userResponse?.data.userFeve.slice(0, 5) || []
 
 	const {} = useTitle(`파이롱${user.nickname ? ' | ' + user.nickname + '의 베이킹룸' : ''}`)
 	const refetch = () => {
@@ -254,7 +258,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			{!isLogin || isMe ? null : (
 				<button
 					onClick={() => navigate(`/room/${urlSafebtoa(loggedInUser?.email || '')}`)}
-					className="fixed top-4 left-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
+					className="fixed top-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
 					style={{
 						left: 'calc(var(--main-mr) + 16px)'
 					}}
@@ -266,6 +270,13 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			)}
 
 			<div className="aspect-[9/20] absolute ">
+				{feves.map((item, index) => (
+					<div key={item.collectedDate} className={`absolute w-16 h-w-16 feves-3d feve-box-${index}`}>
+						<div className="relative">
+							<img className="absolute feve-front" src={`/image/feve/${item.feveId}.png`} alt={item.feveName} />
+						</div>
+					</div>
+				))}
 				<img src="/image/main_board.png" />
 				<motion.div
 					className="absolute top-[4.5%] max-w-[60%] left-[35%]"
@@ -310,8 +321,14 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					</div>
 					<div className="absolute top-[30%] -left-[5%]">
 						<img src={PIES.GREEN_PAPER} />
-						<img className="absolute -left-[57%] top-[41%] -z-[1]" draggable={false} src={PIES.WhitePaper} />
-						<img className="absolute top-[13%] -left-[43%] max-w-[73.5%] z-10" draggable={false} src={PIES.Piece} />
+						<img className="absolute -left-[47%] top-[45%] -z-[1]" draggable={false} src={PIES.WhitePaper} />
+
+						<img className="absolute top-[35%] -left-[30%] max-w-[61%] z-10" draggable={false} src={PIES.Piece} />
+						<img
+							className="absolute top-[57%] -left-[34%] max-w-[70%] z-[0] drop-shadow-bottom"
+							draggable={false}
+							src={PIES.Plate_Small}
+						/>
 					</div>
 					<AnimatePresence>
 						{data.userPieId

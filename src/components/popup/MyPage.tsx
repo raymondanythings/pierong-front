@@ -71,7 +71,7 @@ const MyPage = () => {
 				</div>
 			</div>
 			{user ? (
-				<div className="shadow-btn py-3 items-center justify-between px-4">
+				<div className="shadow-btn py-3 items-center justify-between px-4 max-h-[46px]">
 					<div
 						className={`w-7 h-7 ${
 							user.socialType === 'google' ? 'bg-white' : user.socialType === 'kakao' ? 'bg-[#FEE500]' : 'bg-[#03C75A]'

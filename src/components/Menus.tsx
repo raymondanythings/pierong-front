@@ -96,7 +96,6 @@ const Menus = () => {
 								height="25"
 								viewBox="0 0 25 25"
 								fill="none"
-								className="relative -right-2"
 								xmlns="http://www.w3.org/2000/svg"
 								xmlnsXlink="http://www.w3.org/1999/xlink"
 							>

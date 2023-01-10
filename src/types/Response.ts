@@ -36,7 +36,7 @@ interface UserPie {
 	bakingStatus: '01' | '02' | '03'
 	pieId: string
 	ownerEmail: string
-	piecesNumber: number
+	piecesNumber: '6' | '8'
 	userPieId: string
 	userPiePiece: PiePiece[]
 	userPieCount?: string

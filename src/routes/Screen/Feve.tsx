@@ -31,12 +31,12 @@ const Feve = () => {
 		<div className="relative">
 			<button
 				style={{
-					left: 'var(--main-mr)'
+					left: 'calc(var(--main-mr) + 16px)'
 				}}
 				onClick={() => navigate(-1)}
-				className="fixed top-2 left-2 z-10 bg-mainTeal w-28 border border-solid border-black rounded-full flex items-center justify-center"
+				className="fixed top-4 left-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
 			>
-				<span className="m-1 text-white font-thin py-1 text-lg grow text-center rounded-full border border-solid border-white">
+				<span className="m-1 text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white">
 					돌아가기
 				</span>
 			</button>

@@ -6,7 +6,7 @@ const getUserPie = async ({ userId }: { userId: string }) => {
 	return res.data.data
 }
 
-const createPie = async (feveId: string, pieType: number = 1) => {
+const createPie = async (feveId: string, pieType: number = 2) => {
 	const res = await axios.post<Response<any>>(`/pie/bake`, {
 		pieId: pieType,
 		feveId
