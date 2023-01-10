@@ -1,9 +1,13 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: Googlebot
 Allow: /
+User-agent: Googlebot-Mobile
+Allow: /
+User-agent: Googlebot-News
+Allow: /
+User-agent: Googlebot-Image
+Allow: /
 User-agent: Yeti
 Allow: /
-User-agent: *
-Disallow:
 
 Sitemap: https://www.pierong.site/sitemap.xml

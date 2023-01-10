@@ -22,7 +22,6 @@ const pageSitemap = pages
 	)
 	.join('') // 배열이니 join으로 전부 합쳐주자
 
-console.log(pageSitemap)
 const geneateSitemap = `
       <?xml version="1.0" encoding="UTF-8"?>
         <urlset
