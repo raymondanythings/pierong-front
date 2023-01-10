@@ -103,7 +103,7 @@ const MyPage = () => {
 			</div>
 			{isThisTrue ? (
 				<div
-					className="fixed top-0 left-0 w-screen h-screen z-[100] flex justify-center items-center"
+					className="fixed top-0 w-screen h-screen z-[100] flex justify-center items-center max-w-screen-default left-[50%] -translate-x-[50%]"
 					style={{
 						marginTop: 0
 					}}

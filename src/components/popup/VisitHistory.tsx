@@ -31,31 +31,39 @@ const VisitHistory = () => {
 
 	return (
 		<div className="w-full px-7 flex flex-col space-y-3">
-			<h1 className="text-center">
-				<b className="text-mainTeal">최근방문</b> 친구 방가기
-			</h1>
-			<div className="w-full flex flex-col space-y-3 items-center">
-				{history.map((item) => (
-					<div key={item.userId} className="shadow-btn h-12 justify-between items-center">
-						<span className="pl-7">
-							<b className="text-mainTeal">{item.nickname}</b>의 베이킹룸
-						</span>
+			{history.length ? (
+				<>
+					<h1 className="text-center">
+						<b className="text-mainTeal">최근방문</b> 친구 방가기
+					</h1>
+					<div className="w-full flex flex-col space-y-3 items-center">
+						{history.map((item) => (
+							<div key={item.userId} className="shadow-btn h-12 justify-between items-center">
+								<span className="pl-7">
+									<b className="text-mainTeal">{item.nickname}</b>의 베이킹룸
+								</span>
 
-						<div
-							onClick={() => setClickedHistory(item)}
-							className="flex border-l-mainTeal border-solid border-l p-2 h-full aspect-square"
-						>
-							<img src="/image/icon/door_g.png" alt="door" />
-						</div>
+								<div
+									onClick={() => setClickedHistory(item)}
+									className="flex border-l-mainTeal border-solid border-l p-2 h-full aspect-square"
+								>
+									<img src="/image/icon/door_g.png" alt="door" />
+								</div>
+							</div>
+						))}
 					</div>
-				))}
-				<div className="w-fit p-2 text-xs font-thin rounded-full border border-solid border-black mt-2 text-white bg-mainTeal ">
-					{new Intl.DateTimeFormat('ko').format(new Date())} 기준
-				</div>
+				</>
+			) : (
+				<h1 className="text-center">
+					<b className="text-mainTeal">최근방문</b> 내역이 없어요.
+				</h1>
+			)}
+			<div className="w-fit mx-auto p-2 text-xs font-thin rounded-full border border-solid border-black mt-2 text-white bg-mainTeal ">
+				{new Intl.DateTimeFormat('ko').format(new Date())} 기준
 			</div>
 			{clickedHistory ? (
 				<div
-					className="fixed top-0 left-0 w-screen h-screen z-[100] flex justify-center items-center"
+					className="fixed top-0 w-screen h-screen z-[100] flex justify-center items-center max-w-screen-default left-[50%] -translate-x-[50%]"
 					style={{
 						marginTop: 0
 					}}

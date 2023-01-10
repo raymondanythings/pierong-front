@@ -562,7 +562,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 						<p className="text-center leading-6 mb-2">
 							<b className="text-mainTeal">{user.nickname}</b>님 계정을
 							<br />
-							로그아웃 하시겠습니까?
+							로그아웃 할까요?
 						</p>
 						<div className="flex space-x-2">
 							<button onClick={onLogout} className="modal-btn py-1.5 text-sm font-normal min-w-min px-6">

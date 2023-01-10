@@ -28,7 +28,7 @@ const Feve = () => {
 	}, [isUserLoading])
 
 	return (
-		<div className="relative">
+		<div className="relative h-full overflow-y-scroll">
 			<button
 				style={{
 					left: 'calc(var(--main-mr) + 16px)'
