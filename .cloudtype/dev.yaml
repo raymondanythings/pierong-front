@@ -36,6 +36,8 @@ options:
           var: REACT_APP_NAVER_STATE
         - name: REACT_APP_API_PATH
           var: REACT_APP_API_PATH
+        - name: TZ
+          var: TZ
     context:
     git:
       url: https://github.com/6floorpeople/pierong-front.git
