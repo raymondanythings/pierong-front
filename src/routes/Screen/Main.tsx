@@ -386,12 +386,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 					>
 						{isMe ? (
 							<div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
-								<div
-									className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col"
-									onClick={() => {
-										window.open('https://forms.gle/6hyzXtku1F3EzyoD6')
-									}}
-								>
+								<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col">
 									<svg
 										width="25"
 										height="25"
