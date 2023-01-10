@@ -2,7 +2,7 @@ import { UserApi } from 'api'
 import { UserHistory } from 'api/user'
 import Loading from 'components/animation/Loading'
 import useCopyClipboard from 'hooks/useCopyClipboard'
-import { formatDate, formatOrdianl, numberToKr } from 'libs/utils'
+import { formatDate, formatOrdianl, numberToKr, urlSafebtoa } from 'libs/utils'
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import store from 'store'
@@ -92,18 +92,18 @@ interface SelectedHistory {
 const locks = [0, 1, 2, 3, 4]
 
 const History = () => {
-	const { userNickname, ownerDetail } = store((state) => ({ userNickname: state.user?.nickname, ownerDetail: state.owner }))
+	const { user } = store((state) => ({ userNickname: state.user?.nickname, ownerDetail: state.owner, user: state.user }))
 	const [selectedHistory, setSelectedHistory] = useState<SelectedHistory | null>(null)
 	const {
 		data: { data: owner = [] } = {},
 		refetch,
 		isLoading
-	} = useQuery(['room', 'user', 'owner', ownerDetail?.userId], () => UserApi.getOwnerDetail(ownerDetail?.userId || ''), {
+	} = useQuery(['room', 'user', 'owner', urlSafebtoa(user?.email ?? '')], () => UserApi.getOwnerDetail(urlSafebtoa(user?.email ?? '')), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60,
 		retry: false,
 		refetchOnWindowFocus: false,
-		enabled: !!ownerDetail?.userId
+		enabled: !!user?.email
 	})
 
 	const { copyUrlOnClipboard } = useCopyClipboard()
@@ -142,7 +142,7 @@ const History = () => {
 			<div className="bg-mainBeige grow py-4 px-5 max-h-half overflow-y-scroll rounded-b-lg">
 				{selectedHistory ? (
 					<h1 className="text-mainTeal text-lg text-center mb-4">
-						{ownerDetail?.nickname}의 {formatOrdianl(selectedHistory.selectedIndex + 1)} 파이
+						{user?.nickname}의 {formatOrdianl(selectedHistory.selectedIndex + 1)} 파이
 					</h1>
 				) : null}
 				{owner.length && selectedHistory ? (

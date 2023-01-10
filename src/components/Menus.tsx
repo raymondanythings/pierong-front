@@ -35,7 +35,7 @@ const social = {
 		title: '네이버'
 	}
 }
-type NavKey = 'history' | 'feve' | 'share' | 'mypage'
+type NavKey = 'history' | 'feve' | 'share' | 'mypage' | 'logout'
 const Menus = () => {
 	const { logout } = useAuth()
 	const { user, setPopup, setToggle } = store((state) => ({
@@ -235,7 +235,10 @@ const Menus = () => {
 						>
 							공유하기
 						</button>
-						<button onClick={onLogout} className="w-full rounded-xl h-10 solid-box border-mainTeal text-mainTeal">
+						<button
+							onClick={() => onNavClick('logout')}
+							className="w-full rounded-xl h-10 solid-box border-mainTeal text-mainTeal"
+						>
 							로그아웃
 						</button>
 					</div>

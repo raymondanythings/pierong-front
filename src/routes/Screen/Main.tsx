@@ -21,6 +21,8 @@ import { useTitle } from 'hooks/useTitle'
 import { useNavigate } from 'react-router-dom'
 import CompletePie from 'components/popup/CompletePie'
 import useCopyClipboard from 'hooks/useCopyClipboard'
+import VisitHistory from 'components/popup/VisitHistory'
+import useAuth from 'hooks/useAuth'
 
 const signTitleVariants: Variants = {
 	initial: {
@@ -64,7 +66,8 @@ const domVariants: Variants = {
 
 const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 	const navigate = useNavigate()
-	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, setOwner, clickedPieState } = store()
+	const { logout } = useAuth()
+	const { dragState, setDragState, popup, setPopup, user: loggedInUser, refreshPopup, isLogin, owner, setOwner } = store()
 	const { data: pieData, refetch: pieRefetch } = useQuery(['room', 'pie', userId], () => PieApi.getUserPie({ userId }), {
 		cacheTime: Infinity,
 		staleTime: 1000 * 60 * 5,
@@ -114,6 +117,11 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		})
 	}
 
+	const onLogout = useCallback(() => {
+		logout()
+		navigate('/')
+	}, [])
+
 	const handleCreatePie = useCallback(
 		async (feveId: string) => {
 			const isCreateSuccess = await PieApi.createPie(feveId)
@@ -128,6 +136,28 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 		},
 		[userId]
 	)
+
+	useLayoutEffect(() => {
+		if (isLogin && !isMe) {
+			const loggedInUserId = urlSafebtoa(loggedInUser?.email ?? '')
+			const history: any[] = JSON.parse(localStorage.getItem(`ROOM_HISTORY_${loggedInUserId}`) ?? '[]') || []
+			const parsedHistory = history.filter((item) => item.userId !== userId)
+			if (parsedHistory.length > 3) {
+				parsedHistory.shift()
+			}
+			parsedHistory.push({
+				nickname: owner?.nickname,
+				userId,
+				date: new Date().getTime()
+			})
+			parsedHistory.sort((a, b) => {
+				if (a.date > b.date) return -1
+				else if (a.date < b.date) return 1
+				return 0
+			})
+			localStorage.setItem(`ROOM_HISTORY_${loggedInUserId}`, JSON.stringify(parsedHistory))
+		}
+	}, [isLogin])
 
 	useLayoutEffect(() => {
 		const firstTime = localStorage.getItem('initial')
@@ -255,7 +285,25 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 
 	return (
 		<div className="h-full relative overflow-x-hidden">
-			{!isLogin || isMe ? null : (
+			{!isLogin ? null : isMe ? (
+				<button
+					onClick={() =>
+						setPopup({
+							key: 'saveHistory',
+							btnHide: true,
+							isOpen: true
+						})
+					}
+					className="fixed top-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
+					style={{
+						left: 'calc(var(--main-mr) + 16px)'
+					}}
+				>
+					<span className="m-1 text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white">
+						친구 방가기
+					</span>
+				</button>
+			) : (
 				<button
 					onClick={() => navigate(`/room/${urlSafebtoa(loggedInUser?.email || '')}`)}
 					className="fixed top-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
@@ -502,6 +550,31 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 							<br />
 							파이당 한조각만 가져갈 수 있어요!
 						</p>
+					</div>
+				</Modal>
+			) : popup?.key === 'saveHistory' ? (
+				<Modal icon="door">
+					<VisitHistory />
+				</Modal>
+			) : popup?.key === 'logout' ? (
+				<Modal>
+					<div>
+						<p className="text-center leading-6 mb-2">
+							<b className="text-mainTeal">{user.nickname}</b>님 계정을
+							<br />
+							로그아웃 하시겠습니까?
+						</p>
+						<div className="flex space-x-2">
+							<button onClick={onLogout} className="modal-btn py-1.5 text-sm font-normal min-w-min px-6">
+								네
+							</button>
+							<button
+								onClick={refreshPopup}
+								className="modal-btn py-1.5 text-sm font-normal bg-transparent text-black min-w-min px-6"
+							>
+								아니요
+							</button>
+						</div>
 					</div>
 				</Modal>
 			) : null}

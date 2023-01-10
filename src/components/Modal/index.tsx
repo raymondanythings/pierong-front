@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import store from 'store'
 interface ModalProps extends HTMLMotionProps<'div'> {
 	children?: ReactNode
-	icon?: 'logo' | 'info' | 'message' | 'pancel' | 'book' | 'person'
+	icon?: 'logo' | 'info' | 'message' | 'pancel' | 'book' | 'person' | 'door'
 	top?: 'default' | 'large'
 	isCustom?: boolean
 }
