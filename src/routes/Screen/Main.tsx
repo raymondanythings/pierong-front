@@ -475,6 +475,35 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 				<Modal>
 					<CompletePie />
 				</Modal>
+			) : popup?.key === 'myPie' ? (
+				<Modal>
+					<div className="flex flex-col items-center">
+						<p className="text-center leading-6 mb-2">
+							<b className="text-mainTeal">내 파이</b>는 선택할 수 없어요
+							<br />
+							친구들에게 공유해 메세지를 받아보세요!
+						</p>
+
+						<button
+							onClick={copyUrlOnClipboard}
+							className="min-w-[100px] w-1/3  rounded-full border border-solid border-black mt-2 text-white bg-mainTeal py-3"
+						>
+							공유하기
+						</button>
+					</div>
+				</Modal>
+			) : popup?.key === 'alreadySelect' ? (
+				<Modal>
+					<div>
+						<p className="text-center leading-6 mb-2">
+							<b className="text-mainTeal">{user.nickname}</b>님의
+							<br />
+							파이를 선택한 적이 있어요
+							<br />
+							파이당 한조각만 가져갈 수 있어요!
+						</p>
+					</div>
+				</Modal>
 			) : null}
 		</div>
 	)

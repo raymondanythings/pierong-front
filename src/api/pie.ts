@@ -39,4 +39,9 @@ const getFeveList = async () => {
 	return res.data
 }
 
-export { getUserPie, createPie, choosePie, getFeveList }
+const checkAlreadySend = async (param: Partial<UserPie>) => {
+	const res = await axios.post<Response<boolean>>('/pie/piece/available', param)
+	return res.data.data
+}
+
+export { getUserPie, createPie, choosePie, getFeveList, checkAlreadySend }

@@ -3,6 +3,9 @@ import type { Pie } from 'types'
 import { motion } from 'framer-motion'
 import store from 'store'
 import Lottie from 'react-lottie'
+import { PieApi } from 'api'
+import { urlSafebtoa } from 'libs/utils'
+import { useQuery } from 'react-query'
 interface PiePieceProps {
 	isMe: boolean
 	dragged?: boolean
@@ -15,18 +18,31 @@ interface PiePieceProps {
 }
 
 const PiePiece: FC<PiePieceProps> = ({ isMe, dragged = true, startX, endX, startY, endY, pie, onDragEnd }) => {
-	const { isLogin, dragState, setDragState, setClickedState, setPopup, refreshPopup } = store((state) => ({
+	const { isLogin, user, owner, dragState, setDragState, setClickedState, setPopup, refreshPopup } = store((state) => ({
 		isLogin: state.isLogin,
+		user: state.user,
 		dragState: state.dragState,
+		owner: state.owner,
 		setDragState: state.setDragState,
 		clickedState: state.clickedPieState,
 		setClickedState: state.setClickedPieState,
 		setPopup: state.setPopup,
 		refreshPopup: state.refreshPopup
 	}))
+	const { data: pieData, refetch: pieRefetch } = useQuery(
+		['room', 'pie', urlSafebtoa(owner?.email ?? '')],
+		() => PieApi.getUserPie({ userId: urlSafebtoa(owner?.email ?? '') }),
+		{
+			cacheTime: Infinity,
+			staleTime: 1000 * 60 * 5,
+			retry: false,
+			refetchOnWindowFocus: false,
+			enabled: !!owner?.email
+		}
+	)
 
 	const handleClickPie = useCallback(
-		(pie: Pie) => {
+		async (pie: Pie) => {
 			if (!isLogin) {
 				setPopup({
 					isOpen: true,
@@ -51,25 +67,63 @@ const PiePiece: FC<PiePieceProps> = ({ isMe, dragged = true, startX, endX, start
 					}
 				})
 				return
-			}
-			setClickedState({
-				state: 'clicked',
-				item: pie
-			})
-			setPopup({
-				isOpen: true,
-				key: 'sendMessage',
-				btnHide: true,
-				payload: {
-					cancel: () => {
-						setClickedState({
-							state: 'idle',
-							item: null
-						})
-						refreshPopup()
+			} else if (isMe) {
+				setPopup({
+					isOpen: true,
+					key: 'myPie',
+					btnHide: true,
+					payload: {
+						cancel: () => {
+							setClickedState({
+								state: 'idle',
+								item: null
+							})
+							refreshPopup()
+						}
 					}
+				})
+				return
+			} else {
+				const param = {
+					ownerEmail: pieData?.ownerEmail,
+					userPieId: pieData?.userPieId
 				}
-			})
+				const check = await PieApi.checkAlreadySend(param)
+				if (check) {
+					setClickedState({
+						state: 'clicked',
+						item: pie
+					})
+					setPopup({
+						isOpen: true,
+						key: 'sendMessage',
+						btnHide: true,
+						payload: {
+							cancel: () => {
+								setClickedState({
+									state: 'idle',
+									item: null
+								})
+								refreshPopup()
+							}
+						}
+					})
+				} else {
+					setPopup({
+						isOpen: true,
+						key: 'alreadySelect',
+						payload: {
+							cancel: () => {
+								setClickedState({
+									state: 'idle',
+									item: null
+								})
+								refreshPopup()
+							}
+						}
+					})
+				}
+			}
 		},
 		[dragged]
 	)
@@ -135,7 +189,7 @@ const PiePiece: FC<PiePieceProps> = ({ isMe, dragged = true, startX, endX, start
 		<motion.div
 			key={pie.src}
 			layoutId={`pie-clicked-${pie.id}`}
-			onClick={() => !isMe && handleClickPie(pie)}
+			onClick={() => handleClickPie(pie)}
 			className="absolute"
 			style={{
 				maxWidth: pie.width + '%',
