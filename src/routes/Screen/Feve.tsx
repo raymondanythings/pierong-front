@@ -36,7 +36,7 @@ const Feve = () => {
 				onClick={() => navigate(-1)}
 				className="fixed top-4 z-10 bg-mainTeal w-[120px] h-[50px] border border-solid border-black rounded-full flex items-center justify-center p-1"
 			>
-				<span className="w-full h-full text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white flex items-center justify-center">
+				<span className="w-full h-full text-white font-thin py-1 grow text-center rounded-full border border-solid border-white flex items-center justify-center">
 					돌아가기
 				</span>
 			</button>
