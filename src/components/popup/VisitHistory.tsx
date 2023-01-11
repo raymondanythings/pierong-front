@@ -47,7 +47,7 @@ const VisitHistory = () => {
 									onClick={() => setClickedHistory(item)}
 									className="flex border-l-mainTeal border-solid border-l p-2 h-full aspect-square"
 								>
-									<img src="/image/icon/door_g.png" alt="door" />
+									<img className="w-[30px] h-[30px]" src="/image/icon/door_g.png" alt="door" />
 								</div>
 							</div>
 						))}

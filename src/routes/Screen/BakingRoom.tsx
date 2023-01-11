@@ -1,6 +1,6 @@
 import { PieApi, UserApi } from 'api'
 import Loading from 'components/animation/Loading'
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom'
 import store from 'store'
@@ -8,6 +8,7 @@ import Main from './Main'
 
 const BakingRoom = () => {
 	const { userId = undefined } = useParams() as { userId?: string }
+	const [fakeLoading, setFakeLoading] = useState(true)
 	const navigate = useNavigate()
 	const [setPopup, setOwner, owner] = store((state) => [state.setPopup, state.setOwner, state.owner])
 	if (!userId) {
@@ -21,7 +22,7 @@ const BakingRoom = () => {
 			refetchOnReconnect: false,
 			refetchOnWindowFocus: false
 		})
-		console.log(count)
+
 		const { isLoading: isPieLoading, refetch: pieRefetch } = useQuery(
 			['room', 'pie', userId],
 			(key) => {
@@ -62,10 +63,14 @@ const BakingRoom = () => {
 			if (userResponse?.data) {
 				setOwner({ ...userResponse?.data, userId })
 			}
+			setTimeout(() => {
+				setFakeLoading(false)
+			}, 500)
+			return () => setFakeLoading(true)
 		}, [userId])
 		const user = userResponse?.data
 		const isLoading = isPieLoading || isUserLoading || !user
-		return isLoading ? <Loading /> : <Main userId={userId} user={user} />
+		return isLoading || fakeLoading ? <Loading /> : <Main userId={userId} user={user} />
 	}
 }
 

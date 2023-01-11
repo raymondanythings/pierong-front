@@ -20,20 +20,16 @@ const CompletePie = () => {
 		enabled: !!userId
 	})
 
-	const { data: { data: userData = null } = {}, refetch: userRefetch } = useQuery(
-		['room', 'user', userId],
-		() => UserApi.getUserDetail(userId),
-		{
-			cacheTime: Infinity,
-			staleTime: 1000 * 60 * 5,
-			retry: false,
-			refetchOnWindowFocus: false,
-			enabled: !!userId,
-			onSuccess({ data }) {
-				setOwner({ ...data, userId })
-			}
+	const { data: { data: userData = null } = {} } = useQuery(['room', 'user', userId], () => UserApi.getUserDetail(userId), {
+		cacheTime: Infinity,
+		staleTime: 1000 * 60 * 5,
+		retry: false,
+		refetchOnWindowFocus: false,
+		enabled: !!userId,
+		onSuccess({ data }) {
+			setOwner({ ...data, userId })
 		}
-	)
+	})
 
 	const onSelectFeve = () => {
 		setPopup({

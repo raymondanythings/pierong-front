@@ -34,9 +34,9 @@ const Feve = () => {
 					left: 'calc(var(--main-mr) + 16px)'
 				}}
 				onClick={() => navigate(-1)}
-				className="fixed top-4 left-4 z-10 bg-mainTeal w-24 border border-solid border-black rounded-full flex items-center justify-center"
+				className="fixed top-4 z-10 bg-mainTeal w-[120px] h-[50px] border border-solid border-black rounded-full flex items-center justify-center p-1"
 			>
-				<span className="m-1 text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white">
+				<span className="w-full h-full text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white flex items-center justify-center">
 					돌아가기
 				</span>
 			</button>
@@ -44,7 +44,7 @@ const Feve = () => {
 			<div className="absolute -z-[1]">
 				<img src="/image/main_background.png" />
 			</div>
-			<div className="py-16 space-y-16">
+			<div className="pt-20 space-y-16">
 				<div className="bg-mainBeige w-full flex flex-col round-top border border-solid">
 					<span className="py-2 text-center border-b border-solid">{owner?.nickname}'s CROWN</span>
 					{owner ? (

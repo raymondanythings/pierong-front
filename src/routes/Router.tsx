@@ -13,7 +13,7 @@ const router = createBrowserRouter(
 		<Route element={<App />} loader={loginCheckLoader}>
 			<Route index element={<Splash />} />
 			<Route path="oauth" element={<OAuth />} />
-			<Route path="room" element={<Outlet />}>
+			<Route path="room" element={<Outlet key={window.location.pathname} />}>
 				<Route path="feve" element={<Feve />} />
 				<Route path=":userId" element={<BakingRoom />} />
 			</Route>
@@ -22,5 +22,5 @@ const router = createBrowserRouter(
 		</Route>
 	)
 )
-
+console.log()
 export default router

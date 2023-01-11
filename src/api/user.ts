@@ -28,8 +28,13 @@ const getWithdraw = async () => {
 	return res.data
 }
 
+interface VisitCount {
+	total_visit_count: number
+	today_visit_count: number
+}
+
 const getVisitCount = async (email: string) => {
-	const res = await axios.get<Response<any>>(`/api/user/visit/${email}`)
+	const res = await axios.get<Response<VisitCount>>(`/user/visit/${email}`)
 	return res.data
 }
 
