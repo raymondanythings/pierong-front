@@ -42,7 +42,7 @@ const MyPage = () => {
 		}
 	}, [])
 	return (
-		<div className="w-full px-4 flex flex-col space-y-4">
+		<div className="w-full px-4 flex flex-col space-y-6">
 			<div className="mx-auto h-[60px] flex justify-center items-center bg-mainTeal p-2 z-30 border border-solid max-w-screen-default">
 				<div className="border-[#EAE6DA] border border-solid w-full h-full flex items-center justify-center text-[#EAE6DA] leading-5 px-2">
 					<div className="relative flex items-center">

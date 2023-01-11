@@ -30,13 +30,13 @@ const VisitHistory = () => {
 	}, [])
 
 	return (
-		<div className="w-full px-7 flex flex-col space-y-3">
+		<div className="w-full px-7 flex flex-col space-y-6">
 			{history.length ? (
 				<>
 					<h1 className="text-center">
 						<b className="text-mainTeal">최근방문</b> 친구 방가기
 					</h1>
-					<div className="w-full flex flex-col space-y-3 items-center">
+					<div className="w-full flex flex-col space-y-4 items-center">
 						{history.map((item) => (
 							<div key={item.userId} className="shadow-btn h-12 justify-between items-center">
 								<span className="pl-7">

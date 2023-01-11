@@ -300,7 +300,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 							left: 'calc(var(--main-mr) + 16px)'
 						}}
 					>
-						<span className="w-full h-full text-white font-thin py-1 text-sm grow text-center rounded-full border border-solid border-white flex items-center justify-center">
+						<span className="w-full h-full  text-white font-thin py-1  grow text-center rounded-full border border-solid border-white flex items-center justify-center">
 							친구 방가기
 						</span>
 					</button>
@@ -312,7 +312,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 							left: 'calc(var(--main-mr) + 16px)'
 						}}
 					>
-						<span className="w-full h-full text-white font-thin p-1 text-sm grow text-center rounded-full border border-solid border-white flex items-center justify-center">
+						<span className="w-full h-full text-white font-thin p-1  grow text-center rounded-full border border-solid border-white flex items-center justify-center">
 							내 방가기
 						</span>
 					</button>
@@ -430,9 +430,26 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 							initial="initial"
 							className={`fixed bottom-0 flex justify-center items-center z-40  max-w-screen-default bg-mainTeal`}
 							style={{
-								right: 'var(--main-mr)'
+								left: 'var(--main-mr)'
 							}}
 						>
+							<div className="h-[60px] border border-solid p-1 flex justify-center items-center relative">
+								<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 space-x-2 px-2">
+									<div className="relative flex items-center">
+										<strong className="text-base">
+											{user.nickname}
+											<small
+												className="ml-1"
+												style={{
+													fontSize: '0.75em'
+												}}
+											>
+												의 베이킹룸
+											</small>
+										</strong>
+									</div>
+								</div>
+							</div>
 							{isMe ? (
 								<div className="w-[60px] h-[60px] border border-solid p-1 flex justify-center items-center">
 									<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 flex-col">
@@ -460,23 +477,6 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 									</div>
 								</div>
 							) : null}
-							<div className="h-[60px] border border-solid p-1 flex justify-center items-center relative">
-								<div className="border-[#EAE6DA] grow h-full bg-mainTeal border border-solid   flex items-center justify-center text-[#EAE6DA] leading-5 space-x-2 px-2">
-									<div className="relative flex items-center">
-										<strong className="text-base">
-											{user.nickname}
-											<small
-												className="ml-1"
-												style={{
-													fontSize: '0.75em'
-												}}
-											>
-												의 베이킹룸
-											</small>
-										</strong>
-									</div>
-								</div>
-							</div>
 						</motion.div>
 					) : null}
 				</AnimatePresence>

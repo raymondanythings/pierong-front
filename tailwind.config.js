@@ -30,11 +30,11 @@ module.exports = {
 			},
 			height: {
 				screen: 'calc(var(--vh, 1vh) * 100)',
-				half: 'calc(var(--vh, 1vh) * 50)'
+				half: 'calc(var(--vh, 1vh) * 70)'
 			},
 			maxHeight: {
 				screen: 'calc(var(--vh, 1vh) * 100)',
-				half: 'calc(var(--vh, 1vh) * 50)'
+				half: 'calc(var(--vh, 1vh) * 70)'
 			}
 		}
 	},
