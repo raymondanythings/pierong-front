@@ -34,7 +34,7 @@ interface VisitCount {
 }
 
 const getVisitCount = async (email: string) => {
-	const res = await axios.get<Response<VisitCount>>(`/user/visit/${email}`)
+	const res = await axios.get<Response<VisitCount>>(`/room/visit/${email}`)
 	return res.data
 }
 
