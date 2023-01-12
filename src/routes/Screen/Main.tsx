@@ -86,6 +86,16 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 			setOwner({ ...data, userId })
 		}
 	})
+
+	const { data: count } = useQuery(['visit', 'count', userId], () => UserApi.getVisitCount(userId), {
+		cacheTime: Infinity,
+		staleTime: 1000 * 60 * 5,
+		retry: false,
+		refetchOnReconnect: false,
+		refetchOnWindowFocus: false,
+		enabled: !!userId
+	})
+
 	const [shakeCustom, setShakeCustom] = useState(false)
 	const howToAnimate = useAnimation()
 	const { copyUrlOnClipboard } = useCopyClipboard()
@@ -320,14 +330,36 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 
 				<div className="aspect-[9/20] absolute ">
 					{feves.map((item, index) => (
-						<div key={item.collectedDate} className={`absolute w-16 h-w-16 feves-3d feve-box-${index}`}>
+						<div key={item.collectedDate + index} className={`absolute w-16 h-w-16 feves-3d feve-box-${index}`}>
 							<div className="relative">
 								<img className="absolute feve-front" src={`/image/feve/${item.feveId}.png`} alt={item.feveName} />
 							</div>
 						</div>
 					))}
 					<img src="/image/main_board.png" />
-					<motion.div
+					<motion.div className="absolute top-[7.5%] w-[85%] left-[7.5%]">
+						<img src="/image/board.png" alt="board" />
+						{count && userResponse ? (
+							<div className="absolute max-w-[50%] top-1/2 -translate-y-1/2 left-[7%] h-[76%] break-all flex flex-col justify-center space-y-2">
+								<p className="text-slate-200 font-thin text-sm">
+									오늘 방문자수 : {(+count.data.todayVisitCount).toLocaleString()}
+								</p>
+								<p className="text-slate-200 font-thin text-sm">
+									획득한 페브수: {(+userResponse.data.userFeve.length).toLocaleString()}
+								</p>
+								<p className="text-slate-200 font-thin text-sm">
+									총 방문자수 : {(+count.data.totalVisitCount).toLocaleString()}
+								</p>
+							</div>
+						) : null}
+						<div className="absolute max-w-[35%] top-1/2 -translate-y-1/2 right-[7%] h-[76%] break-all flex items-center">
+							<img className="absolute top-0 -z-[1]" src="/image/memo.png" />
+							<p className="px-3 text-center leading-5 text-xs">{count?.data.noteContent}</p>
+						</div>
+						<div className="absolute top-0"></div>
+						<div className="relative"></div>
+					</motion.div>
+					{/* <motion.div
 						className="absolute top-[4.5%] max-w-[60%] left-[35%]"
 						onClick={() => {
 							setPopup({
@@ -359,7 +391,7 @@ const Main = ({ userId, user }: { userId: string; user: UserDetail }) => {
 								<img src={PIES.Arrow} />
 							</motion.div>
 						</motion.div>
-					</motion.div>
+					</motion.div> */}
 				</div>
 				<div className="h-full bg-mainBeige">
 					<Crown rank={userResponse?.data.crownId} />

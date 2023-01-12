@@ -29,8 +29,11 @@ const getWithdraw = async () => {
 }
 
 interface VisitCount {
-	total_visit_count: number
-	today_visit_count: number
+	createdDate: string
+	noteContent: string
+	totalFeveCount: string
+	totalVisitCount: string
+	todayVisitCount: string
 }
 
 const getVisitCount = async (email: string) => {

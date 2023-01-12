@@ -17,10 +17,11 @@ const BakingRoom = () => {
 	} else {
 		const { data: count } = useQuery(['visit', 'count', userId], () => UserApi.getVisitCount(userId), {
 			cacheTime: Infinity,
-			staleTime: Infinity,
-			refetchOnMount: false,
+			staleTime: 1000 * 60 * 5,
+			retry: false,
 			refetchOnReconnect: false,
-			refetchOnWindowFocus: false
+			refetchOnWindowFocus: false,
+			enabled: !!userId
 		})
 
 		const { isLoading: isPieLoading, refetch: pieRefetch } = useQuery(
@@ -33,7 +34,6 @@ const BakingRoom = () => {
 				staleTime: 1000 * 60 * 5,
 				retry: false,
 				refetchOnWindowFocus: false,
-
 				enabled: !!userId,
 				onError(err: any) {
 					setPopup({
