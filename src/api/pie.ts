@@ -26,7 +26,7 @@ interface SendMessage {
 
 const choosePie = async (param: SendMessage) => {
 	// try {
-	const res = await axios.post<Response<FeveDetail>>('/pie/piece/choose', param)
+	const res = await axios.post<Response<FeveDetail & { defailtYn: 'Y' | 'N' }>>('/pie/piece/choose', param)
 	return res.data
 	// } catch (err: any) {
 	// const { response } = err as unknown as AxiosError<{ code: string; message: string }>

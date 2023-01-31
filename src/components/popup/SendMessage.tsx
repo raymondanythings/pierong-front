@@ -86,7 +86,7 @@ const SendMessage: FC<SendMessageProps> = ({ refetch, ownerEmail, userPieId, own
 				})
 
 				if (res.message === 'SUCCESS') {
-					if (res.data) {
+					if (res.data.defailtYn === 'N') {
 						setChoosed(res.data)
 						store.setState({ chooseState: 'choose' })
 					} else {
